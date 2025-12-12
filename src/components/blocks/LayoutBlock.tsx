@@ -142,8 +142,8 @@ function LayoutBlock({ block, isSelected, onClick, onFormatRequest, onActiveStat
           )}
         </div>
 
-        {/* Column 2 (if 2-column layout) */}
-        {data.columns === 2 && (
+        {/* Column 2 (if 2+ column layout) */}
+        {data.columns >= 2 && (
           <div
             ref={setDropRef2}
             className={`min-h-[120px] border-2 border-dashed rounded-xl transition-all ${
@@ -168,11 +168,65 @@ function LayoutBlock({ block, isSelected, onClick, onFormatRequest, onActiveStat
             )}
           </div>
         )}
+
+        {/* Column 3 (if 3+ column layout) */}
+        {data.columns >= 3 && (
+          <div
+            ref={setDropRef3}
+            className={`min-h-[120px] border-2 border-dashed rounded-xl transition-all ${
+              isOver3 ? 'border-blue-400 bg-blue-50' : 'border-gray-300 bg-gray-50 hover:border-gray-400'
+            }`}
+          >
+            {data.children[2] ? (
+              <BlockRenderer
+                block={data.children[2]}
+                isSelected={selectedBlockId === data.children[2].id}
+                onClick={() => {
+                  selectBlock(data.children[2].id)
+                  setActiveSidebarTab('style')
+                }}
+                onFormatRequest={onFormatRequest}
+                onActiveStatesChange={onActiveStatesChange}
+              />
+            ) : (
+              <div className="flex items-center justify-center h-full text-gray-400 text-sm p-4">
+                Drop a block here
+              </div>
+            )}
+          </div>
+        )}
+
+        {/* Column 4 (if 4-column layout) */}
+        {data.columns === 4 && (
+          <div
+            ref={setDropRef4}
+            className={`min-h-[120px] border-2 border-dashed rounded-xl transition-all ${
+              isOver4 ? 'border-blue-400 bg-blue-50' : 'border-gray-300 bg-gray-50 hover:border-gray-400'
+            }`}
+          >
+            {data.children[3] ? (
+              <BlockRenderer
+                block={data.children[3]}
+                isSelected={selectedBlockId === data.children[3].id}
+                onClick={() => {
+                  selectBlock(data.children[3].id)
+                  setActiveSidebarTab('style')
+                }}
+                onFormatRequest={onFormatRequest}
+                onActiveStatesChange={onActiveStatesChange}
+              />
+            ) : (
+              <div className="flex items-center justify-center h-full text-gray-400 text-sm p-4">
+                Drop a block here
+              </div>
+            )}
+          </div>
+        )}
       </div>
 
       {isSelected && (
         <div className="mt-4 flex gap-2 justify-center">
-          {data.columns === 1 && (
+          {data.columns < 4 && (
             <button
               onClick={(e) => {
                 e.stopPropagation()
@@ -180,10 +234,10 @@ function LayoutBlock({ block, isSelected, onClick, onFormatRequest, onActiveStat
               }}
               className="px-4 py-2 bg-blue-600 text-white text-sm rounded-lg hover:bg-blue-700 transition-all shadow-sm"
             >
-              Add Second Column
+              Add Column ({data.columns + 1} columns)
             </button>
           )}
-          {data.columns === 2 && (
+          {data.columns > 1 && (
             <button
               onClick={(e) => {
                 e.stopPropagation()
@@ -191,7 +245,7 @@ function LayoutBlock({ block, isSelected, onClick, onFormatRequest, onActiveStat
               }}
               className="px-4 py-2 bg-red-600 text-white text-sm rounded-lg hover:bg-red-700 transition-all shadow-sm"
             >
-              Remove Second Column
+              Remove Column ({data.columns - 1} columns)
             </button>
           )}
         </div>

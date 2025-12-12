@@ -8,15 +8,17 @@ interface LayoutControlsProps {
 export default function LayoutControls({ block }: LayoutControlsProps) {
   const updateBlock = useEmailStore((state) => state.updateBlock)
 
-  const handleColumnsChange = (columns: 1 | 2) => {
-    // If reducing columns, trim children array
-    const newChildren = columns === 1 ? block.data.children.slice(0, 1) : block.data.children
+  const handleColumnsChange = (columns: 1 | 2 | 3 | 4) => {
+    // If reducing columns, trim children array to match column count
+    const newChildren = block.data.children.slice(0, columns)
 
     updateBlock(block.id, {
       data: {
         ...block.data,
         columns,
         children: newChildren,
+        // Reset column ratio when changing column count
+        columnRatio: columns === 2 ? (block.data.columnRatio || '1-1') : columns === 3 ? '1-1-1' : columns === 4 ? '1-1-1-1' : undefined,
       },
     })
   }
@@ -45,7 +47,7 @@ export default function LayoutControls({ block }: LayoutControlsProps) {
         <label className="block text-sm font-medium text-gray-700 mb-2">
           Columns
         </label>
-        <div className="grid grid-cols-2 gap-2">
+        <div className="grid grid-cols-4 gap-2">
           <button
             onClick={() => handleColumnsChange(1)}
             className={`px-3 py-2 text-sm border rounded transition-colors ${
@@ -54,7 +56,7 @@ export default function LayoutControls({ block }: LayoutControlsProps) {
                 : 'bg-white text-gray-700 border-gray-300 hover:border-blue-400'
             }`}
           >
-            1 Column
+            1
           </button>
           <button
             onClick={() => handleColumnsChange(2)}
@@ -64,7 +66,27 @@ export default function LayoutControls({ block }: LayoutControlsProps) {
                 : 'bg-white text-gray-700 border-gray-300 hover:border-blue-400'
             }`}
           >
-            2 Columns
+            2
+          </button>
+          <button
+            onClick={() => handleColumnsChange(3)}
+            className={`px-3 py-2 text-sm border rounded transition-colors ${
+              block.data.columns === 3
+                ? 'bg-blue-600 text-white border-blue-600'
+                : 'bg-white text-gray-700 border-gray-300 hover:border-blue-400'
+            }`}
+          >
+            3
+          </button>
+          <button
+            onClick={() => handleColumnsChange(4)}
+            className={`px-3 py-2 text-sm border rounded transition-colors ${
+              block.data.columns === 4
+                ? 'bg-blue-600 text-white border-blue-600'
+                : 'bg-white text-gray-700 border-gray-300 hover:border-blue-400'
+            }`}
+          >
+            4
           </button>
         </div>
       </div>

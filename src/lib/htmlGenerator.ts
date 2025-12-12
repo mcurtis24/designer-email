@@ -262,7 +262,7 @@ function generateLayoutHTML(block: EmailBlock): string {
 
   if (data.columns === 1) {
     columnWidths = [totalWidth]
-  } else {
+  } else if (data.columns === 2) {
     // For 2-column layouts, calculate based on columnRatio
     const ratio = data.columnRatio || '1-1'
     const contentWidth = totalWidth - gap // Available for actual content
@@ -282,6 +282,18 @@ function generateLayoutHTML(block: EmailBlock): string {
       const col2 = Math.floor(contentWidth / 3)
       columnWidths = [col1 + gap, col2]
     }
+  } else if (data.columns === 3) {
+    // For 3-column layouts, equal split
+    const totalGap = gap * 2 // 2 gaps for 3 columns
+    const contentWidth = totalWidth - totalGap
+    const colWidth = Math.floor(contentWidth / 3)
+    columnWidths = [colWidth + gap, colWidth + gap, colWidth]
+  } else if (data.columns === 4) {
+    // For 4-column layouts, equal split
+    const totalGap = gap * 3 // 3 gaps for 4 columns
+    const contentWidth = totalWidth - totalGap
+    const colWidth = Math.floor(contentWidth / 4)
+    columnWidths = [colWidth + gap, colWidth + gap, colWidth + gap, colWidth]
   }
 
   // Generate HTML for each child block

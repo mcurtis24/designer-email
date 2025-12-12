@@ -4,6 +4,55 @@ All notable changes to the Email Designer project will be documented in this fil
 
 ## [Unreleased]
 
+### Phase 1: Quick Wins - 2025-12-11
+
+#### 3-4 Column Row Layouts ✅ COMPLETE
+**Added**: Extended layout block support from 1-2 columns to 1-4 columns.
+
+**Features**:
+- Layout blocks now support 1, 2, 3, and 4 column configurations
+- Equal-width columns for 3 and 4 column layouts
+- Maintained existing 2-column ratio options (50/50, 33/66, 66/33)
+- Drag-and-drop support for all column configurations
+- Dynamic add/remove column buttons showing next column count
+- Proper email-safe HTML table generation for 3-4 columns
+
+**UI/UX Improvements**:
+- Updated sidebar controls with 4 column selection buttons (1, 2, 3, 4)
+- Add Column button dynamically shows next count: "Add Column (3 columns)"
+- Remove Column button dynamically shows next count: "Remove Column (1 column)"
+- Improved button labels for clarity
+
+**Technical Implementation**:
+- Updated `LayoutBlockData` type to support `columns: 1 | 2 | 3 | 4`
+- Added column ratio types: `'1-1-1'` (3 columns) and `'1-1-1-1'` (4 columns)
+- Added droppable zones for columns 3 and 4 using `@dnd-kit`
+- Updated HTML generator with proper column width calculations:
+  - 3 columns: ~1/3 width each with 2 gaps
+  - 4 columns: ~1/4 width each with 3 gaps
+- Automatic column ratio assignment when changing column count
+- Children array trimming when reducing column count
+
+**Email Compatibility**:
+- Uses email-safe table-based HTML structure
+- Mobile-responsive with `mobile-full-width` class for column stacking
+- Proper gap spacing between columns
+- Tested column width calculations for email clients
+
+**Files Modified**:
+- `src/types/email.ts:91-96` - Extended LayoutBlockData type
+- `src/components/blocks/LayoutBlock.tsx:22-36,38-63,83-97,145-252` - Added columns 3-4 rendering and logic
+- `src/components/controls/LayoutControls.tsx:11-24,46-92` - Updated column selection UI
+- `src/lib/htmlGenerator.ts:263-297` - Added 3-4 column HTML generation
+
+**Impact**:
+- ✅ More flexible email layouts matching industry standards
+- ✅ Matches Beefree's core row-based layout capability
+- ✅ Enables complex multi-column email designs
+- ✅ Clean progression from simple to complex layouts
+
+---
+
 ### Phase 1: Template Library - 2025-12-11
 
 #### Professional Email Templates ✅ COMPLETE
