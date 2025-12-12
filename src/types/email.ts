@@ -89,8 +89,8 @@ export interface DividerBlockData {
 }
 
 export interface LayoutBlockData {
-  columns: 1 | 2
-  columnRatio?: '1-1' | '1-2' | '2-1' // '1-1' = 50/50, '1-2' = 33/66, '2-1' = 66/33
+  columns: 1 | 2 | 3 | 4
+  columnRatio?: '1-1' | '1-2' | '2-1' | '1-1-1' | '1-1-1-1' // '1-1' = 50/50, '1-2' = 33/66, '2-1' = 66/33, '1-1-1' = 33/33/33, '1-1-1-1' = 25/25/25/25
   children: EmailBlock[]
   gap: number
 }

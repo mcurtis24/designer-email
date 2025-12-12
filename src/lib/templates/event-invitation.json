@@ -1,0 +1,270 @@
+{
+  "id": "template-event",
+  "name": "Event Invitation",
+  "category": "event",
+  "description": "Professional event invitation with date, time, and registration CTA",
+  "thumbnail": "",
+  "tags": ["event", "webinar", "invitation", "registration"],
+  "blocks": [
+    {
+      "id": "spacer-top",
+      "type": "spacer",
+      "data": {
+        "height": 32
+      },
+      "styles": {
+        "padding": {
+          "top": "0px",
+          "right": "0px",
+          "bottom": "0px",
+          "left": "0px"
+        }
+      }
+    },
+    {
+      "id": "event-label",
+      "type": "text",
+      "data": {
+        "content": "<p>📅 UPCOMING WEBINAR</p>",
+        "fontFamily": "-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif",
+        "fontSize": "12px",
+        "color": "#7C3AED",
+        "lineHeight": 1.4
+      },
+      "styles": {
+        "padding": {
+          "top": "8px",
+          "right": "16px",
+          "bottom": "8px",
+          "left": "16px"
+        },
+        "textAlign": "center",
+        "backgroundColor": "#F5F3FF"
+      }
+    },
+    {
+      "id": "event-heading",
+      "type": "heading",
+      "data": {
+        "level": 1,
+        "text": "You're Invited!",
+        "fontFamily": "Georgia, serif",
+        "fontSize": "48px",
+        "fontWeight": 700,
+        "color": "#111827",
+        "lineHeight": 1.2,
+        "letterSpacing": "-0.02em"
+      },
+      "styles": {
+        "padding": {
+          "top": "24px",
+          "right": "4px",
+          "bottom": "16px",
+          "left": "4px"
+        },
+        "textAlign": "center"
+      }
+    },
+    {
+      "id": "event-title",
+      "type": "heading",
+      "data": {
+        "level": 2,
+        "text": "Mastering Modern Email Design",
+        "fontFamily": "Georgia, serif",
+        "fontSize": "36px",
+        "fontWeight": 600,
+        "color": "#7C3AED",
+        "lineHeight": 1.3,
+        "letterSpacing": "-0.01em"
+      },
+      "styles": {
+        "padding": {
+          "top": "4px",
+          "right": "24px",
+          "bottom": "24px",
+          "left": "24px"
+        },
+        "textAlign": "center"
+      }
+    },
+    {
+      "id": "event-description",
+      "type": "text",
+      "data": {
+        "content": "<p>Join industry experts as we explore the latest trends in email design, best practices for mobile optimization, and strategies to boost engagement rates.</p>",
+        "fontFamily": "-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif",
+        "fontSize": "16px",
+        "color": "#4B5563",
+        "lineHeight": 1.6
+      },
+      "styles": {
+        "padding": {
+          "top": "4px",
+          "right": "32px",
+          "bottom": "32px",
+          "left": "32px"
+        },
+        "textAlign": "center"
+      }
+    },
+    {
+      "id": "event-details",
+      "type": "text",
+      "data": {
+        "content": "<p style='font-size: 18px; font-weight: 600; margin-bottom: 12px;'>📅 Thursday, December 15, 2025</p><p style='font-size: 18px; font-weight: 600; margin-bottom: 12px;'>🕐 2:00 PM EST</p><p style='font-size: 18px; font-weight: 600;'>⏱️ Duration: 1 hour</p>",
+        "fontFamily": "-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif",
+        "fontSize": "16px",
+        "color": "#111827",
+        "lineHeight": 1.6
+      },
+      "styles": {
+        "padding": {
+          "top": "24px",
+          "right": "24px",
+          "bottom": "24px",
+          "left": "24px"
+        },
+        "textAlign": "center",
+        "backgroundColor": "#F9FAFB"
+      }
+    },
+    {
+      "id": "register-button",
+      "type": "button",
+      "data": {
+        "text": "Reserve Your Spot",
+        "linkUrl": "https://example.com/register",
+        "backgroundColor": "#7C3AED",
+        "textColor": "#FFFFFF",
+        "borderRadius": 8,
+        "padding": {
+          "top": "16px",
+          "right": "40px",
+          "bottom": "16px",
+          "left": "40px"
+        },
+        "alignment": "center"
+      },
+      "styles": {
+        "padding": {
+          "top": "32px",
+          "right": "4px",
+          "bottom": "24px",
+          "left": "4px"
+        }
+      }
+    },
+    {
+      "id": "spots-text",
+      "type": "text",
+      "data": {
+        "content": "<p><em>Limited spots available – Register now to secure your seat!</em></p>",
+        "fontFamily": "-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif",
+        "fontSize": "14px",
+        "color": "#DC2626",
+        "lineHeight": 1.6
+      },
+      "styles": {
+        "padding": {
+          "top": "4px",
+          "right": "4px",
+          "bottom": "32px",
+          "left": "4px"
+        },
+        "textAlign": "center"
+      }
+    },
+    {
+      "id": "agenda-divider",
+      "type": "divider",
+      "data": {
+        "color": "#E5E7EB",
+        "thickness": 1,
+        "style": "solid",
+        "width": "100%",
+        "padding": "16px 0"
+      },
+      "styles": {
+        "padding": {
+          "top": "16px",
+          "right": "4px",
+          "bottom": "16px",
+          "left": "4px"
+        }
+      }
+    },
+    {
+      "id": "agenda-heading",
+      "type": "heading",
+      "data": {
+        "level": 3,
+        "text": "What You'll Learn",
+        "fontFamily": "Georgia, serif",
+        "fontSize": "28px",
+        "fontWeight": 600,
+        "color": "#374151",
+        "lineHeight": 1.4,
+        "letterSpacing": "0em"
+      },
+      "styles": {
+        "padding": {
+          "top": "16px",
+          "right": "4px",
+          "bottom": "16px",
+          "left": "4px"
+        },
+        "textAlign": "left"
+      }
+    },
+    {
+      "id": "agenda-text",
+      "type": "text",
+      "data": {
+        "content": "<p>• Design principles for high-converting emails<br>• Mobile-first best practices<br>• Accessibility and inclusive design<br>• Real-world case studies and examples<br>• Q&A with industry experts</p>",
+        "fontFamily": "-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif",
+        "fontSize": "16px",
+        "color": "#4B5563",
+        "lineHeight": 1.8
+      },
+      "styles": {
+        "padding": {
+          "top": "4px",
+          "right": "4px",
+          "bottom": "32px",
+          "left": "4px"
+        },
+        "textAlign": "left"
+      }
+    },
+    {
+      "id": "footer-text",
+      "type": "text",
+      "data": {
+        "content": "<p>Can't make it? Register anyway and we'll send you the recording.</p>",
+        "fontFamily": "-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif",
+        "fontSize": "14px",
+        "color": "#6B7280",
+        "lineHeight": 1.6
+      },
+      "styles": {
+        "padding": {
+          "top": "32px",
+          "right": "4px",
+          "bottom": "32px",
+          "left": "4px"
+        },
+        "textAlign": "center",
+        "backgroundColor": "#F9FAFB"
+      }
+    }
+  ],
+  "settings": {
+    "subject": "📅 You're Invited: Mastering Modern Email Design Webinar",
+    "preheader": "December 15 at 2:00 PM EST – Reserve your spot now",
+    "width": 640,
+    "backgroundColor": "#FFFFFF",
+    "fontFamily": "-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif",
+    "textColor": "#1F2937"
+  }
+}

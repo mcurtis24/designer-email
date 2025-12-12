@@ -27,12 +27,21 @@ function LayoutBlock({ block, isSelected, onClick, onFormatRequest, onActiveStat
     id: `${block.id}-col-1`,
   })
 
+  const { setNodeRef: setDropRef3, isOver: isOver3 } = useDroppable({
+    id: `${block.id}-col-2`,
+  })
+
+  const { setNodeRef: setDropRef4, isOver: isOver4 } = useDroppable({
+    id: `${block.id}-col-3`,
+  })
+
   const handleAddColumn = () => {
-    if (data.columns < 2) {
+    if (data.columns < 4) {
       updateBlock(block.id, {
         data: {
           ...data,
-          columns: 2,
+          columns: (data.columns + 1) as 1 | 2 | 3 | 4,
+          columnRatio: data.columns === 1 ? '1-1' : data.columns === 2 ? '1-1-1' : '1-1-1-1',
         },
       })
     }
@@ -41,12 +50,13 @@ function LayoutBlock({ block, isSelected, onClick, onFormatRequest, onActiveStat
   const handleRemoveColumn = () => {
     if (data.columns > 1) {
       // Remove the last child block
-      const newChildren = data.children.slice(0, -1)
+      const newChildren = data.children.slice(0, data.columns - 1)
       updateBlock(block.id, {
         data: {
           ...data,
-          columns: 1,
+          columns: (data.columns - 1) as 1 | 2 | 3 | 4,
           children: newChildren,
+          columnRatio: data.columns === 4 ? '1-1-1' : data.columns === 3 ? '1-1' : undefined,
         },
       })
     }
@@ -72,6 +82,8 @@ function LayoutBlock({ block, isSelected, onClick, onFormatRequest, onActiveStat
   // Calculate grid template columns based on ratio
   const getGridTemplateColumns = () => {
     if (data.columns === 1) return '1fr'
+    if (data.columns === 3) return '1fr 1fr 1fr' // Equal 3 columns
+    if (data.columns === 4) return '1fr 1fr 1fr 1fr' // Equal 4 columns
 
     const ratio = data.columnRatio || '1-1'
     switch (ratio) {

@@ -1,0 +1,202 @@
+{
+  "id": "template-simple-announcement",
+  "name": "Simple Announcement",
+  "category": "announcement",
+  "description": "Minimal announcement template for company updates and news",
+  "thumbnail": "",
+  "tags": ["announcement", "update", "minimal", "simple"],
+  "blocks": [
+    {
+      "id": "spacer-top",
+      "type": "spacer",
+      "data": {
+        "height": 48
+      },
+      "styles": {
+        "padding": {
+          "top": "0px",
+          "right": "0px",
+          "bottom": "0px",
+          "left": "0px"
+        }
+      }
+    },
+    {
+      "id": "announcement-heading",
+      "type": "heading",
+      "data": {
+        "level": 1,
+        "text": "Important Update",
+        "fontFamily": "Georgia, serif",
+        "fontSize": "48px",
+        "fontWeight": 700,
+        "color": "#111827",
+        "lineHeight": 1.2,
+        "letterSpacing": "-0.02em"
+      },
+      "styles": {
+        "padding": {
+          "top": "4px",
+          "right": "4px",
+          "bottom": "24px",
+          "left": "4px"
+        },
+        "textAlign": "center"
+      }
+    },
+    {
+      "id": "main-content",
+      "type": "text",
+      "data": {
+        "content": "<p>We're writing to let you know about an important update to our service. This change will take effect on <strong>January 1, 2026</strong> and will bring several improvements to your experience.</p><p style='margin-top: 24px;'>Here's what's changing:</p>",
+        "fontFamily": "-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif",
+        "fontSize": "17px",
+        "color": "#374151",
+        "lineHeight": 1.7
+      },
+      "styles": {
+        "padding": {
+          "top": "4px",
+          "right": "40px",
+          "bottom": "24px",
+          "left": "40px"
+        },
+        "textAlign": "left"
+      }
+    },
+    {
+      "id": "changes-list",
+      "type": "text",
+      "data": {
+        "content": "<p><strong>1. Enhanced Security</strong><br>We're implementing additional security measures to better protect your account and data.</p><p><strong>2. Improved Performance</strong><br>Faster load times and smoother overall experience across all devices.</p><p><strong>3. New Dashboard</strong><br>A refreshed interface that makes it easier to find what you need.</p>",
+        "fontFamily": "-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif",
+        "fontSize": "16px",
+        "color": "#4B5563",
+        "lineHeight": 1.8
+      },
+      "styles": {
+        "padding": {
+          "top": "16px",
+          "right": "40px",
+          "bottom": "32px",
+          "left": "40px"
+        },
+        "textAlign": "left"
+      }
+    },
+    {
+      "id": "action-required",
+      "type": "text",
+      "data": {
+        "content": "<p style='font-weight: 600; font-size: 18px; margin-bottom: 12px;'>Action Required</p><p>Please review and accept our updated terms of service before January 1 to continue using our service without interruption.</p>",
+        "fontFamily": "-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif",
+        "fontSize": "16px",
+        "color": "#111827",
+        "lineHeight": 1.6
+      },
+      "styles": {
+        "padding": {
+          "top": "24px",
+          "right": "32px",
+          "bottom": "24px",
+          "left": "32px"
+        },
+        "textAlign": "center",
+        "backgroundColor": "#FEF3C7"
+      }
+    },
+    {
+      "id": "review-button",
+      "type": "button",
+      "data": {
+        "text": "Review & Accept",
+        "linkUrl": "https://example.com/terms",
+        "backgroundColor": "#111827",
+        "textColor": "#FFFFFF",
+        "borderRadius": 6,
+        "padding": {
+          "top": "16px",
+          "right": "36px",
+          "bottom": "16px",
+          "left": "36px"
+        },
+        "alignment": "center"
+      },
+      "styles": {
+        "padding": {
+          "top": "32px",
+          "right": "4px",
+          "bottom": "32px",
+          "left": "4px"
+        }
+      }
+    },
+    {
+      "id": "questions-text",
+      "type": "text",
+      "data": {
+        "content": "<p>Have questions? We're here to help. Contact our support team at <a href='mailto:support@example.com'>support@example.com</a> or visit our <a href='https://example.com/help'>help center</a>.</p>",
+        "fontFamily": "-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif",
+        "fontSize": "15px",
+        "color": "#6B7280",
+        "lineHeight": 1.6
+      },
+      "styles": {
+        "padding": {
+          "top": "24px",
+          "right": "40px",
+          "bottom": "24px",
+          "left": "40px"
+        },
+        "textAlign": "center"
+      }
+    },
+    {
+      "id": "closing-divider",
+      "type": "divider",
+      "data": {
+        "color": "#E5E7EB",
+        "thickness": 1,
+        "style": "solid",
+        "width": "100%",
+        "padding": "24px 0"
+      },
+      "styles": {
+        "padding": {
+          "top": "8px",
+          "right": "4px",
+          "bottom": "8px",
+          "left": "4px"
+        }
+      }
+    },
+    {
+      "id": "signature-text",
+      "type": "text",
+      "data": {
+        "content": "<p style='margin-bottom: 4px;'>Thank you for your continued trust,</p><p style='font-weight: 600;'>The [Company Name] Team</p>",
+        "fontFamily": "-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif",
+        "fontSize": "15px",
+        "color": "#374151",
+        "lineHeight": 1.6
+      },
+      "styles": {
+        "padding": {
+          "top": "16px",
+          "right": "4px",
+          "bottom": "48px",
+          "left": "4px"
+        },
+        "textAlign": "center"
+      }
+    }
+  ],
+  "settings": {
+    "subject": "Important Update: Action Required by January 1",
+    "preheader": "Please review our service updates and new terms",
+    "width": 640,
+    "backgroundColor": "#FFFFFF",
+    "fontFamily": "-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif",
+    "textColor": "#1F2937"
+  }
+}

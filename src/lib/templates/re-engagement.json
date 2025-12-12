@@ -1,0 +1,187 @@
+{
+  "id": "template-reengagement",
+  "name": "Re-engagement",
+  "category": "retention",
+  "description": "Win-back email to re-engage inactive subscribers",
+  "thumbnail": "",
+  "tags": ["winback", "retention", "reengagement"],
+  "blocks": [
+    {
+      "id": "spacer-top",
+      "type": "spacer",
+      "data": {
+        "height": 40
+      },
+      "styles": {
+        "padding": {
+          "top": "0px",
+          "right": "0px",
+          "bottom": "0px",
+          "left": "0px"
+        }
+      }
+    },
+    {
+      "id": "miss-you-heading",
+      "type": "heading",
+      "data": {
+        "level": 1,
+        "text": "We Miss You! 💙",
+        "fontFamily": "Georgia, serif",
+        "fontSize": "52px",
+        "fontWeight": 700,
+        "color": "#111827",
+        "lineHeight": 1.1,
+        "letterSpacing": "-0.02em"
+      },
+      "styles": {
+        "padding": {
+          "top": "4px",
+          "right": "24px",
+          "bottom": "16px",
+          "left": "24px"
+        },
+        "textAlign": "center"
+      }
+    },
+    {
+      "id": "comeback-text",
+      "type": "text",
+      "data": {
+        "content": "<p>It's been a while since we've heard from you, and we wanted to check in. We've made some exciting improvements and would love to have you back!</p>",
+        "fontFamily": "-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif",
+        "fontSize": "18px",
+        "color": "#4B5563",
+        "lineHeight": 1.6
+      },
+      "styles": {
+        "padding": {
+          "top": "4px",
+          "right": "32px",
+          "bottom": "32px",
+          "left": "32px"
+        },
+        "textAlign": "center"
+      }
+    },
+    {
+      "id": "whats-new-heading",
+      "type": "heading",
+      "data": {
+        "level": 2,
+        "text": "Here's What's New",
+        "fontFamily": "Georgia, serif",
+        "fontSize": "36px",
+        "fontWeight": 600,
+        "color": "#1F2937",
+        "lineHeight": 1.3,
+        "letterSpacing": "-0.01em"
+      },
+      "styles": {
+        "padding": {
+          "top": "16px",
+          "right": "4px",
+          "bottom": "24px",
+          "left": "4px"
+        },
+        "textAlign": "center"
+      }
+    },
+    {
+      "id": "updates-text",
+      "type": "text",
+      "data": {
+        "content": "<p>🎨 <strong>Redesigned interface</strong> – Cleaner, faster, more intuitive</p><p>🚀 <strong>New features</strong> – Tools you've been asking for</p><p>💡 <strong>Better content</strong> – More value in every update</p>",
+        "fontFamily": "-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif",
+        "fontSize": "16px",
+        "color": "#4B5563",
+        "lineHeight": 1.8
+      },
+      "styles": {
+        "padding": {
+          "top": "4px",
+          "right": "32px",
+          "bottom": "32px",
+          "left": "32px"
+        },
+        "textAlign": "left"
+      }
+    },
+    {
+      "id": "special-offer",
+      "type": "text",
+      "data": {
+        "content": "<p style='font-size: 18px; font-weight: 600; margin-bottom: 12px;'>Welcome Back Offer</p><p>As a thank you for coming back, enjoy <strong style='font-size: 24px; color: #DC2626;'>20% off</strong> your next purchase</p><p style='margin-top: 16px; font-size: 20px; font-weight: 700; letter-spacing: 0.05em;'>WELCOME20</p>",
+        "fontFamily": "-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif",
+        "fontSize": "16px",
+        "color": "#111827",
+        "lineHeight": 1.6
+      },
+      "styles": {
+        "padding": {
+          "top": "32px",
+          "right": "32px",
+          "bottom": "32px",
+          "left": "32px"
+        },
+        "textAlign": "center",
+        "backgroundColor": "#FEF3C7"
+      }
+    },
+    {
+      "id": "comeback-button",
+      "type": "button",
+      "data": {
+        "text": "Welcome Me Back",
+        "linkUrl": "https://example.com/welcome-back",
+        "backgroundColor": "#3B82F6",
+        "textColor": "#FFFFFF",
+        "borderRadius": 8,
+        "padding": {
+          "top": "18px",
+          "right": "40px",
+          "bottom": "18px",
+          "left": "40px"
+        },
+        "alignment": "center"
+      },
+      "styles": {
+        "padding": {
+          "top": "32px",
+          "right": "4px",
+          "bottom": "32px",
+          "left": "4px"
+        }
+      }
+    },
+    {
+      "id": "preference-text",
+      "type": "text",
+      "data": {
+        "content": "<p>Still not interested? <a href='https://example.com/preferences'>Update your preferences</a> or <a href='https://example.com/unsubscribe'>unsubscribe</a>.</p>",
+        "fontFamily": "-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif",
+        "fontSize": "13px",
+        "color": "#9CA3AF",
+        "lineHeight": 1.6
+      },
+      "styles": {
+        "padding": {
+          "top": "32px",
+          "right": "24px",
+          "bottom": "32px",
+          "left": "24px"
+        },
+        "textAlign": "center",
+        "backgroundColor": "#F9FAFB"
+      }
+    }
+  ],
+  "settings": {
+    "subject": "We Miss You! Come Back for 20% Off",
+    "preheader": "Special welcome-back offer just for you",
+    "width": 640,
+    "backgroundColor": "#FFFFFF",
+    "fontFamily": "-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif",
+    "textColor": "#1F2937"
+  }
+}

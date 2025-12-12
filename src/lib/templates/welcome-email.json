@@ -1,0 +1,181 @@
+{
+  "id": "template-welcome",
+  "name": "Welcome Email",
+  "category": "transactional",
+  "description": "Warm welcome email for new subscribers with clear next steps",
+  "thumbnail": "",
+  "tags": ["welcome", "onboarding", "transactional"],
+  "blocks": [
+    {
+      "id": "spacer-top",
+      "type": "spacer",
+      "data": {
+        "height": 40
+      },
+      "styles": {
+        "padding": {
+          "top": "0px",
+          "right": "0px",
+          "bottom": "0px",
+          "left": "0px"
+        }
+      }
+    },
+    {
+      "id": "welcome-heading",
+      "type": "heading",
+      "data": {
+        "level": 1,
+        "text": "Welcome! 🎉",
+        "fontFamily": "Georgia, serif",
+        "fontSize": "48px",
+        "fontWeight": 700,
+        "color": "#111827",
+        "lineHeight": 1.2,
+        "letterSpacing": "-0.02em"
+      },
+      "styles": {
+        "padding": {
+          "top": "4px",
+          "right": "4px",
+          "bottom": "4px",
+          "left": "4px"
+        },
+        "textAlign": "center"
+      }
+    },
+    {
+      "id": "welcome-text",
+      "type": "text",
+      "data": {
+        "content": "<p>We're thrilled to have you here. You've just joined a community of thousands who are already enjoying exclusive content, special offers, and insider updates.</p>",
+        "fontFamily": "-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif",
+        "fontSize": "16px",
+        "color": "#4B5563",
+        "lineHeight": 1.6
+      },
+      "styles": {
+        "padding": {
+          "top": "16px",
+          "right": "32px",
+          "bottom": "16px",
+          "left": "32px"
+        },
+        "textAlign": "center"
+      }
+    },
+    {
+      "id": "welcome-cta",
+      "type": "button",
+      "data": {
+        "text": "Get Started",
+        "linkUrl": "https://example.com/get-started",
+        "backgroundColor": "#10B981",
+        "textColor": "#FFFFFF",
+        "borderRadius": 8,
+        "padding": {
+          "top": "16px",
+          "right": "32px",
+          "bottom": "16px",
+          "left": "32px"
+        },
+        "alignment": "center"
+      },
+      "styles": {
+        "padding": {
+          "top": "24px",
+          "right": "4px",
+          "bottom": "24px",
+          "left": "4px"
+        }
+      }
+    },
+    {
+      "id": "what-next-heading",
+      "type": "heading",
+      "data": {
+        "level": 2,
+        "text": "What's Next?",
+        "fontFamily": "Georgia, serif",
+        "fontSize": "36px",
+        "fontWeight": 600,
+        "color": "#1F2937",
+        "lineHeight": 1.3,
+        "letterSpacing": "-0.01em"
+      },
+      "styles": {
+        "padding": {
+          "top": "32px",
+          "right": "4px",
+          "bottom": "16px",
+          "left": "4px"
+        },
+        "textAlign": "center"
+      }
+    },
+    {
+      "id": "steps-text",
+      "type": "text",
+      "data": {
+        "content": "<p><strong>1. Explore our resources</strong><br>Check out our getting started guide and tutorials</p><p><strong>2. Set your preferences</strong><br>Customize your experience to match your interests</p><p><strong>3. Join the conversation</strong><br>Connect with our community and share your thoughts</p>",
+        "fontFamily": "-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif",
+        "fontSize": "16px",
+        "color": "#4B5563",
+        "lineHeight": 1.8
+      },
+      "styles": {
+        "padding": {
+          "top": "16px",
+          "right": "32px",
+          "bottom": "16px",
+          "left": "32px"
+        },
+        "textAlign": "left"
+      }
+    },
+    {
+      "id": "footer-text",
+      "type": "text",
+      "data": {
+        "content": "<p>Questions? Just reply to this email - we're here to help!</p>",
+        "fontFamily": "-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif",
+        "fontSize": "14px",
+        "color": "#6B7280",
+        "lineHeight": 1.6
+      },
+      "styles": {
+        "padding": {
+          "top": "32px",
+          "right": "4px",
+          "bottom": "4px",
+          "left": "4px"
+        },
+        "textAlign": "center",
+        "backgroundColor": "#F9FAFB"
+      }
+    },
+    {
+      "id": "spacer-bottom",
+      "type": "spacer",
+      "data": {
+        "height": 40
+      },
+      "styles": {
+        "padding": {
+          "top": "0px",
+          "right": "0px",
+          "bottom": "0px",
+          "left": "0px"
+        }
+      }
+    }
+  ],
+  "settings": {
+    "subject": "Welcome to [Your Company]!",
+    "preheader": "Let's get you started",
+    "width": 640,
+    "backgroundColor": "#FFFFFF",
+    "fontFamily": "-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif",
+    "textColor": "#1F2937"
+  }
+}
