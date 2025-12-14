@@ -21,7 +21,7 @@ export async function sendTestEmail({ to, subject, email }: SendTestEmailParams)
     throw new Error('Resend is not configured. Please set VITE_RESEND_API_KEY and VITE_RESEND_FROM_EMAIL in your .env file.')
   }
 
-  const htmlContent = generateEmailHTML(email)
+  const htmlContent = generateEmailHTML(email, false)
 
   try {
     // Call our backend server instead of Resend directly (avoids CORS)

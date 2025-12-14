@@ -38,6 +38,21 @@ function TextBlock({ block, isSelected, onClick, onFormatRequest, onActiveStates
   const clearEditingBlock = useEmailStore((state) => state.clearEditingBlock)
   const editingBlockId = useEmailStore((state) => state.editorState.editingBlockId)
   const selectedBlockId = useEmailStore((state) => state.editorState.selectedBlockId)
+  const viewportMode = useEmailStore((state) => state.editorState.viewport.mode)
+
+  // Apply mobile styles when in mobile viewport
+  const isMobileViewport = viewportMode === 'mobile'
+  const fontSize = (isMobileViewport && data.mobileFontSize) ? data.mobileFontSize : data.fontSize
+  const lineHeight = (isMobileViewport && data.mobileLineHeight) ? data.mobileLineHeight : data.lineHeight
+  const padding = (isMobileViewport && styles.mobileStyles?.padding) ? styles.mobileStyles.padding : styles.padding
+  const textAlign = (isMobileViewport && styles.mobileStyles?.textAlign) ? styles.mobileStyles.textAlign : styles.textAlign
+  const backgroundColor = (isMobileViewport && styles.mobileStyles?.backgroundColor) ? styles.mobileStyles.backgroundColor : styles.backgroundColor
+
+  // Check if block should be hidden based on viewport
+  const shouldHide = (isMobileViewport && styles.hideOnMobile) || (!isMobileViewport && styles.hideOnDesktop)
+  if (shouldHide) {
+    return null
+  }
 
   // Get computed styles at current cursor position
   const getCurrentSelectionStyles = () => {
@@ -315,11 +330,12 @@ function TextBlock({ block, isSelected, onClick, onFormatRequest, onActiveStates
   }
 
   const handleBlur = (e: React.FocusEvent) => {
-    // Don't blur if clicking on toolbar buttons, canvas toolbar, or sidebar controls
+    // Don't blur if clicking on toolbar buttons, canvas toolbar, block toolbar, or sidebar controls
     if (e.relatedTarget) {
       const target = e.relatedTarget as HTMLElement
       if (target.closest('.rich-text-toolbar') ||
           target.closest('.canvas-toolbar') ||
+          target.closest('.block-toolbar') ||
           target.closest('.right-sidebar')) {
         return
       }
@@ -349,10 +365,10 @@ function TextBlock({ block, isSelected, onClick, onFormatRequest, onActiveStates
   const handleClick = (e: React.MouseEvent) => {
     e.stopPropagation()
 
-    if (!isEditing) {
-      // Select the block first
-      onClick?.()
+    // Always select the block when clicked
+    onClick?.()
 
+    if (!isEditing) {
       // Switch to Style tab
       setActiveSidebarTab('style')
 
@@ -459,14 +475,17 @@ function TextBlock({ block, isSelected, onClick, onFormatRequest, onActiveStates
       {isEditing ? (
         <div
           className="border-2 border-blue-500 shadow-sm"
-          onClick={(e) => e.stopPropagation()}
+          onClick={(e) => {
+            e.stopPropagation()
+            onClick?.() // Ensure block stays selected while editing
+          }}
           style={{
-            paddingTop: styles.padding?.top,
-            paddingRight: styles.padding?.right,
-            paddingBottom: styles.padding?.bottom,
-            paddingLeft: styles.padding?.left,
-            backgroundColor: styles.backgroundColor || 'white',
-            textAlign: styles.textAlign,
+            paddingTop: padding?.top,
+            paddingRight: padding?.right,
+            paddingBottom: padding?.bottom,
+            paddingLeft: padding?.left,
+            backgroundColor: backgroundColor || 'white',
+            textAlign: textAlign,
           }}
         >
           <div
@@ -478,12 +497,15 @@ function TextBlock({ block, isSelected, onClick, onFormatRequest, onActiveStates
             className="w-full bg-transparent focus:outline-none"
             style={{
               fontFamily: data.fontFamily,
-              fontSize: data.fontSize,
+              fontSize: fontSize,
               color: data.color,
-              lineHeight: data.lineHeight,
+              lineHeight: lineHeight,
               outline: 'none',
               cursor: 'text',
-              paddingLeft: styles.padding?.left, // Use user's padding setting
+              paddingLeft: padding?.left, // Use user's padding setting
+              wordWrap: 'break-word',
+              overflowWrap: 'break-word',
+              wordBreak: 'break-word',
             }}
           />
         </div>
@@ -498,12 +520,15 @@ function TextBlock({ block, isSelected, onClick, onFormatRequest, onActiveStates
             fontSize: data.fontSize,
             color: data.color,
             lineHeight: data.lineHeight,
-            paddingTop: styles.padding?.top,
-            paddingRight: styles.padding?.right,
-            paddingBottom: styles.padding?.bottom,
-            paddingLeft: styles.padding?.left,
-            backgroundColor: styles.backgroundColor,
-            textAlign: styles.textAlign,
+            paddingTop: padding?.top,
+            paddingRight: padding?.right,
+            paddingBottom: padding?.bottom,
+            paddingLeft: padding?.left,
+            backgroundColor: backgroundColor,
+            textAlign: textAlign,
+            wordWrap: 'break-word',
+            overflowWrap: 'break-word',
+            wordBreak: 'break-word',
           }}
           dangerouslySetInnerHTML={{
             __html: DOMPurify.sanitize(data.content || '<p style="color: #9ca3af;">Click to add text...</p>', {

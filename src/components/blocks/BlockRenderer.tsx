@@ -7,6 +7,7 @@ import ButtonBlock from './ButtonBlock'
 import SpacerBlock from './SpacerBlock'
 import DividerBlock from './DividerBlock'
 import LayoutBlock from './LayoutBlock'
+import FooterBlock from './FooterBlock'
 
 interface BlockRendererProps {
   block: EmailBlock
@@ -37,6 +38,8 @@ export default function BlockRenderer({ block, isSelected = false, onClick, onFo
       return <DividerBlock block={block as any} isSelected={isSelected} onClick={clickHandler} />
     case 'layout':
       return <LayoutBlock block={block as any} isSelected={isSelected} onClick={clickHandler} />
+    case 'footer':
+      return <FooterBlock block={block as any} isSelected={isSelected} onClick={clickHandler} />
     default:
       return (
         <div className="p-4 bg-red-50 border border-red-200 rounded-md">

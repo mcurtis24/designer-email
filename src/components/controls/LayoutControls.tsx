@@ -151,6 +151,60 @@ export default function LayoutControls({ block }: LayoutControlsProps) {
         </div>
       </div>
 
+      {/* Stack on Mobile Toggle - Only show for multi-column layouts */}
+      {block.data.columns > 1 && (
+        <div className="space-y-3">
+          <label className="flex items-center gap-2 cursor-pointer">
+            <input
+              type="checkbox"
+              checked={block.data.stackOnMobile !== false}
+              onChange={(e) => {
+                updateBlock(block.id, {
+                  data: {
+                    ...block.data,
+                    stackOnMobile: e.target.checked,
+                  },
+                })
+              }}
+              className="w-4 h-4 text-blue-600 border-gray-300 rounded focus:ring-blue-500"
+            />
+            <span className="text-sm font-medium text-gray-700">
+              Stack columns on mobile
+            </span>
+          </label>
+          <p className="text-xs text-gray-500 mt-1 ml-6">
+            When unchecked, columns stay side-by-side on mobile (useful for social icons, small thumbnails)
+          </p>
+
+          {/* Reverse Stack Order - Only show if stacking is enabled */}
+          {block.data.stackOnMobile !== false && (
+            <label className="flex items-center gap-2 cursor-pointer">
+              <input
+                type="checkbox"
+                checked={block.data.reverseStackOnMobile || false}
+                onChange={(e) => {
+                  updateBlock(block.id, {
+                    data: {
+                      ...block.data,
+                      reverseStackOnMobile: e.target.checked,
+                    },
+                  })
+                }}
+                className="w-4 h-4 text-blue-600 border-gray-300 rounded focus:ring-blue-500"
+              />
+              <span className="text-sm font-medium text-gray-700">
+                Reverse stack order on mobile
+              </span>
+            </label>
+          )}
+          {block.data.reverseStackOnMobile && (
+            <p className="text-xs text-gray-500 mt-1 ml-6">
+              Right column appears first on mobile (useful for image-text layouts)
+            </p>
+          )}
+        </div>
+      )}
+
       <div>
         <label className="block text-sm font-medium text-gray-700 mb-2">
           Children Blocks

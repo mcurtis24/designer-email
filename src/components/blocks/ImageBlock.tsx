@@ -1,7 +1,7 @@
 import { useState, useRef, useEffect, memo } from 'react'
 import type { EmailBlock, ImageBlockData } from '@/types/email'
 import { useEmailStore } from '@/stores/emailStore'
-import { useImageUpload } from '@/hooks/useImageUpload'
+import { ImagePickerModal } from '@/components/ui/ImagePickerModal'
 
 interface ImageBlockProps {
   block: EmailBlock & { data: ImageBlockData }
@@ -16,21 +16,20 @@ function ImageBlock({ block, isSelected, onClick }: ImageBlockProps) {
 
   const [imageAspectRatio, setImageAspectRatio] = useState<number | undefined>(undefined)
   const [hasSetInitialDimensions, setHasSetInitialDimensions] = useState(false)
+  const [showImagePicker, setShowImagePicker] = useState(false)
   const imgRef = useRef<HTMLImageElement>(null)
 
-  const { openFilePicker, fileInputRef, handleFileSelect, uploadState } = useImageUpload({
-    onImageSelect: (url: string, publicId?: string) => {
-      setHasSetInitialDimensions(false)
-      setImageAspectRatio(undefined)
-      updateBlock(block.id, {
-        data: {
-          ...data,
-          src: url,
-          alt: data.alt || 'Image',
-        },
-      })
-    }
-  })
+  const handleImageSelect = (url: string, publicId?: string) => {
+    setHasSetInitialDimensions(false)
+    setImageAspectRatio(undefined)
+    updateBlock(block.id, {
+      data: {
+        ...data,
+        src: url,
+        alt: data.alt || 'Image',
+      },
+    })
+  }
 
   // Calculate aspect ratio when image loads
   useEffect(() => {
@@ -141,7 +140,7 @@ function ImageBlock({ block, isSelected, onClick }: ImageBlockProps) {
                 <button
                   onClick={(e) => {
                     e.stopPropagation()
-                    openFilePicker()
+                    setShowImagePicker(true)
                   }}
                   className="px-3 py-1.5 text-sm bg-white border border-gray-300 rounded-md hover:bg-gray-50 shadow-sm flex items-center gap-2"
                 >
@@ -170,7 +169,7 @@ function ImageBlock({ block, isSelected, onClick }: ImageBlockProps) {
           <button
             onClick={(e) => {
               e.stopPropagation()
-              openFilePicker()
+              setShowImagePicker(true)
             }}
             className="px-4 py-2 text-sm font-medium text-gray-700 bg-white border border-gray-300 rounded-md hover:bg-gray-50 hover:border-gray-400 transition-all shadow-sm flex items-center gap-2"
           >
@@ -182,47 +181,13 @@ function ImageBlock({ block, isSelected, onClick }: ImageBlockProps) {
         </div>
       )}
 
-      {/* Hidden file input */}
-      <input
-        ref={fileInputRef}
-        type="file"
-        accept="image/*"
-        style={{ display: 'none' }}
-        onChange={handleFileSelect}
+      {/* Image Picker Modal */}
+      <ImagePickerModal
+        isOpen={showImagePicker}
+        onClose={() => setShowImagePicker(false)}
+        onImageSelect={handleImageSelect}
+        title="Select Image"
       />
-
-      {/* Upload progress dialog */}
-      {uploadState.isUploading && (
-        <div
-          className="fixed top-4 left-1/2 transform -translate-x-1/2 z-50"
-          style={{ margin: 0 }}
-        >
-          <div className="bg-white rounded-lg p-6 w-80 shadow-2xl border border-gray-200">
-            {uploadState.previewUrl && (
-              <img
-                src={uploadState.previewUrl}
-                alt="Preview"
-                className="w-full max-w-[150px] h-auto rounded-lg mx-auto mb-3 border-2 border-gray-200"
-              />
-            )}
-            <h3 className="text-sm font-semibold text-gray-900 mb-2 text-center break-words">
-              {uploadState.fileName}
-            </h3>
-            <p className="text-xs text-gray-600 mb-3 text-center">
-              {uploadState.progress === 100 ? 'Upload complete!' : `Uploading... ${uploadState.progress}%`}
-            </p>
-            <div className="w-full h-1 bg-gray-200 rounded-full overflow-hidden">
-              <div
-                className="h-full transition-all duration-300 ease-in-out"
-                style={{
-                  width: `${uploadState.progress}%`,
-                  backgroundColor: uploadState.progress === 100 ? '#10b981' : '#3b82f6',
-                }}
-              />
-            </div>
-          </div>
-        </div>
-      )}
     </div>
   )
 }

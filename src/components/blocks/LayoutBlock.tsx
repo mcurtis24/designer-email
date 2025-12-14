@@ -82,17 +82,17 @@ function LayoutBlock({ block, isSelected, onClick, onFormatRequest, onActiveStat
   // Calculate grid template columns based on ratio
   const getGridTemplateColumns = () => {
     if (data.columns === 1) return '1fr'
-    if (data.columns === 3) return '1fr 1fr 1fr' // Equal 3 columns
-    if (data.columns === 4) return '1fr 1fr 1fr 1fr' // Equal 4 columns
+    if (data.columns === 3) return 'repeat(3, minmax(0, 1fr))' // Equal 3 columns with constraints
+    if (data.columns === 4) return 'repeat(4, minmax(0, 1fr))' // Equal 4 columns with constraints
 
     const ratio = data.columnRatio || '1-1'
     switch (ratio) {
       case '1-2':
-        return '1fr 2fr' // 33% / 66%
+        return 'minmax(0, 1fr) minmax(0, 2fr)' // 33% / 66%
       case '2-1':
-        return '2fr 1fr' // 66% / 33%
+        return 'minmax(0, 2fr) minmax(0, 1fr)' // 66% / 33%
       default:
-        return '1fr 1fr' // 50% / 50%
+        return 'minmax(0, 1fr) minmax(0, 1fr)' // 50% / 50%
     }
   }
 
@@ -115,6 +115,8 @@ function LayoutBlock({ block, isSelected, onClick, onFormatRequest, onActiveStat
         style={{
           gridTemplateColumns: getGridTemplateColumns(),
           gap: `${gap}px`,
+          maxWidth: '100%',
+          overflow: 'hidden',
         }}
       >
         {/* Column 1 */}
@@ -256,10 +258,28 @@ function LayoutBlock({ block, isSelected, onClick, onFormatRequest, onActiveStat
 
 // Memoize component to prevent unnecessary re-renders
 export default memo(LayoutBlock, (prevProps, nextProps) => {
-  return (
-    prevProps.block.id === nextProps.block.id &&
-    prevProps.isSelected === nextProps.isSelected &&
-    JSON.stringify(prevProps.block.data) === JSON.stringify(nextProps.block.data) &&
-    JSON.stringify(prevProps.block.styles) === JSON.stringify(nextProps.block.styles)
-  )
+  // Fast equality checks first
+  if (prevProps.block.id !== nextProps.block.id) return false
+  if (prevProps.isSelected !== nextProps.isSelected) return false
+
+  // Check data fields that commonly change
+  const prevData = prevProps.block.data as LayoutBlockData
+  const nextData = nextProps.block.data as LayoutBlockData
+
+  if (prevData.columns !== nextData.columns) return false
+  if (prevData.columnRatio !== nextData.columnRatio) return false
+  if (prevData.gap !== nextData.gap) return false
+  if (prevData.children.length !== nextData.children.length) return false
+
+  // Only stringify for deep child comparison if length matches
+  if (JSON.stringify(prevData.children) !== JSON.stringify(nextData.children)) return false
+
+  // Check styles
+  const prevStyles = prevProps.block.styles
+  const nextStyles = nextProps.block.styles
+
+  if (prevStyles.backgroundColor !== nextStyles.backgroundColor) return false
+  if (JSON.stringify(prevStyles.padding) !== JSON.stringify(nextStyles.padding)) return false
+
+  return true
 })

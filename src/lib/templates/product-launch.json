@@ -1,10 +1,43 @@
 {
-  "id": "template-product-launch",
-  "name": "Product Launch",
-  "category": "announcement",
-  "description": "Product announcement email with hero image and key features",
-  "thumbnail": "",
-  "tags": ["product", "launch", "announcement", "ecommerce"],
+  "metadata": {
+    "id": "template-product-launch",
+    "version": 1,
+    "name": "Product Launch",
+    "category": "announcement",
+    "description": "Product announcement email with hero image and key features",
+    "thumbnail": "",
+    "tags": ["product", "launch", "announcement", "ecommerce"],
+    "placeholders": {
+      "launch-badge": {
+        "content": "<p><strong>🚀 NEW PRODUCT</strong></p>"
+      },
+      "product-heading": {
+        "text": "[Introducing Product Name]"
+      },
+      "product-subtitle": {
+        "content": "<p>Add a compelling subtitle describing your product benefits.</p>"
+      },
+      "product-image": {
+        "src": "",
+        "alt": "Product hero image"
+      },
+      "features-heading": {
+        "text": "[Key Features]"
+      },
+      "features-text": {
+        "content": "<p><strong>Feature 1</strong><br>Description of first key feature</p><p><strong>Feature 2</strong><br>Description of second key feature</p><p><strong>Feature 3</strong><br>Description of third key feature</p>"
+      },
+      "cta-button": {
+        "text": "Learn More",
+        "linkUrl": "https://example.com/product"
+      },
+      "footer-1": {
+        "companyName": "[Your Company]",
+        "address": "[Your Address]",
+        "legalText": "© 2025 [Your Company]. All rights reserved."
+      }
+    }
+  },
   "blocks": [
     {
       "id": "spacer-top",
@@ -89,7 +122,7 @@
       "id": "product-image",
       "type": "image",
       "data": {
-        "src": "",
+        "src": "https://picsum.photos/seed/product-hero/1200/600",
         "alt": "Product hero image",
         "alignment": "center",
         "borderRadius": 12
@@ -173,31 +206,36 @@
       }
     },
     {
-      "id": "footer-text",
-      "type": "text",
+      "id": "footer-1",
+      "type": "footer",
       "data": {
-        "content": "<p>Want to see it in action? <a href='https://example.com/demo'>Book a demo</a></p>",
-        "fontFamily": "-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif",
-        "fontSize": "14px",
-        "color": "#6B7280",
-        "lineHeight": 1.6
+        "companyName": "Your Company",
+        "address": "123 Main Street, Suite 100, City, State 12345",
+        "socialLinks": [
+          { "platform": "facebook", "url": "https://facebook.com/yourcompany" },
+          { "platform": "twitter", "url": "https://twitter.com/yourcompany" },
+          { "platform": "linkedin", "url": "https://linkedin.com/company/yourcompany" }
+        ],
+        "links": [
+          { "text": "Book a Demo", "url": "https://example.com/demo" },
+          { "text": "Product Info", "url": "https://example.com/product" },
+          { "text": "Unsubscribe", "url": "{{unsubscribe_url}}" }
+        ],
+        "legalText": "© 2025 Your Company. All rights reserved. Want to see it in action? Book a demo today!",
+        "backgroundColor": "#F3F4F6",
+        "textColor": "#6B7280",
+        "linkColor": "#3B82F6",
+        "fontSize": "14px"
       },
       "styles": {
-        "padding": {
-          "top": "32px",
-          "right": "4px",
-          "bottom": "32px",
-          "left": "4px"
-        },
-        "textAlign": "center",
-        "backgroundColor": "#F9FAFB"
+        "padding": { "top": "40px", "right": "20px", "bottom": "40px", "left": "20px" }
       }
     }
   ],
   "settings": {
     "subject": "🚀 Introducing [Product Name] – Our Latest Innovation",
     "preheader": "Simplify your workflow and boost productivity by 3x",
-    "width": 640,
+    "width": 600,
     "backgroundColor": "#FFFFFF",
     "fontFamily": "-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif",
     "textColor": "#1F2937"

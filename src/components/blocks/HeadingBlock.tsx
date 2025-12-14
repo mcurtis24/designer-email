@@ -39,6 +39,21 @@ function HeadingBlock({ block, isSelected, onClick, onFormatRequest, onActiveSta
   const clearEditingBlock = useEmailStore((state) => state.clearEditingBlock)
   const editingBlockId = useEmailStore((state) => state.editorState.editingBlockId)
   const selectedBlockId = useEmailStore((state) => state.editorState.selectedBlockId)
+  const viewportMode = useEmailStore((state) => state.editorState.viewport.mode)
+
+  // Apply mobile styles when in mobile viewport
+  const isMobileViewport = viewportMode === 'mobile'
+  const fontSize = (isMobileViewport && data.mobileFontSize) ? data.mobileFontSize : data.fontSize
+  const lineHeight = (isMobileViewport && data.mobileLineHeight) ? data.mobileLineHeight : data.lineHeight
+  const padding = (isMobileViewport && styles.mobileStyles?.padding) ? styles.mobileStyles.padding : styles.padding
+  const textAlign = (isMobileViewport && styles.mobileStyles?.textAlign) ? styles.mobileStyles.textAlign : styles.textAlign
+  const backgroundColor = (isMobileViewport && styles.mobileStyles?.backgroundColor) ? styles.mobileStyles.backgroundColor : styles.backgroundColor
+
+  // Check if block should be hidden based on viewport
+  const shouldHide = (isMobileViewport && styles.hideOnMobile) || (!isMobileViewport && styles.hideOnDesktop)
+  if (shouldHide) {
+    return null
+  }
 
   // Get computed styles at current cursor position
   const getCurrentSelectionStyles = () => {
@@ -368,11 +383,12 @@ function HeadingBlock({ block, isSelected, onClick, onFormatRequest, onActiveSta
   }
 
   const handleBlur = (e: React.FocusEvent) => {
-    // Don't blur if clicking on toolbar buttons, canvas toolbar, or sidebar controls
+    // Don't blur if clicking on toolbar buttons, canvas toolbar, block toolbar, or sidebar controls
     if (e.relatedTarget) {
       const target = e.relatedTarget as HTMLElement
       if (target.closest('.rich-text-toolbar') ||
           target.closest('.canvas-toolbar') ||
+          target.closest('.block-toolbar') ||
           target.closest('.right-sidebar')) {
         return
       }
@@ -402,10 +418,10 @@ function HeadingBlock({ block, isSelected, onClick, onFormatRequest, onActiveSta
   const handleClick = (e: React.MouseEvent) => {
     e.stopPropagation()
 
-    if (!isEditing) {
-      // Select the block first
-      onClick?.()
+    // Always select the block when clicked
+    onClick?.()
 
+    if (!isEditing) {
       // Switch to Style tab
       setActiveSidebarTab('style')
 
@@ -520,14 +536,17 @@ function HeadingBlock({ block, isSelected, onClick, onFormatRequest, onActiveSta
       {isEditing ? (
         <div
           className="border-2 border-blue-500 shadow-sm"
-          onClick={(e) => e.stopPropagation()}
+          onClick={(e) => {
+            e.stopPropagation()
+            onClick?.() // Ensure block stays selected while editing
+          }}
           style={{
-            paddingTop: styles.padding?.top,
-            paddingRight: styles.padding?.right,
-            paddingBottom: styles.padding?.bottom,
-            paddingLeft: styles.padding?.left,
-            backgroundColor: styles.backgroundColor || 'white',
-            textAlign: styles.textAlign,
+            paddingTop: padding?.top,
+            paddingRight: padding?.right,
+            paddingBottom: padding?.bottom,
+            paddingLeft: padding?.left,
+            backgroundColor: backgroundColor || 'white',
+            textAlign: textAlign,
           }}
         >
           <HeadingTag
@@ -539,15 +558,18 @@ function HeadingBlock({ block, isSelected, onClick, onFormatRequest, onActiveSta
             onKeyDown={handleKeyDown}
             style={{
               fontFamily: data.fontFamily,
-              fontSize: data.fontSize,
+              fontSize: fontSize,
               fontWeight: data.fontWeight,
               color: data.color,
-              lineHeight: data.lineHeight,
+              lineHeight: lineHeight,
               letterSpacing: data.letterSpacing || '0',
               margin: 0,
               outline: 'none',
               cursor: 'text',
-              paddingLeft: styles.padding?.left, // Use user's padding setting
+              paddingLeft: padding?.left, // Use user's padding setting
+              wordWrap: 'break-word',
+              overflowWrap: 'break-word',
+              wordBreak: 'break-word',
             }}
           />
         </div>
@@ -569,12 +591,15 @@ function HeadingBlock({ block, isSelected, onClick, onFormatRequest, onActiveSta
           <HeadingTag
             style={{
               fontFamily: data.fontFamily,
-              fontSize: data.fontSize,
+              fontSize: fontSize,
               fontWeight: data.fontWeight,
               color: data.color,
-              lineHeight: data.lineHeight,
+              lineHeight: lineHeight,
               letterSpacing: data.letterSpacing || '0',
               margin: 0,
+              wordWrap: 'break-word',
+              overflowWrap: 'break-word',
+              wordBreak: 'break-word',
             }}
             dangerouslySetInnerHTML={{
               __html: DOMPurify.sanitize(data.text || '<span style="color: #9ca3af;">Click to add heading...</span>', {

@@ -101,6 +101,15 @@ export default function BlockLibrary() {
         </svg>
       )
     },
+    {
+      id: 'footer',
+      label: 'Footer',
+      icon: (
+        <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
+        </svg>
+      )
+    },
   ]
 
   return (
@@ -143,6 +152,22 @@ export default function BlockLibrary() {
         </h2>
         <div className="grid grid-cols-2 gap-3">
           {contentBlocks.slice(4, 8).map((block) => (
+            <DraggableBlockItem
+              key={block.id}
+              id={block.id}
+              icon={block.icon}
+              label={block.label}
+            />
+          ))}
+        </div>
+      </div>
+
+      <div>
+        <h2 className="text-xs font-semibold text-gray-500 uppercase tracking-wide mb-3">
+          FOOTER
+        </h2>
+        <div className="grid grid-cols-2 gap-3">
+          {contentBlocks.slice(8, 9).map((block) => (
             <DraggableBlockItem
               key={block.id}
               id={block.id}

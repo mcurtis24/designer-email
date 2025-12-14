@@ -74,6 +74,14 @@ const blockMetadata: Record<string, { label: string; icon: ReactNode }> = {
       </svg>
     )
   },
+  footer: {
+    label: 'Footer',
+    icon: (
+      <svg className="w-7 h-7" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
+      </svg>
+    )
+  },
 }
 
 export default function EditorLayout() {

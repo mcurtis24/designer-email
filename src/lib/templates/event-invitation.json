@@ -1,10 +1,48 @@
 {
-  "id": "template-event",
-  "name": "Event Invitation",
-  "category": "event",
-  "description": "Professional event invitation with date, time, and registration CTA",
-  "thumbnail": "",
-  "tags": ["event", "webinar", "invitation", "registration"],
+  "metadata": {
+    "id": "template-event",
+    "version": 1,
+    "name": "Event Invitation",
+    "category": "event",
+    "description": "Professional event invitation with date, time, and registration CTA",
+    "thumbnail": "",
+    "tags": ["event", "webinar", "invitation", "registration"],
+    "placeholders": {
+      "event-label": {
+        "content": "<p>📅 UPCOMING EVENT</p>"
+      },
+      "event-heading": {
+        "text": "You're Invited!"
+      },
+      "event-title": {
+        "text": "[Event Title]"
+      },
+      "event-description": {
+        "content": "<p>Add your event description here. Explain what attendees will learn, who the speaker is, and why they should attend.</p>"
+      },
+      "event-details": {
+        "content": "<p style='font-size: 18px; font-weight: 600; margin-bottom: 12px;'>📅 [Day, Month DD, YYYY]</p><p style='font-size: 18px; font-weight: 600; margin-bottom: 12px;'>🕐 [Time] [Timezone]</p><p style='font-size: 18px; font-weight: 600; margin-bottom: 12px;'>⏱️ Duration: [X] minutes</p><p style='font-size: 18px; font-weight: 600;'>👩‍🏫 Speaker: [Speaker Name]</p>"
+      },
+      "register-button": {
+        "text": "Register Now",
+        "linkUrl": "https://example.com/register"
+      },
+      "spots-text": {
+        "content": "<p><em>Register now to secure your seat!</em></p>"
+      },
+      "agenda-heading": {
+        "text": "[What You'll Learn]"
+      },
+      "agenda-text": {
+        "content": "<p>• Topic 1 description<br>• Topic 2 description<br>• Topic 3 description<br>• Topic 4 description</p>"
+      },
+      "footer-1": {
+        "companyName": "[Your Company]",
+        "address": "[Your Address]",
+        "legalText": "© 2025 [Your Company]. All rights reserved."
+      }
+    }
+  },
   "blocks": [
     {
       "id": "spacer-top",
@@ -70,7 +108,7 @@
       "type": "heading",
       "data": {
         "level": 2,
-        "text": "Mastering Modern Email Design",
+        "text": "Email Marketing Masterclass 2025",
         "fontFamily": "Georgia, serif",
         "fontSize": "36px",
         "fontWeight": 600,
@@ -92,7 +130,7 @@
       "id": "event-description",
       "type": "text",
       "data": {
-        "content": "<p>Join industry experts as we explore the latest trends in email design, best practices for mobile optimization, and strategies to boost engagement rates.</p>",
+        "content": "<p>Join <strong>Jane Martinez</strong>, Email Marketing Expert, for an exclusive masterclass covering everything you need to know about modern email marketing. From AI-powered personalization to deliverability optimization, you'll walk away with actionable strategies you can implement immediately.</p>",
         "fontFamily": "-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif",
         "fontSize": "16px",
         "color": "#4B5563",
@@ -112,7 +150,7 @@
       "id": "event-details",
       "type": "text",
       "data": {
-        "content": "<p style='font-size: 18px; font-weight: 600; margin-bottom: 12px;'>📅 Thursday, December 15, 2025</p><p style='font-size: 18px; font-weight: 600; margin-bottom: 12px;'>🕐 2:00 PM EST</p><p style='font-size: 18px; font-weight: 600;'>⏱️ Duration: 1 hour</p>",
+        "content": "<p style='font-size: 18px; font-weight: 600; margin-bottom: 12px;'>📅 Saturday, March 15, 2025</p><p style='font-size: 18px; font-weight: 600; margin-bottom: 12px;'>🕐 2:00 PM EST (11:00 AM PST)</p><p style='font-size: 18px; font-weight: 600; margin-bottom: 12px;'>⏱️ Duration: 90 minutes + Q&A</p><p style='font-size: 18px; font-weight: 600;'>👩‍🏫 Speaker: Jane Martinez, Email Expert</p>",
         "fontFamily": "-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif",
         "fontSize": "16px",
         "color": "#111827",
@@ -221,7 +259,7 @@
       "id": "agenda-text",
       "type": "text",
       "data": {
-        "content": "<p>• Design principles for high-converting emails<br>• Mobile-first best practices<br>• Accessibility and inclusive design<br>• Real-world case studies and examples<br>• Q&A with industry experts</p>",
+        "content": "<p><strong>Session 1: AI & Automation</strong> (30 mins)<br>How to use AI for personalization and predictive analytics</p><p><strong>Session 2: Design & Deliverability</strong> (30 mins)<br>Modern design trends and inbox optimization strategies</p><p><strong>Session 3: Metrics That Matter</strong> (20 mins)<br>Beyond open rates - tracking real business impact</p><p><strong>Live Q&A</strong> (20 mins)<br>Get your burning questions answered</p>",
         "fontFamily": "-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif",
         "fontSize": "16px",
         "color": "#4B5563",
@@ -238,31 +276,35 @@
       }
     },
     {
-      "id": "footer-text",
-      "type": "text",
+      "id": "footer-1",
+      "type": "footer",
       "data": {
-        "content": "<p>Can't make it? Register anyway and we'll send you the recording.</p>",
-        "fontFamily": "-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif",
-        "fontSize": "14px",
-        "color": "#6B7280",
-        "lineHeight": 1.6
+        "companyName": "Marketing Academy",
+        "address": "2100 Broadway, New York, NY 10023",
+        "socialLinks": [
+          { "platform": "linkedin", "url": "https://linkedin.com/company/yourcompany" },
+          { "platform": "twitter", "url": "https://twitter.com/yourcompany" }
+        ],
+        "links": [
+          { "text": "Add to Calendar", "url": "https://example.com/calendar" },
+          { "text": "View Recording", "url": "https://example.com/recordings" },
+          { "text": "Unsubscribe", "url": "{{unsubscribe_url}}" }
+        ],
+        "legalText": "© 2025 Marketing Academy. All rights reserved. Can't make it? Register anyway and we'll send you the recording.",
+        "backgroundColor": "#F3F4F6",
+        "textColor": "#6B7280",
+        "linkColor": "#3B82F6",
+        "fontSize": "14px"
       },
       "styles": {
-        "padding": {
-          "top": "32px",
-          "right": "4px",
-          "bottom": "32px",
-          "left": "4px"
-        },
-        "textAlign": "center",
-        "backgroundColor": "#F9FAFB"
+        "padding": { "top": "40px", "right": "20px", "bottom": "40px", "left": "20px" }
       }
     }
   ],
   "settings": {
-    "subject": "📅 You're Invited: Mastering Modern Email Design Webinar",
-    "preheader": "December 15 at 2:00 PM EST – Reserve your spot now",
-    "width": 640,
+    "subject": "📅 You're Invited: Email Marketing Masterclass 2025 with Jane Martinez",
+    "preheader": "March 15 at 2:00 PM EST – 90 minutes of expert insights + live Q&A",
+    "width": 600,
     "backgroundColor": "#FFFFFF",
     "fontFamily": "-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif",
     "textColor": "#1F2937"

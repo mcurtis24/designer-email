@@ -78,7 +78,7 @@ export default function SortableBlock({ block, isSelected, onClick, onFormatRequ
     >
       {/* Inline Block Controls - Similar to Designer Email */}
       {isSelected && (
-        <div className="absolute -top-9 right-0 flex items-center gap-1 bg-white border border-gray-200 rounded shadow-sm p-1 z-30">
+        <div className="block-toolbar absolute -top-9 right-0 flex items-center gap-1 bg-white border border-gray-200 rounded shadow-sm p-1 z-30">
           {/* Drag Handle */}
           <button
             {...attributes}

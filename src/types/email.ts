@@ -19,6 +19,15 @@ export interface CommonStyles {
   margin?: SpacingValue
   backgroundColor?: string
   textAlign?: 'left' | 'center' | 'right'
+  // Mobile-specific overrides
+  mobileStyles?: {
+    padding?: SpacingValue
+    textAlign?: 'left' | 'center' | 'right'
+    backgroundColor?: string
+  }
+  // Visibility controls
+  hideOnMobile?: boolean // Hide this block on mobile devices
+  hideOnDesktop?: boolean // Hide this block on desktop devices
 }
 
 // ============================================================================
@@ -34,6 +43,9 @@ export interface HeadingBlockData {
   color: string
   lineHeight: number
   letterSpacing?: string
+  // Mobile-specific overrides
+  mobileFontSize?: string
+  mobileLineHeight?: number
 }
 
 export interface TextBlockData {
@@ -42,6 +54,9 @@ export interface TextBlockData {
   fontSize: string
   color: string
   lineHeight: number
+  // Mobile-specific overrides
+  mobileFontSize?: string
+  mobileLineHeight?: number
 }
 
 export interface ImageBlockData {
@@ -63,6 +78,7 @@ export interface ImageGalleryBlockData {
     objectPosition?: string // CSS object-position for image focal point (e.g., "50% 50%")
   }>
   gap: number // spacing between images
+  stackOnMobile?: boolean // Whether columns should stack vertically on mobile (default: true)
 }
 
 export interface ButtonBlockData {
@@ -93,6 +109,36 @@ export interface LayoutBlockData {
   columnRatio?: '1-1' | '1-2' | '2-1' | '1-1-1' | '1-1-1-1' // '1-1' = 50/50, '1-2' = 33/66, '2-1' = 66/33, '1-1-1' = 33/33/33, '1-1-1-1' = 25/25/25/25
   children: EmailBlock[]
   gap: number
+  stackOnMobile?: boolean // Whether columns should stack vertically on mobile (default: true)
+  reverseStackOnMobile?: boolean // Reverse column order when stacking on mobile (default: false)
+}
+
+export interface FooterBlockData {
+  // Company info section
+  companyName: string
+  address: string
+
+  // Social media links (4 max for common layout)
+  socialLinks: Array<{
+    platform: 'facebook' | 'twitter' | 'instagram' | 'linkedin' | 'youtube' | 'tiktok' | 'custom'
+    url: string
+    iconUrl?: string // For custom platform
+  }>
+
+  // Footer links
+  links: Array<{
+    text: string
+    url: string
+  }>
+
+  // Legal text
+  legalText: string
+
+  // Styling options
+  backgroundColor?: string
+  textColor?: string
+  linkColor?: string
+  fontSize?: string
 }
 
 // ============================================================================
@@ -108,6 +154,7 @@ export type BlockType =
   | 'spacer'
   | 'divider'
   | 'layout'
+  | 'footer'
 
 export type BlockData =
   | HeadingBlockData
@@ -118,6 +165,7 @@ export type BlockData =
   | SpacerBlockData
   | DividerBlockData
   | LayoutBlockData
+  | FooterBlockData
 
 // ============================================================================
 // Email Block
@@ -229,6 +277,22 @@ export function isButtonBlock(block: EmailBlock): block is EmailBlock & { data: 
 
 export function isLayoutBlock(block: EmailBlock): block is EmailBlock & { data: LayoutBlockData } {
   return block.type === 'layout'
+}
+
+export function isGalleryBlock(block: EmailBlock): block is EmailBlock & { data: ImageGalleryBlockData } {
+  return block.type === 'imageGallery'
+}
+
+export function isFooterBlock(block: EmailBlock): block is EmailBlock & { data: FooterBlockData } {
+  return block.type === 'footer'
+}
+
+export function isSpacerBlock(block: EmailBlock): block is EmailBlock & { data: SpacerBlockData } {
+  return block.type === 'spacer'
+}
+
+export function isDividerBlock(block: EmailBlock): block is EmailBlock & { data: DividerBlockData } {
+  return block.type === 'divider'
 }
 
 // ============================================================================

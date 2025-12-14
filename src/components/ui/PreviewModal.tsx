@@ -4,9 +4,11 @@ interface PreviewModalProps {
   isOpen: boolean
   onClose: () => void
   htmlContent: string
+  title?: string
+  footer?: React.ReactNode
 }
 
-export default function PreviewModal({ isOpen, onClose, htmlContent }: PreviewModalProps) {
+export default function PreviewModal({ isOpen, onClose, htmlContent, title, footer }: PreviewModalProps) {
   const desktopIframeRef = useRef<HTMLIFrameElement>(null)
   const mobileIframeRef = useRef<HTMLIFrameElement>(null)
   const [activeView, setActiveView] = useState<'both' | 'desktop' | 'mobile'>('both')
@@ -53,7 +55,7 @@ export default function PreviewModal({ isOpen, onClose, htmlContent }: PreviewMo
         {/* Header */}
         <div className="flex items-center justify-between px-6 py-4 border-b border-gray-200">
           <div className="flex items-center gap-4">
-            <h2 className="text-xl font-semibold text-gray-900">Email Preview</h2>
+            <h2 className="text-xl font-semibold text-gray-900">{title || 'Email Preview'}</h2>
 
             {/* View Toggle */}
             <div className="flex items-center gap-2 bg-gray-100 rounded-lg p-1">
@@ -146,6 +148,13 @@ export default function PreviewModal({ isOpen, onClose, htmlContent }: PreviewMo
             </div>
           </div>
         </div>
+
+        {/* Footer (optional) */}
+        {footer && (
+          <div className="px-6 py-4 border-t border-gray-200 bg-gray-50">
+            {footer}
+          </div>
+        )}
       </div>
     </div>
   )

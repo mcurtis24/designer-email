@@ -4,6 +4,8 @@
  */
 
 import { config, isCloudinaryConfigured } from './config'
+import { addAsset } from './assetStorage'
+import type { Asset } from '@/types/asset'
 
 export interface CloudinaryUploadResponse {
   secure_url: string
@@ -14,9 +16,12 @@ export interface CloudinaryUploadResponse {
 }
 
 /**
- * Upload image to Cloudinary
+ * Upload image to Cloudinary and save to asset library
  */
-export async function uploadImageToCloudinary(file: File): Promise<CloudinaryUploadResponse> {
+export async function uploadImageToCloudinary(
+  file: File,
+  saveToLibrary = true
+): Promise<CloudinaryUploadResponse> {
   if (!isCloudinaryConfigured()) {
     throw new Error('Cloudinary is not configured. Please set VITE_CLOUDINARY_CLOUD_NAME and VITE_CLOUDINARY_UPLOAD_PRESET in your .env file.')
   }
@@ -39,6 +44,31 @@ export async function uploadImageToCloudinary(file: File): Promise<CloudinaryUpl
     }
 
     const data = await response.json()
+
+    // Save to asset library
+    if (saveToLibrary) {
+      const asset: Asset = {
+        id: data.public_id,
+        url: data.secure_url,
+        publicId: data.public_id,
+        filename: file.name,
+        uploadedAt: Date.now(),
+        width: data.width,
+        height: data.height,
+        format: data.format,
+        size: file.size,
+        tags: [],
+        folder: undefined
+      }
+
+      try {
+        await addAsset(asset)
+      } catch (error) {
+        console.error('Failed to save asset to library:', error)
+        // Don't throw - upload was successful even if saving to library failed
+      }
+    }
+
     return data
   } catch (error) {
     console.error('Cloudinary upload error:', error)

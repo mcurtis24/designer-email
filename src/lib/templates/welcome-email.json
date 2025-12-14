@@ -1,10 +1,36 @@
 {
-  "id": "template-welcome",
-  "name": "Welcome Email",
-  "category": "transactional",
-  "description": "Warm welcome email for new subscribers with clear next steps",
-  "thumbnail": "",
-  "tags": ["welcome", "onboarding", "transactional"],
+  "metadata": {
+    "id": "template-welcome",
+    "version": 1,
+    "name": "Welcome Email",
+    "category": "transactional",
+    "description": "Warm welcome email for new subscribers with clear next steps",
+    "thumbnail": "",
+    "tags": ["welcome", "onboarding", "transactional"],
+    "placeholders": {
+      "welcome-heading": {
+        "text": "Welcome to [Company Name]!"
+      },
+      "welcome-text": {
+        "content": "<p>We're excited to have you on board! Add your welcome message here and explain what new users can expect.</p>"
+      },
+      "welcome-cta": {
+        "text": "Get Started",
+        "linkUrl": "https://example.com/get-started"
+      },
+      "what-next-heading": {
+        "text": "What's Next?"
+      },
+      "steps-text": {
+        "content": "<p><strong>1. First Step</strong><br>Description of the first thing they should do</p><p><strong>2. Second Step</strong><br>Description of the second thing they should do</p><p><strong>3. Third Step</strong><br>Description of the third thing they should do</p>"
+      },
+      "footer-1": {
+        "companyName": "[Your Company]",
+        "address": "[Your Address]",
+        "legalText": "© 2025 [Your Company]. All rights reserved."
+      }
+    }
+  },
   "blocks": [
     {
       "id": "spacer-top",
@@ -26,7 +52,7 @@
       "type": "heading",
       "data": {
         "level": 1,
-        "text": "Welcome! 🎉",
+        "text": "Welcome to TechFlow! 🚀",
         "fontFamily": "Georgia, serif",
         "fontSize": "48px",
         "fontWeight": 700,
@@ -48,7 +74,7 @@
       "id": "welcome-text",
       "type": "text",
       "data": {
-        "content": "<p>We're thrilled to have you here. You've just joined a community of thousands who are already enjoying exclusive content, special offers, and insider updates.</p>",
+        "content": "<p>We're thrilled to have you on board! You've just joined over 50,000 developers who are already building better software with TechFlow's powerful collaboration tools.</p><p>Your free 14-day trial starts now - no credit card required. Let's get you set up so you can start shipping code faster.</p>",
         "fontFamily": "-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif",
         "fontSize": "16px",
         "color": "#4B5563",
@@ -68,8 +94,8 @@
       "id": "welcome-cta",
       "type": "button",
       "data": {
-        "text": "Get Started",
-        "linkUrl": "https://example.com/get-started",
+        "text": "Complete Your Profile →",
+        "linkUrl": "https://app.techflow.com/onboarding",
         "backgroundColor": "#10B981",
         "textColor": "#FFFFFF",
         "borderRadius": 8,
@@ -117,7 +143,7 @@
       "id": "steps-text",
       "type": "text",
       "data": {
-        "content": "<p><strong>1. Explore our resources</strong><br>Check out our getting started guide and tutorials</p><p><strong>2. Set your preferences</strong><br>Customize your experience to match your interests</p><p><strong>3. Join the conversation</strong><br>Connect with our community and share your thoughts</p>",
+        "content": "<p><strong>1. Complete your profile</strong><br>Add your team members and connect your development tools (takes 2 minutes)</p><p><strong>2. Import your first project</strong><br>Link your GitHub, GitLab, or Bitbucket repository to start tracking progress</p><p><strong>3. Invite your team</strong><br>Collaboration is better together - invite unlimited team members during your trial</p>",
         "fontFamily": "-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif",
         "fontSize": "16px",
         "color": "#4B5563",
@@ -134,24 +160,29 @@
       }
     },
     {
-      "id": "footer-text",
-      "type": "text",
+      "id": "footer-1",
+      "type": "footer",
       "data": {
-        "content": "<p>Questions? Just reply to this email - we're here to help!</p>",
-        "fontFamily": "-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif",
-        "fontSize": "14px",
-        "color": "#6B7280",
-        "lineHeight": 1.6
+        "companyName": "TechFlow",
+        "address": "450 Townsend Street, San Francisco, CA 94107",
+        "socialLinks": [
+          { "platform": "facebook", "url": "https://facebook.com/yourcompany" },
+          { "platform": "twitter", "url": "https://twitter.com/yourcompany" },
+          { "platform": "instagram", "url": "https://instagram.com/yourcompany" }
+        ],
+        "links": [
+          { "text": "Help Center", "url": "https://example.com/help" },
+          { "text": "Contact Support", "url": "https://example.com/support" },
+          { "text": "Unsubscribe", "url": "{{unsubscribe_url}}" }
+        ],
+        "legalText": "© 2025 TechFlow. All rights reserved. Questions? Just reply to this email - we're here to help!",
+        "backgroundColor": "#F3F4F6",
+        "textColor": "#6B7280",
+        "linkColor": "#10B981",
+        "fontSize": "14px"
       },
       "styles": {
-        "padding": {
-          "top": "32px",
-          "right": "4px",
-          "bottom": "4px",
-          "left": "4px"
-        },
-        "textAlign": "center",
-        "backgroundColor": "#F9FAFB"
+        "padding": { "top": "40px", "right": "20px", "bottom": "40px", "left": "20px" }
       }
     },
     {
@@ -171,9 +202,9 @@
     }
   ],
   "settings": {
-    "subject": "Welcome to [Your Company]!",
-    "preheader": "Let's get you started",
-    "width": 640,
+    "subject": "Welcome to TechFlow! Your 14-day trial starts now 🚀",
+    "preheader": "Complete your profile and invite your team in just 2 minutes",
+    "width": 600,
     "backgroundColor": "#FFFFFF",
     "fontFamily": "-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif",
     "textColor": "#1F2937"

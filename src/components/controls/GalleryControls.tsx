@@ -87,6 +87,31 @@ export default function GalleryControls({ block }: GalleryControlsProps) {
         </div>
       </div>
 
+      {/* Stack on Mobile Toggle */}
+      <div>
+        <label className="flex items-center gap-2 cursor-pointer">
+          <input
+            type="checkbox"
+            checked={block.data.stackOnMobile !== false}
+            onChange={(e) => {
+              updateBlock(block.id, {
+                data: {
+                  ...block.data,
+                  stackOnMobile: e.target.checked,
+                },
+              })
+            }}
+            className="w-4 h-4 text-blue-600 border-gray-300 rounded focus:ring-blue-500"
+          />
+          <span className="text-sm font-medium text-gray-700">
+            Stack columns on mobile
+          </span>
+        </label>
+        <p className="text-xs text-gray-500 mt-1 ml-6">
+          When unchecked, images stay side-by-side on mobile (useful for social icons, small thumbnails)
+        </p>
+      </div>
+
       <div>
         <label className="block text-sm font-medium text-gray-700 mb-2">
           Image Border Radius: {(block.data.images[0]?.borderRadius ?? 0)}px

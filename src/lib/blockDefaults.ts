@@ -14,6 +14,7 @@ import type {
   SpacerBlockData,
   DividerBlockData,
   LayoutBlockData,
+  FooterBlockData,
   BlockType,
 } from '@/types/email'
 import { defaultSpacing } from '@/types/email'
@@ -36,7 +37,7 @@ export function createHeadingBlock(order: number): EmailBlock {
     order,
     data,
     styles: {
-      padding: { ...defaultSpacing },
+      padding: { top: '8px', right: '8px', bottom: '8px', left: '8px' },
       textAlign: 'center',
     },
   }
@@ -57,7 +58,7 @@ export function createTextBlock(order: number): EmailBlock {
     order,
     data,
     styles: {
-      padding: { ...defaultSpacing },
+      padding: { top: '8px', right: '8px', bottom: '8px', left: '8px' },
       textAlign: 'left',
     },
   }
@@ -91,6 +92,7 @@ export function createGalleryBlock(order: number): EmailBlock {
       { src: '', alt: 'Gallery image 2', borderRadius: 0 },
     ],
     gap: 8,
+    stackOnMobile: true,
   }
 
   return {
@@ -169,6 +171,7 @@ export function createLayoutBlock(order: number): EmailBlock {
     columns: 2,
     children: [],
     gap: 24,
+    stackOnMobile: true,
   }
 
   return {
@@ -178,6 +181,33 @@ export function createLayoutBlock(order: number): EmailBlock {
     data,
     styles: {
       padding: { ...defaultSpacing },
+    },
+  }
+}
+
+export function createFooterBlock(order: number): EmailBlock {
+  const data: FooterBlockData = {
+    companyName: '',
+    address: '',
+    socialLinks: [],
+    links: [
+      { text: 'Unsubscribe', url: '{{unsubscribe_url}}' },
+      { text: 'Privacy Policy', url: 'https://example.com/privacy' },
+    ],
+    legalText: '© 2025 Your Company. All rights reserved.',
+    backgroundColor: '#F3F4F6',
+    textColor: '#6B7280',
+    linkColor: '#3B82F6',
+    fontSize: '14px',
+  }
+
+  return {
+    id: nanoid(),
+    type: 'footer',
+    order,
+    data,
+    styles: {
+      padding: { top: '40px', right: '20px', bottom: '40px', left: '20px' },
     },
   }
 }
@@ -201,6 +231,8 @@ export function createBlock(type: BlockType, order: number): EmailBlock {
       return createDividerBlock(order)
     case 'layout':
       return createLayoutBlock(order)
+    case 'footer':
+      return createFooterBlock(order)
     default:
       // Default to text block if unknown type
       return createTextBlock(order)

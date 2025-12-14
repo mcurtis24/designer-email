@@ -8,8 +8,9 @@ import ButtonControls from '@/components/controls/ButtonControls'
 import SpacerControls from '@/components/controls/SpacerControls'
 import DividerControls from '@/components/controls/DividerControls'
 import LayoutControls from '@/components/controls/LayoutControls'
+import FooterControls from '@/components/controls/FooterControls'
 import CommonControls from '@/components/controls/CommonControls'
-import type { HeadingBlockData, TextBlockData, ImageBlockData, ImageGalleryBlockData, ButtonBlockData, SpacerBlockData, DividerBlockData, LayoutBlockData } from '@/types/email'
+import type { HeadingBlockData, TextBlockData, ImageBlockData, ImageGalleryBlockData, ButtonBlockData, SpacerBlockData, DividerBlockData, LayoutBlockData, FooterBlockData } from '@/types/email'
 
 export default function DesignControls() {
   // Subscribe to selectedBlockId and blocks for reactive updates
@@ -64,6 +65,7 @@ export default function DesignControls() {
         {selectedBlock.type === 'spacer' && <SpacerControls block={selectedBlock as typeof selectedBlock & { data: SpacerBlockData }} />}
         {selectedBlock.type === 'divider' && <DividerControls block={selectedBlock as typeof selectedBlock & { data: DividerBlockData }} />}
         {selectedBlock.type === 'layout' && <LayoutControls block={selectedBlock as typeof selectedBlock & { data: LayoutBlockData }} />}
+        {selectedBlock.type === 'footer' && <FooterControls block={selectedBlock as typeof selectedBlock & { data: FooterBlockData }} />}
 
         {/* Common Controls (Padding, Background, Alignment) */}
         <CommonControls block={selectedBlock} />

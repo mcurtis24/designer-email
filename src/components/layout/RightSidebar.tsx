@@ -1,5 +1,7 @@
 import BlockLibrary from './BlockLibrary'
 import DesignControls from './DesignControls'
+import TemplateLibrary from './TemplateLibrary'
+import { AssetLibrary } from './AssetLibrary'
 import { useEmailStore } from '@/stores/emailStore'
 
 // Right sidebar with tabs for Blocks, Style, Templates, and Branding
@@ -43,6 +45,16 @@ export default function RightSidebar() {
             Templates
           </button>
           <button
+            onClick={() => setActiveTab('assets')}
+            className={`flex-1 px-4 py-3 text-sm font-medium border-b-2 transition-colors ${
+              activeTab === 'assets'
+                ? 'border-blue-600 text-blue-600'
+                : 'border-transparent text-gray-600 hover:text-gray-900 hover:border-gray-300'
+            }`}
+          >
+            Assets
+          </button>
+          <button
             onClick={() => setActiveTab('branding')}
             className={`flex-1 px-4 py-3 text-sm font-medium border-b-2 transition-colors ${
               activeTab === 'branding'
@@ -71,14 +83,12 @@ export default function RightSidebar() {
 
         {activeTab === 'templates' && (
           <div className="p-4">
-            <div className="text-center text-gray-500 py-12">
-              <svg className="w-12 h-12 mx-auto mb-3 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 5a1 1 0 011-1h14a1 1 0 011 1v2a1 1 0 01-1 1H5a1 1 0 01-1-1V5zM4 13a1 1 0 011-1h6a1 1 0 011 1v6a1 1 0 01-1 1H5a1 1 0 01-1-1v-6zM16 13a1 1 0 011-1h2a1 1 0 011 1v6a1 1 0 01-1 1h-2a1 1 0 01-1-1v-6z" />
-              </svg>
-              <p className="text-sm">Email templates</p>
-              <p className="text-xs text-gray-400 mt-1">Coming soon</p>
-            </div>
+            <TemplateLibrary />
           </div>
+        )}
+
+        {activeTab === 'assets' && (
+          <AssetLibrary />
         )}
 
         {activeTab === 'branding' && (

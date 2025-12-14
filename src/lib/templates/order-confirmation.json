@@ -1,10 +1,45 @@
 {
-  "id": "template-order-confirmation",
-  "name": "Order Confirmation",
-  "category": "transactional",
-  "description": "Clean order confirmation email with order details and tracking",
-  "thumbnail": "",
-  "tags": ["transactional", "receipt", "ecommerce", "order"],
+  "metadata": {
+    "id": "template-order-confirmation",
+    "version": 1,
+    "name": "Order Confirmation",
+    "category": "transactional",
+    "description": "Clean order confirmation email with order details and tracking",
+    "thumbnail": "",
+    "tags": ["transactional", "receipt", "ecommerce", "order"],
+    "placeholders": {
+      "confirmation-badge": {
+        "content": "<p>✓ ORDER CONFIRMED</p>"
+      },
+      "thanks-heading": {
+        "text": "Thank You for Your Order!"
+      },
+      "confirmation-text": {
+        "content": "<p>We've received your order and will send you updates as it ships.</p>"
+      },
+      "order-number": {
+        "content": "<p style='font-size: 14px; color: #6B7280; margin-bottom: 8px;'>Order Number</p><p style='font-size: 24px; font-weight: 700;'>#[ORDER-NUMBER]</p>"
+      },
+      "order-details-heading": {
+        "text": "[Order Details]"
+      },
+      "order-items": {
+        "content": "<p style='padding: 16px 0; border-bottom: 1px solid #E5E7EB;'><strong>[Product Name]</strong><br><span style='color: #6B7280;'>Quantity: [X] | Price: $XX.XX</span></p><p style='padding: 16px 0; font-size: 18px;'><strong>Total: $XX.XX</strong></p>"
+      },
+      "shipping-info": {
+        "content": "<p style='font-weight: 600; margin-bottom: 8px;'>Shipping Address</p><p style='color: #6B7280;'>[Customer Name]<br>[Address Line 1]<br>[City, State ZIP]<br>[Country]</p><p style='font-weight: 600; margin: 16px 0 8px 0;'>Estimated Delivery</p><p style='color: #6B7280;'>[Date Range]</p>"
+      },
+      "track-button": {
+        "text": "Track Your Order",
+        "linkUrl": "https://example.com/track"
+      },
+      "footer-1": {
+        "companyName": "[Your Company]",
+        "address": "[Your Address]",
+        "legalText": "© 2025 [Your Company]. All rights reserved."
+      }
+    }
+  },
   "blocks": [
     {
       "id": "spacer-top",
@@ -133,7 +168,7 @@
       "id": "order-items",
       "type": "text",
       "data": {
-        "content": "<p style='padding: 16px 0; border-bottom: 1px solid #E5E7EB;'><strong>Product Name</strong><br><span style='color: #6B7280;'>Quantity: 1 | Price: $99.00</span></p><p style='padding: 16px 0; border-bottom: 1px solid #E5E7EB;'><strong>Another Product</strong><br><span style='color: #6B7280;'>Quantity: 2 | Price: $49.00 each</span></p><p style='padding: 16px 0; font-size: 18px;'><strong>Total: $197.00</strong></p>",
+        "content": "<p style='padding: 16px 0; border-bottom: 1px solid #E5E7EB;'><strong>Premium Wireless Headphones</strong><br><span style='color: #6B7280;'>Noise Cancelling, Bluetooth 5.3, 40-Hour Battery</span><br><span style='color: #6B7280;'>Quantity: 1 | Price: $299.99</span></p><p style='padding: 16px 0; border-bottom: 1px solid #E5E7EB;'><span style='color: #6B7280;'>Subtotal: $299.99</span></p><p style='padding: 16px 0; border-bottom: 1px solid #E5E7EB;'><span style='color: #6B7280;'>Shipping: FREE</span></p><p style='padding: 16px 0; font-size: 18px;'><strong>Total: $299.99</strong></p>",
         "fontFamily": "-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif",
         "fontSize": "16px",
         "color": "#111827",
@@ -154,7 +189,7 @@
       "id": "shipping-info",
       "type": "text",
       "data": {
-        "content": "<p style='font-weight: 600; margin-bottom: 8px;'>Shipping Address</p><p style='color: #6B7280;'>John Doe<br>123 Main Street<br>City, ST 12345<br>United States</p>",
+        "content": "<p style='font-weight: 600; margin-bottom: 8px;'>Shipping Address</p><p style='color: #6B7280;'>Sarah Johnson<br>123 Main St, Apt 4B<br>New York, NY 10001<br>United States</p><p style='font-weight: 600; margin: 16px 0 8px 0;'>Estimated Delivery</p><p style='color: #6B7280;'>January 18-20, 2025</p>",
         "fontFamily": "-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif",
         "fontSize": "14px",
         "color": "#111827",
@@ -198,31 +233,35 @@
       }
     },
     {
-      "id": "support-text",
-      "type": "text",
+      "id": "footer-1",
+      "type": "footer",
       "data": {
-        "content": "<p>Questions about your order? Contact our support team at <a href='mailto:support@example.com'>support@example.com</a></p>",
-        "fontFamily": "-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif",
-        "fontSize": "14px",
-        "color": "#6B7280",
-        "lineHeight": 1.6
+        "companyName": "AudioStore",
+        "address": "890 E Paces Ferry Rd NE, Atlanta, GA 30326",
+        "socialLinks": [
+          { "platform": "facebook", "url": "https://facebook.com/yourcompany" },
+          { "platform": "instagram", "url": "https://instagram.com/yourcompany" }
+        ],
+        "links": [
+          { "text": "Track Order", "url": "https://example.com/track" },
+          { "text": "Contact Support", "url": "mailto:support@example.com" },
+          { "text": "Returns", "url": "https://example.com/returns" }
+        ],
+        "legalText": "© 2025 AudioStore. All rights reserved. Questions about your order? Our support team is here to help 24/7.",
+        "backgroundColor": "#F3F4F6",
+        "textColor": "#6B7280",
+        "linkColor": "#10B981",
+        "fontSize": "14px"
       },
       "styles": {
-        "padding": {
-          "top": "32px",
-          "right": "24px",
-          "bottom": "32px",
-          "left": "24px"
-        },
-        "textAlign": "center",
-        "backgroundColor": "#F9FAFB"
+        "padding": { "top": "40px", "right": "20px", "bottom": "40px", "left": "20px" }
       }
     }
   ],
   "settings": {
     "subject": "Order Confirmation #ORD-123456",
     "preheader": "Your order has been confirmed and will ship soon",
-    "width": 640,
+    "width": 600,
     "backgroundColor": "#FFFFFF",
     "fontFamily": "-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif",
     "textColor": "#1F2937"

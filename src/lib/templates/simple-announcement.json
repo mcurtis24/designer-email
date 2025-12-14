@@ -1,10 +1,42 @@
 {
-  "id": "template-simple-announcement",
-  "name": "Simple Announcement",
-  "category": "announcement",
-  "description": "Minimal announcement template for company updates and news",
-  "thumbnail": "",
-  "tags": ["announcement", "update", "minimal", "simple"],
+  "metadata": {
+    "id": "template-simple-announcement",
+    "version": 1,
+    "name": "Simple Announcement",
+    "category": "announcement",
+    "description": "Minimal announcement template for company updates and news",
+    "thumbnail": "",
+    "tags": ["announcement", "update", "minimal", "simple"],
+    "placeholders": {
+      "announcement-heading": {
+        "text": "[Announcement Title]"
+      },
+      "main-content": {
+        "content": "<p>Add your announcement details here. Explain what's changing and why it matters to your audience.</p>"
+      },
+      "changes-list": {
+        "content": "<p><strong>1. First Change</strong><br>Description of the first change or update.</p><p><strong>2. Second Change</strong><br>Description of the second change or update.</p><p><strong>3. Third Change</strong><br>Description of the third change or update.</p>"
+      },
+      "action-required": {
+        "content": "<p style='font-weight: 600; font-size: 18px; margin-bottom: 12px;'>Action Required</p><p>Describe any action your recipients need to take.</p>"
+      },
+      "review-button": {
+        "text": "Take Action",
+        "linkUrl": "https://example.com"
+      },
+      "questions-text": {
+        "content": "<p>Have questions? Contact us at <a href='mailto:support@example.com'>support@example.com</a></p>"
+      },
+      "signature-text": {
+        "content": "<p style='margin-bottom: 4px;'>Thank you,</p><p style='font-weight: 600;'>The [Company Name] Team</p>"
+      },
+      "footer-1": {
+        "companyName": "[Your Company]",
+        "address": "[Your Address]",
+        "legalText": "© 2025 [Your Company]. All rights reserved."
+      }
+    }
+  },
   "blocks": [
     {
       "id": "spacer-top",
@@ -26,7 +58,7 @@
       "type": "heading",
       "data": {
         "level": 1,
-        "text": "Important Update",
+        "text": "Important Update: New Privacy Policy",
         "fontFamily": "Georgia, serif",
         "fontSize": "48px",
         "fontWeight": 700,
@@ -48,7 +80,7 @@
       "id": "main-content",
       "type": "text",
       "data": {
-        "content": "<p>We're writing to let you know about an important update to our service. This change will take effect on <strong>January 1, 2026</strong> and will bring several improvements to your experience.</p><p style='margin-top: 24px;'>Here's what's changing:</p>",
+        "content": "<p>We're writing to inform you about updates to our Privacy Policy, effective <strong>January 1, 2025</strong>. These changes reflect our ongoing commitment to transparency and protecting your data.</p><p style='margin-top: 24px;'>Here's what's changing:</p>",
         "fontFamily": "-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif",
         "fontSize": "17px",
         "color": "#374151",
@@ -68,7 +100,7 @@
       "id": "changes-list",
       "type": "text",
       "data": {
-        "content": "<p><strong>1. Enhanced Security</strong><br>We're implementing additional security measures to better protect your account and data.</p><p><strong>2. Improved Performance</strong><br>Faster load times and smoother overall experience across all devices.</p><p><strong>3. New Dashboard</strong><br>A refreshed interface that makes it easier to find what you need.</p>",
+        "content": "<p><strong>1. Enhanced Data Protection</strong><br>We've implemented additional security measures to better protect your personal information.</p><p><strong>2. Clearer Data Usage</strong><br>We've simplified how we explain what data we collect and how we use it.</p><p><strong>3. More Control for You</strong><br>New tools to manage your privacy settings and data preferences.</p>",
         "fontFamily": "-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif",
         "fontSize": "16px",
         "color": "#4B5563",
@@ -109,8 +141,8 @@
       "id": "review-button",
       "type": "button",
       "data": {
-        "text": "Review & Accept",
-        "linkUrl": "https://example.com/terms",
+        "text": "Review Full Policy",
+        "linkUrl": "https://acme-corp.com/privacy",
         "backgroundColor": "#111827",
         "textColor": "#FFFFFF",
         "borderRadius": 6,
@@ -184,17 +216,41 @@
         "padding": {
           "top": "16px",
           "right": "4px",
-          "bottom": "48px",
+          "bottom": "32px",
           "left": "4px"
         },
         "textAlign": "center"
       }
+    },
+    {
+      "id": "footer-1",
+      "type": "footer",
+      "data": {
+        "companyName": "Acme Corporation",
+        "address": "1 Market Plaza, San Francisco, CA 94105",
+        "socialLinks": [
+          { "platform": "linkedin", "url": "https://linkedin.com/company/yourcompany" }
+        ],
+        "links": [
+          { "text": "Contact Us", "url": "https://example.com/contact" },
+          { "text": "Privacy Policy", "url": "https://example.com/privacy" },
+          { "text": "Unsubscribe", "url": "{{unsubscribe_url}}" }
+        ],
+        "legalText": "© 2025 Acme Corporation. All rights reserved. Questions? Contact privacy@acme-corp.com",
+        "backgroundColor": "#F3F4F6",
+        "textColor": "#6B7280",
+        "linkColor": "#3B82F6",
+        "fontSize": "14px"
+      },
+      "styles": {
+        "padding": { "top": "40px", "right": "20px", "bottom": "40px", "left": "20px" }
+      }
     }
   ],
   "settings": {
-    "subject": "Important Update: Action Required by January 1",
-    "preheader": "Please review our service updates and new terms",
-    "width": 640,
+    "subject": "Important Update: New Privacy Policy - Effective January 1, 2025",
+    "preheader": "We've updated our Privacy Policy - here's what's changed",
+    "width": 600,
     "backgroundColor": "#FFFFFF",
     "fontFamily": "-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif",
     "textColor": "#1F2937"

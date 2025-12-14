@@ -30,7 +30,7 @@ function SpacerBlock({ block, isSelected, onClick }: SpacerBlockProps) {
       }`}
       style={{
         height: `${data.height}px`,
-        backgroundColor: 'transparent',
+        backgroundColor: block.styles.backgroundColor || 'transparent',
       }}
     >
       {/* Visual indicator for spacer (only in editor, not in export) */}

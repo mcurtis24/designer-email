@@ -31,6 +31,7 @@ function DividerBlock({ block, isSelected, onClick }: DividerBlockProps) {
       style={{
         padding: data.padding || '16px 0',
         minHeight: '24px',
+        backgroundColor: block.styles.backgroundColor,
       }}
     >
       <hr

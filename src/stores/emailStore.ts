@@ -15,6 +15,10 @@ import type {
 } from '@/types/email'
 import { CircularHistoryBuffer, ActionBatcher } from '@/lib/historyManager'
 import { VersionManager } from '@/lib/versionManager'
+import { validateTemplate, TemplateValidationError } from '@/lib/templateValidator'
+import { stripToPlaceholders } from '@/lib/templatePlaceholders'
+import { deepClone } from '@/lib/utils/cloneUtils'
+import { getTemplateMetadata } from '@/lib/templates'
 
 interface EmailStore {
   // Email Document State
@@ -24,7 +28,7 @@ interface EmailStore {
   editorState: EditorState
 
   // Sidebar UI State
-  activeSidebarTab: 'blocks' | 'style' | 'templates' | 'branding'
+  activeSidebarTab: 'blocks' | 'style' | 'templates' | 'assets' | 'branding'
   autoOpenColorPicker: boolean
 
   // History for Undo/Redo (using circular buffer for memory efficiency)
@@ -61,7 +65,7 @@ interface EmailStore {
   setSelectedGalleryImageIndex: (index: number) => void
 
   // Actions - Sidebar
-  setActiveSidebarTab: (tab: 'blocks' | 'style' | 'templates' | 'branding') => void
+  setActiveSidebarTab: (tab: 'blocks' | 'style' | 'templates' | 'assets' | 'branding') => void
   setAutoOpenColorPicker: (value: boolean) => void
 
   // Actions - Viewport
@@ -83,6 +87,7 @@ interface EmailStore {
   markAsDirty: () => void
   loadEmail: (email: EmailDocument) => void
   createNewEmail: () => void
+  loadTemplate: (template: any) => void // Template with blocks and settings
 
   // Actions - Version Management
   createVersion: (type: 'auto' | 'manual' | 'checkpoint', message?: string) => EmailVersion
@@ -576,6 +581,7 @@ export const useEmailStore = create<EmailStore>((set, get) => ({
           editingBlockId: null,
           editingType: null,
           draggedBlockId: null,
+          selectedGalleryImageIndex: 0,
           viewport: { mode: 'desktop', zoom: 120 },
           isDirty: false,
           isSaving: false,
@@ -597,11 +603,72 @@ export const useEmailStore = create<EmailStore>((set, get) => ({
           editingBlockId: null,
           editingType: null,
           draggedBlockId: null,
+          selectedGalleryImageIndex: 0,
           viewport: { mode: 'desktop', zoom: 120 },
           isDirty: false,
           isSaving: false,
           lastSaved: null,
         },
+      }
+    }),
+
+  loadTemplate: (template) =>
+    set((state) => {
+      try {
+        // 1. Validate template structure
+        const validated = validateTemplate(template)
+
+        // 2. Strip stock content to placeholders
+        const stripped = stripToPlaceholders(validated)
+
+        // 3. Ensure correct order properties
+        stripped.blocks.forEach((block: EmailBlock, index: number) => {
+          block.order = index
+        })
+
+        // 4. Reset history buffer
+        state.historyBuffer.clear()
+        state.historyBuffer.push(stripped.blocks)
+
+        // 5. Get template metadata (works with both formats)
+        const meta = getTemplateMetadata(template)
+
+        // 6. Update email state
+        return {
+          email: {
+            ...state.email,
+            title: meta.name || 'Untitled Email',
+            blocks: stripped.blocks,
+            settings: {
+              ...state.email.settings,
+              ...validated.settings,
+              contentWidth: 600,  // Industry standard (not 640px)
+            },
+            updatedAt: new Date(),
+          },
+          editorState: {
+            selectedBlockId: null,
+            editingBlockId: null,
+            editingType: null,
+            draggedBlockId: null,
+            selectedGalleryImageIndex: 0,
+            viewport: { mode: 'mobile', zoom: 120 },
+            isDirty: true,  // Mark as dirty
+            isSaving: false,
+            lastSaved: null,
+          },
+          activeSidebarTab: 'blocks',
+        }
+      } catch (error: any) {
+        console.error('Failed to load template:', error)
+
+        // Show user-friendly error
+        if (typeof window !== 'undefined') {
+          alert(`Template Error: ${error.message || 'Failed to load template'}`)
+        }
+
+        // Return unchanged state on error
+        return state
       }
     }),
 
