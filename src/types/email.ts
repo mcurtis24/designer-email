@@ -205,12 +205,29 @@ export interface EmailMetadata {
   replyTo?: string
 }
 
+export interface BrandColor {
+  color: string // Hex color code
+  name?: string // Optional user-defined name
+  order: number // Display order
+}
+
+export interface TypographyStyle {
+  name: 'heading' | 'body' // Style type
+  fontFamily: string
+  fontSize: string // Desktop font size (e.g., "24px")
+  mobileFontSize?: string // Optional mobile override
+  fontWeight: number // 400 (normal), 700 (bold), etc.
+  color: string // Text color
+  lineHeight: number // Line height multiplier (e.g., 1.5)
+}
+
 export interface EmailSettings {
   backgroundColor: string
   contentWidth: number // 600px default (industry standard)
   fontFamily: string
   textColor: string
-  brandColors: string[] // Brand kit colors
+  brandColors: BrandColor[] // Brand kit colors with names
+  typographyStyles?: TypographyStyle[] // Typography presets
 }
 
 export interface EmailVersion {
@@ -312,6 +329,25 @@ export const defaultEmailSettings: EmailSettings = {
   fontFamily: 'Arial, Helvetica, sans-serif',
   textColor: '#333333',
   brandColors: [], // Empty by default, user can add brand colors
+  typographyStyles: [
+    {
+      name: 'heading',
+      fontFamily: 'Georgia, serif',
+      fontSize: '32px',
+      mobileFontSize: '24px',
+      fontWeight: 700,
+      color: '#1F2937',
+      lineHeight: 1.2,
+    },
+    {
+      name: 'body',
+      fontFamily: '-apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif',
+      fontSize: '16px',
+      fontWeight: 400,
+      color: '#374151',
+      lineHeight: 1.6,
+    },
+  ],
 }
 
 export const defaultViewport: ViewportState = {

@@ -2,6 +2,7 @@ import BlockLibrary from './BlockLibrary'
 import DesignControls from './DesignControls'
 import TemplateLibrary from './TemplateLibrary'
 import { AssetLibrary } from './AssetLibrary'
+import BrandingTab from './BrandingTab'
 import { useEmailStore } from '@/stores/emailStore'
 
 // Right sidebar with tabs for Blocks, Style, Templates, and Branding
@@ -93,13 +94,7 @@ export default function RightSidebar() {
 
         {activeTab === 'branding' && (
           <div className="p-4">
-            <div className="text-center text-gray-500 py-12">
-              <svg className="w-12 h-12 mx-auto mb-3 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M7 21a4 4 0 01-4-4V5a2 2 0 012-2h4a2 2 0 012 2v12a4 4 0 01-4 4zm0 0h12a2 2 0 002-2v-4a2 2 0 00-2-2h-2.343M11 7.343l1.657-1.657a2 2 0 012.828 0l2.829 2.829a2 2 0 010 2.828l-8.486 8.485M7 17h.01" />
-              </svg>
-              <p className="text-sm">Brand settings</p>
-              <p className="text-xs text-gray-400 mt-1">Coming soon</p>
-            </div>
+            <BrandingTab />
           </div>
         )}
       </div>

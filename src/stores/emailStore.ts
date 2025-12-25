@@ -12,6 +12,8 @@ import type {
   EmailVersion,
   EditorState,
   ViewportState,
+  BrandColor,
+  TypographyStyle,
 } from '@/types/email'
 import { CircularHistoryBuffer, ActionBatcher } from '@/lib/historyManager'
 import { VersionManager } from '@/lib/versionManager'
@@ -73,8 +75,15 @@ interface EmailStore {
   setZoom: (zoom: number) => void
 
   // Actions - Brand Colors
-  addBrandColor: (color: string) => void
+  addBrandColor: (color: string, name?: string) => void
   removeBrandColor: (color: string) => void
+  updateBrandColorName: (color: string, name: string) => void
+  reorderBrandColors: (colors: BrandColor[]) => void
+
+  // Actions - Typography Styles
+  updateTypographyStyle: (styleName: 'heading' | 'body', updates: Partial<TypographyStyle>) => void
+  applyTypographyStyleToAll: (styleName: 'heading' | 'body') => void
+  resetTypographyStyles: () => void
 
   // Actions - History (Undo/Redo)
   undo: () => void
@@ -112,6 +121,26 @@ function createNewEmail(): EmailDocument {
       fontFamily: 'Arial, Helvetica, sans-serif',
       textColor: '#333333',
       brandColors: [],
+      typographyStyles: [
+        {
+          name: 'heading',
+          fontFamily: 'Georgia, serif',
+          fontSize: '32px',
+          mobileFontSize: '24px',
+          fontWeight: 700,
+          color: '#1F2937',
+          lineHeight: 1.2,
+        },
+        {
+          name: 'body',
+          fontFamily: '-apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif',
+          fontSize: '16px',
+          mobileFontSize: '16px',
+          fontWeight: 400,
+          color: '#374151',
+          lineHeight: 1.6,
+        },
+      ],
     },
     blocks: [],
     history: [],
@@ -474,12 +503,18 @@ export const useEmailStore = create<EmailStore>((set, get) => ({
     })),
 
   // Brand Colors Actions
-  addBrandColor: (color) =>
+  addBrandColor: (color, name) =>
     set((state) => {
       const normalizedColor = color.toUpperCase()
       // Don't add duplicates
-      if (state.email.settings.brandColors.includes(normalizedColor)) {
+      if (state.email.settings.brandColors.some((bc) => bc.color === normalizedColor)) {
         return state
+      }
+
+      const newBrandColor: BrandColor = {
+        color: normalizedColor,
+        name: name || undefined,
+        order: state.email.settings.brandColors.length,
       }
 
       return {
@@ -487,7 +522,7 @@ export const useEmailStore = create<EmailStore>((set, get) => ({
           ...state.email,
           settings: {
             ...state.email.settings,
-            brandColors: [...state.email.settings.brandColors, normalizedColor],
+            brandColors: [...state.email.settings.brandColors, newBrandColor],
           },
           updatedAt: new Date(),
         },
@@ -501,7 +536,134 @@ export const useEmailStore = create<EmailStore>((set, get) => ({
         ...state.email,
         settings: {
           ...state.email.settings,
-          brandColors: state.email.settings.brandColors.filter((c) => c !== color),
+          brandColors: state.email.settings.brandColors.filter((bc) => bc.color !== color),
+        },
+        updatedAt: new Date(),
+      },
+      editorState: { ...state.editorState, isDirty: true },
+    })),
+
+  updateBrandColorName: (color, name) =>
+    set((state) => ({
+      email: {
+        ...state.email,
+        settings: {
+          ...state.email.settings,
+          brandColors: state.email.settings.brandColors.map((bc) =>
+            bc.color === color ? { ...bc, name } : bc
+          ),
+        },
+        updatedAt: new Date(),
+      },
+      editorState: { ...state.editorState, isDirty: true },
+    })),
+
+  reorderBrandColors: (colors) =>
+    set((state) => ({
+      email: {
+        ...state.email,
+        settings: {
+          ...state.email.settings,
+          brandColors: colors.map((color, index) => ({ ...color, order: index })),
+        },
+        updatedAt: new Date(),
+      },
+      editorState: { ...state.editorState, isDirty: true },
+    })),
+
+  // Typography Styles Actions
+  updateTypographyStyle: (styleName, updates) =>
+    set((state) => {
+      const currentStyles = state.email.settings.typographyStyles || []
+      const updatedStyles = currentStyles.map((style) =>
+        style.name === styleName ? { ...style, ...updates } : style
+      )
+
+      return {
+        email: {
+          ...state.email,
+          settings: {
+            ...state.email.settings,
+            typographyStyles: updatedStyles,
+          },
+          updatedAt: new Date(),
+        },
+        editorState: { ...state.editorState, isDirty: true },
+      }
+    }),
+
+  applyTypographyStyleToAll: (styleName) =>
+    set((state) => {
+      const typographyStyles = state.email.settings.typographyStyles || []
+      const style = typographyStyles.find((s) => s.name === styleName)
+
+      if (!style) return state
+
+      // Apply style to all relevant blocks
+      const updatedBlocks = state.email.blocks.map((block) => {
+        if (styleName === 'heading' && block.type === 'heading') {
+          return {
+            ...block,
+            data: {
+              ...block.data,
+              fontFamily: style.fontFamily,
+              fontSize: style.fontSize,
+              fontWeight: style.fontWeight,
+              color: style.color,
+              lineHeight: style.lineHeight,
+            },
+          }
+        } else if (styleName === 'body' && block.type === 'text') {
+          return {
+            ...block,
+            data: {
+              ...block.data,
+              fontFamily: style.fontFamily,
+              fontSize: style.fontSize,
+              fontWeight: style.fontWeight,
+              color: style.color,
+              lineHeight: style.lineHeight,
+            },
+          }
+        }
+        return block
+      })
+
+      return {
+        email: {
+          ...state.email,
+          blocks: updatedBlocks,
+          updatedAt: new Date(),
+        },
+        editorState: { ...state.editorState, isDirty: true },
+      }
+    }),
+
+  resetTypographyStyles: () =>
+    set((state) => ({
+      email: {
+        ...state.email,
+        settings: {
+          ...state.email.settings,
+          typographyStyles: [
+            {
+              name: 'heading',
+              fontFamily: 'Georgia, serif',
+              fontSize: '32px',
+              mobileFontSize: '24px',
+              fontWeight: 700,
+              color: '#1F2937',
+              lineHeight: 1.2,
+            },
+            {
+              name: 'body',
+              fontFamily: '-apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif',
+              fontSize: '16px',
+              fontWeight: 400,
+              color: '#374151',
+              lineHeight: 1.6,
+            },
+          ],
         },
         updatedAt: new Date(),
       },

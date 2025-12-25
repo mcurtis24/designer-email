@@ -46,7 +46,10 @@ export default function TemplateLibrary() {
           contentWidth: 600, // Industry standard
           fontFamily: template.settings.fontFamily || '-apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif',
           textColor: template.settings.textColor || '#1F2937',
-          brandColors: template.settings.brandColors || []
+          brandColors: (template.settings.brandColors || []).map((color, index) => ({
+            color,
+            order: index,
+          })),
         },
         createdAt: new Date(),
         updatedAt: new Date(),

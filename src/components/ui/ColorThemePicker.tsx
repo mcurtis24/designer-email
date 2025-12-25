@@ -1,13 +1,14 @@
 import { useState, useEffect, useRef } from 'react'
 import { Plus, Palette } from 'lucide-react'
 import { useEmailStore } from '@/stores/emailStore'
+import type { BrandColor } from '@/types/email'
 
 interface ColorThemePickerProps {
   value: string
   onChange: (color: string) => void
   label?: string
   documentColors?: string[]
-  brandColors?: string[]
+  brandColors?: BrandColor[]
   onAddBrandColor?: (color: string) => void
   onRemoveBrandColor?: (color: string) => void
 }
@@ -159,7 +160,7 @@ export function ColorThemePicker({
                   <button
                     onClick={() => {
                       const newColor = value
-                      if (onAddBrandColor && !brandColors.includes(newColor)) {
+                      if (onAddBrandColor && !brandColors.some((bc) => bc.color === newColor)) {
                         onAddBrandColor(newColor)
                       }
                     }}
@@ -169,19 +170,19 @@ export function ColorThemePicker({
                     <Plus className="w-3.5 h-3.5 text-gray-400" />
                   </button>
 
-                  {brandColors.filter(filterColor).map((color, index) => (
+                  {brandColors.filter((bc) => filterColor(bc.color)).map((brandColor, index) => (
                     <div key={`brand-${index}`} className="relative group">
                       <button
-                        onClick={() => handleColorClick(color)}
+                        onClick={() => handleColorClick(brandColor.color)}
                         className="w-7 h-7 rounded border-2 border-gray-200 hover:border-blue-500 transition-colors"
-                        style={{ backgroundColor: color }}
-                        title={color}
+                        style={{ backgroundColor: brandColor.color }}
+                        title={brandColor.name || brandColor.color}
                       />
                       {onRemoveBrandColor && (
                         <button
                           onClick={(e) => {
                             e.stopPropagation()
-                            onRemoveBrandColor(color)
+                            onRemoveBrandColor(brandColor.color)
                           }}
                           className="absolute -top-1 -right-1 w-4 h-4 bg-red-500 text-white rounded-full opacity-0 group-hover:opacity-100 transition-opacity text-xs flex items-center justify-center"
                           title="Remove from brand kit"

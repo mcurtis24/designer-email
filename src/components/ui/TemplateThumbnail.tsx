@@ -29,14 +29,17 @@ export default function TemplateThumbnail({ template, className = '' }: Template
 
       const tempEmail: EmailDocument = {
         id: 'thumbnail-preview',
-        title: template.name,
+        title: 'Template Preview',
         blocks: blocksWithOrder,
         settings: {
           backgroundColor: template.settings.backgroundColor || '#FFFFFF',
           contentWidth: 600,
           fontFamily: template.settings.fontFamily || '-apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif',
           textColor: template.settings.textColor || '#1F2937',
-          brandColors: template.settings.brandColors || []
+          brandColors: (template.settings.brandColors || []).map((color, index) => ({
+            color,
+            order: index,
+          })),
         },
         createdAt: new Date(),
         updatedAt: new Date(),
@@ -71,7 +74,7 @@ export default function TemplateThumbnail({ template, className = '' }: Template
       )}
       <iframe
         ref={iframeRef}
-        title={`Preview of ${template.name}`}
+        title="Template Preview"
         className="w-full h-full border-0 pointer-events-none"
         style={{
           transform: 'scale(0.25)',
