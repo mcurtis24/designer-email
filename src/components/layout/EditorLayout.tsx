@@ -211,7 +211,7 @@ export default function EditorLayout() {
           if (existingBlock) {
             // Show actual block preview with reduced opacity
             return (
-              <div className="opacity-60 pointer-events-none" style={{ width: '640px' }}>
+              <div className="opacity-60 pointer-events-none" style={{ width: '600px' }}>
                 <BlockRenderer
                   block={existingBlock}
                   isSelected={false}

@@ -137,7 +137,7 @@ export default function ImageControls({ block }: ImageControlsProps) {
           className="w-full px-3 py-2 text-sm border border-gray-300 rounded-md"
           placeholder="Auto"
           min="50"
-          max="640"
+          max="600"
         />
       </div>
 

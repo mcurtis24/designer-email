@@ -52,7 +52,7 @@ function ImageBlock({ block, isSelected, onClick }: ImageBlockProps) {
 
       // Only set dimensions once when the image first loads
       if (!data.width || data.width === 0) {
-        const newWidth = Math.min(imgRef.current.naturalWidth, 640)
+        const newWidth = Math.min(imgRef.current.naturalWidth, 600)
 
         updateBlock(block.id, {
           data: {

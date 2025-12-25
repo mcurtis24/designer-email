@@ -8,6 +8,7 @@ import { useEmailStore } from '@/stores/emailStore'
 import { templates, type Template, getTemplateMetadata } from '@/lib/templates'
 import { generateEmailHTML } from '@/lib/htmlGenerator'
 import PreviewModal from '@/components/ui/PreviewModal'
+import TemplateThumbnail from '@/components/ui/TemplateThumbnail'
 import type { EmailDocument } from '@/types/email'
 
 export default function TemplateLibrary() {
@@ -135,16 +136,16 @@ export default function TemplateLibrary() {
       </div>
 
       {/* Template Grid */}
-      <div className="grid grid-cols-1 gap-3">
+      <div className="grid grid-cols-1 gap-4">
         {filteredTemplates.map((template) => {
           const meta = getTemplateMetadata(template)
           return (
             <div
               key={meta.id}
-              onClick={() => handlePreviewTemplate(template)}
-              className="border border-gray-200 rounded-lg p-4 cursor-pointer hover:border-blue-500 hover:shadow-md transition-all group"
+              className="relative border border-gray-200 rounded-lg overflow-hidden cursor-pointer hover:border-blue-500 hover:shadow-lg transition-all group"
               role="button"
               tabIndex={0}
+              onClick={() => handlePreviewTemplate(template)}
               onKeyDown={(e) => {
                 if (e.key === 'Enter' || e.key === ' ') {
                   e.preventDefault()
@@ -152,40 +153,45 @@ export default function TemplateLibrary() {
                 }
               }}
             >
-              {/* Template Header */}
-              <div className="flex items-start justify-between mb-2">
-                <h4 className="text-sm font-semibold text-gray-900">{meta.name}</h4>
+              {/* Template Thumbnail */}
+              <div className="relative w-full bg-gray-50" style={{ height: '280px' }}>
+                <TemplateThumbnail template={template} className="w-full h-full" />
+
+                {/* Category Badge */}
                 <span
-                  className={`px-2 py-0.5 text-xs font-medium rounded capitalize ${getCategoryColor(
+                  className={`absolute top-3 right-3 px-2.5 py-1 text-xs font-medium rounded-md capitalize shadow-sm ${getCategoryColor(
                     meta.category
                   )}`}
                 >
                   {meta.category}
                 </span>
+
+                {/* Hover Overlay */}
+                <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-black/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-200 flex items-end justify-center pb-6 gap-3">
+                  <button
+                    onClick={(e) => {
+                      e.stopPropagation()
+                      handlePreviewTemplate(template)
+                    }}
+                    className="px-5 py-2.5 bg-white text-gray-900 text-sm font-medium rounded-lg shadow-lg hover:bg-gray-100 transition-colors"
+                  >
+                    Preview
+                  </button>
+                  <button
+                    onClick={(e) => {
+                      e.stopPropagation()
+                      handleLoadTemplate(template)
+                    }}
+                    className="px-5 py-2.5 bg-blue-600 text-white text-sm font-medium rounded-lg shadow-lg hover:bg-blue-700 transition-colors"
+                  >
+                    Use Template
+                  </button>
+                </div>
               </div>
 
-              {/* Description */}
-              <p className="text-xs text-gray-600 mb-3 line-clamp-2">{meta.description}</p>
-
-              {/* Tags */}
-              {meta.tags && meta.tags.length > 0 && (
-                <div className="flex flex-wrap gap-1 mb-3">
-                  {meta.tags.slice(0, 3).map((tag) => (
-                    <span
-                      key={tag}
-                      className="px-2 py-0.5 text-xs bg-gray-100 text-gray-600 rounded"
-                    >
-                      {tag}
-                    </span>
-                  ))}
-                </div>
-              )}
-
-              {/* Preview Hint */}
-              <div className="mt-3 pt-3 border-t border-gray-100">
-                <span className="text-xs text-gray-500 group-hover:text-blue-600 transition-colors">
-                  Click to preview →
-                </span>
+              {/* Template Name */}
+              <div className="p-3 bg-white">
+                <h4 className="text-sm font-semibold text-gray-900 truncate">{meta.name}</h4>
               </div>
             </div>
           )

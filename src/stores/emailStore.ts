@@ -108,7 +108,7 @@ function createNewEmail(): EmailDocument {
     metadata: {},
     settings: {
       backgroundColor: '#f4f4f4',
-      contentWidth: 640,
+      contentWidth: 600,
       fontFamily: 'Arial, Helvetica, sans-serif',
       textColor: '#333333',
       brandColors: [],

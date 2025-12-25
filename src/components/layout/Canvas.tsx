@@ -44,7 +44,7 @@ export default function Canvas({ isDraggingFromLibrary = false }: CanvasProps) {
   const blockIds = sortedBlocks.map((block) => block.id)
 
   // Determine canvas width based on viewport mode
-  const canvasWidth = viewportMode === 'mobile' ? 375 : 640
+  const canvasWidth = viewportMode === 'mobile' ? 375 : 600
   const zoomScale = zoom / 100
 
   // Find the currently editing block (including nested blocks in layouts)

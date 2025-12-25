@@ -8,7 +8,7 @@ interface FooterControlsProps {
 
 const SOCIAL_PLATFORMS: Array<FooterBlockData['socialLinks'][0]['platform']> = [
   'facebook',
-  'twitter',
+  'x',
   'instagram',
   'linkedin',
   'youtube',
@@ -164,7 +164,9 @@ export default function FooterControls({ block }: FooterControlsProps) {
                     onChange={(e) => handleToggleSocial(platform, e.target.checked)}
                     className="w-4 h-4 text-blue-600 border-gray-300 rounded"
                   />
-                  <span className="text-sm capitalize">{platform}</span>
+                  <span className="text-sm capitalize">
+                    {platform === 'x' ? 'X (Twitter)' : platform}
+                  </span>
                 </label>
                 {existing && (
                   <input

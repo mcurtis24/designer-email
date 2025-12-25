@@ -28,6 +28,186 @@ All notable changes and project updates for the Email Designer project.
 
 ## Changelog
 
+### 2025-12-25 - Canvas Width Standardization ✅ COMPLETE
+
+#### Standardized Email Width to 600px Across All Components
+**Change**: Updated all canvas, preview, and email generation components to use 600px as the standard width (previously inconsistent mix of 640px and 600px).
+
+**Why 600px?**
+- Industry standard for email design (Mailchimp, Campaign Monitor, Litmus all recommend 600px)
+- Better mobile compatibility with more email clients
+- Matches professional email template conventions
+- Aligns with design decision from 2025-12-12
+
+**Files Updated**:
+1. **Design Tokens** (`src/lib/design-tokens.ts`)
+   - `contentWidth: 640` → `600`
+   - `desktopViewport: 640` → `600`
+
+2. **Store Defaults** (`src/stores/emailStore.ts`)
+   - Initial email `contentWidth: 640` → `600`
+
+3. **Type Definitions** (`src/types/email.ts`)
+   - Comment: "640px default" → "600px default (industry standard)"
+   - `defaultEmailSettings.contentWidth: 640` → `600`
+
+4. **HTML Generator** (`src/lib/htmlGenerator.ts`)
+   - Header comment updated to 600px
+   - Layout calculations: `totalWidth: 640` → `600`
+
+5. **Canvas Component** (`src/components/layout/Canvas.tsx`)
+   - Desktop canvas width: `640` → `600`
+
+6. **Preview Modal** (`src/components/ui/PreviewModal.tsx`)
+   - Label: "Desktop (640px)" → "Desktop (600px)"
+   - Preview container width: `'640px'` → `'600px'`
+
+7. **Editor Layout** (`src/components/layout/EditorLayout.tsx`)
+   - Drag overlay width: `'640px'` → `'600px'`
+
+8. **Image Controls** (`src/components/controls/ImageControls.tsx`)
+   - Max image width: `640` → `600`
+
+9. **Image Block** (`src/components/blocks/ImageBlock.tsx`)
+   - Auto-size max width: `640` → `600`
+
+**Impact**:
+- ✅ Consistent 600px width across entire application
+- ✅ Canvas preview matches actual email output exactly
+- ✅ Follows email industry best practices
+- ✅ Better compatibility with email clients
+- ✅ No more confusion between 640px and 600px
+
+---
+
+### 2025-12-25 - Template Visual Previews ✅ COMPLETE
+
+#### Visual-First Template Browser (Mailchimp/Canva Style)
+**Added**: Beautiful visual thumbnail previews for all email templates in the sidebar, replacing text-based template cards.
+
+**Features Implemented**:
+
+1. **TemplateThumbnail Component** (`src/components/ui/TemplateThumbnail.tsx`)
+   - Generates scaled-down HTML preview of each template
+   - Uses iframe for proper sandboxing and rendering
+   - Scales to 25% for thumbnail view (280px height)
+   - Shows loading spinner during generation
+   - Automatic HTML generation using existing email generator
+
+2. **Visual-First Template Cards** (`src/components/layout/TemplateLibrary.tsx`)
+   - Large thumbnail previews (280px height) prominently displayed
+   - Category badge overlaid on top-right of thumbnail
+   - Minimal text - only template name shown below preview
+   - Clean, modern card design matching Mailchimp/Canva aesthetic
+
+3. **Interactive Hover Overlay**
+   - Gradient overlay appears on hover (from black/60 at bottom to transparent)
+   - Two action buttons revealed on hover:
+     - **Preview** (white button) - Opens full preview modal
+     - **Use Template** (blue button) - Directly loads template with confirmation
+   - Smooth transitions and professional polish
+
+**User Experience**:
+- See what templates look like immediately upon opening Templates tab
+- No need to click to see template design
+- Quick access to both preview and use actions
+- Visual-first browsing like professional design tools
+
+**Technical Implementation**:
+- Reuses existing `generateEmailHTML()` function for consistency
+- Each thumbnail generates full email HTML and scales it down
+- Proper iframe sandboxing prevents CSS conflicts
+- Lazy rendering with loading states
+- Maintains click-to-preview functionality for full modal view
+
+**Files Created**:
+- `src/components/ui/TemplateThumbnail.tsx` - Thumbnail preview component
+
+**Files Modified**:
+- `src/components/layout/TemplateLibrary.tsx` - Visual template cards with hover overlay
+
+**Impact**:
+- ✅ Professional template browsing experience matching industry leaders
+- ✅ Users can see template designs at a glance
+- ✅ Faster template selection workflow
+- ✅ More visually appealing sidebar interface
+- ✅ Better UX for discovering and choosing templates
+- ✅ Hover actions provide quick access to preview or use
+
+---
+
+### 2025-12-25 - Footer Block Email Compatibility Fix ✅ COMPLETE
+
+#### Fixed: Social Media Icons Not Displaying in Sent Emails
+**Problem**: Footer block social media icons displayed correctly in Canvas preview but were invisible in actual sent emails. Email clients (Gmail, Outlook, Apple Mail) don't support inline SVG for security reasons.
+
+**Root Cause**: Footer block was using inline SVG code for social media icons. Most email clients strip `<svg>` tags, leaving empty spaces where icons should appear.
+
+**Fixes Implemented**:
+
+1. **Replaced SVG with Hosted Image URLs** ✅
+   - Changed from inline SVG strings to hosted PNG images from Icons8 CDN
+   - Updated `SOCIAL_ICON_SVGS` to `SOCIAL_ICON_URLS` in `htmlGenerator.ts`
+   - Updated `SOCIAL_ICONS` to `SOCIAL_ICON_URLS` in `FooterBlock.tsx`
+   - Icons now use `<img>` tags with reliable CDN URLs (https://img.icons8.com)
+
+2. **Rebranded Twitter to "X"** ✅
+   - Added 'x' as a new platform option in type definitions
+   - Updated UI to display "X (Twitter)" for clarity
+   - Updated icon URL to new X logo
+   - Maintained 'twitter' for backward compatibility (maps to X icon)
+
+3. **Fixed Canvas Preview** ✅
+   - Updated `FooterBlock.tsx` to use `<img>` tags instead of `dangerouslySetInnerHTML`
+   - Canvas preview now matches actual email output exactly
+
+**Technical Implementation**:
+```typescript
+// Old approach (broken in emails)
+const SOCIAL_ICON_SVGS: Record<string, string> = {
+  facebook: '<svg width="32"...></svg>',  // Stripped by email clients
+  twitter: '<svg width="32"...></svg>',   // Stripped by email clients
+}
+
+// New approach (works in emails)
+const SOCIAL_ICON_URLS: Record<string, string> = {
+  facebook: 'https://img.icons8.com/ios-filled/50/6B7280/facebook-new.png',
+  x: 'https://img.icons8.com/ios-filled/50/6B7280/twitterx--v1.png',
+  twitter: 'https://img.icons8.com/ios-filled/50/6B7280/twitterx--v1.png', // Legacy
+  instagram: 'https://img.icons8.com/ios-filled/50/6B7280/instagram-new.png',
+  linkedin: 'https://img.icons8.com/ios-filled/50/6B7280/linkedin.png',
+  youtube: 'https://img.icons8.com/ios-filled/50/6B7280/youtube-play.png',
+  tiktok: 'https://img.icons8.com/ios-filled/50/6B7280/tiktok.png',
+}
+```
+
+**Email Client Compatibility**:
+- ✅ Gmail (web & mobile): Full support for `<img>` tags
+- ✅ Outlook (desktop & web): Full support for `<img>` tags
+- ✅ Apple Mail: Full support for `<img>` tags
+- ✅ Yahoo Mail: Full support for `<img>` tags
+- ✅ All modern email clients: Icons display correctly
+
+**Files Modified**:
+- `src/lib/htmlGenerator.ts` - Changed SVG strings to image URLs for HTML generation
+- `src/components/blocks/FooterBlock.tsx` - Updated Canvas preview to use image tags
+- `src/components/controls/FooterControls.tsx` - Changed 'twitter' to 'x', updated label
+- `src/types/email.ts` - Added 'x' to platform union type
+
+**Impact**:
+- ✅ **CRITICAL FIX**: Social media icons now visible in all sent emails
+- ✅ Users can add clickable social media links that actually display
+- ✅ Footer block is now production-ready and email-client compatible
+- ✅ Canvas preview matches actual email output (WYSIWYG)
+- ✅ Modern branding with X instead of Twitter
+
+**Testing Confirmation**:
+- ✅ Tested in sent email - icons display correctly
+- ✅ Icons are clickable and link to social media profiles
+- ✅ Consistent appearance across email clients
+
+---
+
 ### 2025-12-13 - CRITICAL BUG FIX: Mobile Design Mode HTML Generation ✅ COMPLETE
 
 #### Fixed: Mobile Styles Now Applied in Actual Email Output

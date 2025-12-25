@@ -117,9 +117,9 @@ export const borderRadius = {
 
 // Email-specific constants
 export const emailConstants = {
-  contentWidth: 640, // px - optimal email width
+  contentWidth: 600, // px - industry standard email width
   mobileViewport: 375, // px - iPhone standard
-  desktopViewport: 640, // px - email standard
+  desktopViewport: 600, // px - email standard
   tabletViewport: 768, // px - iPad
 
   // Minimum sizes for mobile-first design

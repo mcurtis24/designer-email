@@ -112,9 +112,9 @@ export default function PreviewModal({ isOpen, onClose, htmlContent, title, foot
               }`}
             >
               <div className="text-xs font-medium text-gray-500 uppercase tracking-wide">
-                Desktop (640px)
+                Desktop (600px)
               </div>
-              <div className="bg-white rounded-lg shadow-lg overflow-hidden" style={{ width: '640px', maxWidth: '100%' }}>
+              <div className="bg-white rounded-lg shadow-lg overflow-hidden" style={{ width: '600px', maxWidth: '100%' }}>
                 <iframe
                   key={`desktop-${iframeKey}`}
                   ref={desktopIframeRef}

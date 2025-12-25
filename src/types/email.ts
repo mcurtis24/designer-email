@@ -120,7 +120,7 @@ export interface FooterBlockData {
 
   // Social media links (4 max for common layout)
   socialLinks: Array<{
-    platform: 'facebook' | 'twitter' | 'instagram' | 'linkedin' | 'youtube' | 'tiktok' | 'custom'
+    platform: 'facebook' | 'x' | 'twitter' | 'instagram' | 'linkedin' | 'youtube' | 'tiktok' | 'custom'
     url: string
     iconUrl?: string // For custom platform
   }>
@@ -207,7 +207,7 @@ export interface EmailMetadata {
 
 export interface EmailSettings {
   backgroundColor: string
-  contentWidth: number // 640px default
+  contentWidth: number // 600px default (industry standard)
   fontFamily: string
   textColor: string
   brandColors: string[] // Brand kit colors
@@ -308,7 +308,7 @@ export const defaultSpacing: SpacingValue = {
 
 export const defaultEmailSettings: EmailSettings = {
   backgroundColor: '#f4f4f4',
-  contentWidth: 640,
+  contentWidth: 600,
   fontFamily: 'Arial, Helvetica, sans-serif',
   textColor: '#333333',
   brandColors: [], // Empty by default, user can add brand colors
