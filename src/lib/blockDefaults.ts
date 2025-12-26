@@ -68,7 +68,7 @@ export function createImageBlock(order: number): EmailBlock {
   const data: ImageBlockData = {
     src: '',
     alt: 'Image',
-    width: 600,
+    width: 640,
     alignment: 'center',
     borderRadius: 0,
   }

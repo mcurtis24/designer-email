@@ -250,7 +250,7 @@
   "settings": {
     "subject": "Important Update: New Privacy Policy - Effective January 1, 2025",
     "preheader": "We've updated our Privacy Policy - here's what's changed",
-    "width": 600,
+    "width": 640,
     "backgroundColor": "#FFFFFF",
     "fontFamily": "-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif",
     "textColor": "#1F2937"

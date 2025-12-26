@@ -312,7 +312,7 @@
   "settings": {
     "subject": "⚡ Flash Sale: 30% Off Everything (48 Hours Only!)",
     "preheader": "Use code FLASH30 at checkout",
-    "width": 600,
+    "width": 640,
     "backgroundColor": "#FFFFFF",
     "fontFamily": "-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif",
     "textColor": "#1F2937"

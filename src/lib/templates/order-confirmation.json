@@ -261,7 +261,7 @@
   "settings": {
     "subject": "Order Confirmation #ORD-123456",
     "preheader": "Your order has been confirmed and will ship soon",
-    "width": 600,
+    "width": 640,
     "backgroundColor": "#FFFFFF",
     "fontFamily": "-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif",
     "textColor": "#1F2937"

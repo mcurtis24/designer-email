@@ -28,6 +28,71 @@ All notable changes and project updates for the Email Designer project.
 
 ## Changelog
 
+### 2025-12-25 - Email Width Reversion: 600px → 640px ✅ COMPLETE
+
+#### Technical Update: Restored 640px Email Width Standard
+**Changed**: Reverted email content width from 600px back to 640px across the entire application.
+
+**Rationale**:
+The previous change to 600px was causing gallery blocks to display incorrectly in the desktop preview. Gallery images were stacking vertically (mobile layout) instead of displaying side-by-side in the intended multi-column layout. Reverting to 640px resolves this issue and provides more breathing room for content.
+
+**Root Cause of Gallery Issue**:
+- Desktop preview modal was 600px wide
+- Media query breakpoint: `max-width: 639px`
+- Gallery blocks with `mobile-full-width` class were triggering mobile stacking
+- 600px width was too close to the 639px breakpoint, causing inconsistent behavior
+
+**Changes Implemented** (22 instances across 18 files):
+
+**Core Type Definitions:**
+1. `src/types/email.ts` - Updated comment and default contentWidth (2 changes)
+2. `src/stores/emailStore.ts` - Updated initial state and template loading (2 changes)
+3. `src/lib/blockDefaults.ts` - Updated image default width (1 change)
+4. `src/lib/design-tokens.ts` - Updated contentWidth and desktopViewport (2 changes)
+
+**UI Components:**
+5. `src/components/ui/PreviewModal.tsx` - Updated desktop label and iframe width (2 changes)
+6. `src/components/ui/TemplateThumbnail.tsx` - Updated contentWidth (1 change)
+7. `src/components/layout/EditorLayout.tsx` - Updated drag overlay width (1 change)
+8. `src/components/layout/Canvas.tsx` - Updated minHeight AND canvasWidth calculation (2 changes)
+9. `src/components/layout/TemplateLibrary.tsx` - Updated contentWidth (1 change)
+
+**HTML Generator:**
+10. `src/lib/htmlGenerator.ts` - Updated comment from 600px to 640px (1 change)
+
+**Template Files:**
+11. All 8 template JSON files - Updated settings.width to 640:
+    - welcome-email.json
+    - newsletter.json
+    - promotion.json
+    - product-launch.json
+    - event-invitation.json
+    - order-confirmation.json
+    - re-engagement.json
+    - simple-announcement.json
+
+**Impact**:
+- ✅ **Gallery blocks now display correctly** - Multi-column layouts render side-by-side on desktop preview
+- ✅ **More content space** - 640px provides 6.7% more width than 600px
+- ✅ **Consistent with original design** - Returns to the initial specification
+- ✅ **Better breakpoint separation** - 640px is comfortably above the 639px mobile breakpoint
+- ✅ **All components synchronized** - Canvas, preview, templates, and HTML generation all use 640px
+
+**Technical Details**:
+- Media query breakpoint remains at `max-width: 639px`
+- Desktop preview now displays at 640px (matching canvas width)
+- Mobile preview remains at 375px
+- Gallery columns stay side-by-side on desktop (≥640px)
+- Gallery columns stack on mobile (<640px)
+
+**User Experience**:
+- Desktop preview matches canvas appearance
+- Gallery blocks work as expected
+- Templates load with correct 640px width
+- Consistent rendering across all views
+
+---
+
 ### 2025-12-25 - Drag-and-Drop Assets to Canvas ✅ COMPLETE
 
 #### New Feature: Direct Asset-to-Canvas Workflow

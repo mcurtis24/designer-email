@@ -116,7 +116,7 @@ function createNewEmail(): EmailDocument {
     metadata: {},
     settings: {
       backgroundColor: '#f4f4f4',
-      contentWidth: 600,
+      contentWidth: 640,
       fontFamily: 'Arial, Helvetica, sans-serif',
       textColor: '#333333',
       brandColors: [],
@@ -804,7 +804,7 @@ export const useEmailStore = create<EmailStore>((set, get) => ({
             settings: {
               ...state.email.settings,
               ...validated.settings,
-              contentWidth: 600,  // Industry standard (not 640px)
+              contentWidth: 640,
               // Ensure brandColors is always BrandColor[], not string[]
               brandColors: Array.isArray(validated.settings.brandColors)
                 ? validated.settings.brandColors.map((c, index) =>

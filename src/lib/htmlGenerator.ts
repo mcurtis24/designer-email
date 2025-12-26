@@ -1,6 +1,6 @@
 /**
  * HTML Generation Engine
- * Converts email blocks to email-safe HTML (600px, table-based, inline styles)
+ * Converts email blocks to email-safe HTML (640px, table-based, inline styles)
  * Based on email-editor-design-proposal.md specifications
  *
  * HYBRID RENDERING APPROACH:

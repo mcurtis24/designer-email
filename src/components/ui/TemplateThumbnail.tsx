@@ -33,7 +33,7 @@ export default function TemplateThumbnail({ template, className = '' }: Template
         blocks: blocksWithOrder,
         settings: {
           backgroundColor: template.settings.backgroundColor || '#FFFFFF',
-          contentWidth: 600,
+          contentWidth: 640,
           fontFamily: template.settings.fontFamily || '-apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif',
           textColor: template.settings.textColor || '#1F2937',
           brandColors: (template.settings.brandColors || []).map((color, index) => ({

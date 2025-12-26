@@ -225,7 +225,7 @@ export interface TypographyStyle {
 
 export interface EmailSettings {
   backgroundColor: string
-  contentWidth: number // 600px default (industry standard)
+  contentWidth: number // 640px default
   fontFamily: string
   textColor: string
   brandColors: BrandColor[] // Brand kit colors with names
@@ -327,7 +327,7 @@ export const defaultSpacing: SpacingValue = {
 
 export const defaultEmailSettings: EmailSettings = {
   backgroundColor: '#f4f4f4',
-  contentWidth: 600,
+  contentWidth: 640,
   fontFamily: 'Arial, Helvetica, sans-serif',
   textColor: '#333333',
   brandColors: [], // Empty by default, user can add brand colors

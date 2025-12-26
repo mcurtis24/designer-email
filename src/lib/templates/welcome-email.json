@@ -204,7 +204,7 @@
   "settings": {
     "subject": "Welcome to TechFlow! Your 14-day trial starts now 🚀",
     "preheader": "Complete your profile and invite your team in just 2 minutes",
-    "width": 600,
+    "width": 640,
     "backgroundColor": "#FFFFFF",
     "fontFamily": "-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif",
     "textColor": "#1F2937"
