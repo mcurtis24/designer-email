@@ -40,6 +40,7 @@ import {
   isValidTextAlign,
   isValidLineHeight,
 } from './utils/cssValidator'
+import { escapeHTML, sanitizeHTML, sanitizeURL, sanitizeColor } from './sanitization'
 
 // Helper to generate inline padding style
 function getPaddingStyle(padding?: any): string {
@@ -155,7 +156,7 @@ function generateHeadingHTML(block: EmailBlock): string {
   <tr>
     <td style="${getPaddingStyle(styles.padding)} ${styles.backgroundColor ? `background-color: ${styles.backgroundColor};` : ''} text-align: ${styles.textAlign || 'center'};">
       <h${data.level} style="margin: 0; font-family: ${data.fontFamily}; font-size: ${data.fontSize}; font-weight: ${data.fontWeight}; color: ${data.color}; line-height: ${data.lineHeight};">
-        ${data.text}
+        ${escapeHTML(data.text)}
       </h${data.level}>
     </td>
   </tr>
@@ -182,7 +183,7 @@ function generateTextHTML(block: EmailBlock): string {
   return `${mobileMediaQuery}<table id="${blockId}" role="presentation" width="100%" cellspacing="0" cellpadding="0" border="0"${classAttr}>
   <tr>
     <td style="${getPaddingStyle(styles.padding)} ${styles.backgroundColor ? `background-color: ${styles.backgroundColor};` : ''} font-family: ${data.fontFamily}; font-size: ${data.fontSize}; line-height: ${data.lineHeight}; color: ${data.color}; text-align: ${styles.textAlign || 'left'};">
-      ${data.content}
+      ${sanitizeHTML(data.content)}
     </td>
   </tr>
 </table>`
@@ -195,10 +196,12 @@ function generateImageHTML(block: EmailBlock): string {
 
   const imageStyle = `display: block; max-width: 100%; height: auto; border: 0; ${data.borderRadius ? `border-radius: ${data.borderRadius}px;` : ''} ${data.width ? `width: ${data.width}px;` : ''}`
 
-  const imageTag = `<img src="${data.src}" alt="${data.alt}" style="${imageStyle}" />`
+  const safeSrc = sanitizeURL(data.src)
+  const safeAlt = escapeHTML(data.alt)
+  const imageTag = `<img src="${safeSrc}" alt="${safeAlt}" style="${imageStyle}" />`
 
   const content = data.linkUrl
-    ? `<a href="${data.linkUrl}" target="_blank" rel="noopener noreferrer">${imageTag}</a>`
+    ? `<a href="${sanitizeURL(data.linkUrl)}" target="_blank" rel="noopener noreferrer">${imageTag}</a>`
     : imageTag
 
   return `
@@ -256,15 +259,19 @@ function generateGalleryHTML(block: EmailBlock): string {
       // - Modern clients: Use object-fit: cover with exact square dimensions for perfect cropping
       // - Outlook: Use explicit width/height attributes for consistent sizing
       // All images use square (1:1) aspect ratio for exactly equal dimensions
-      const modernImageTag = `<img src="${image.src}" alt="${image.alt}" width="${imageSize}" height="${imageSize}" style="display: block; width: ${imageSize}px; height: ${imageSize}px; object-fit: cover; object-position: ${objectPosition}; border: 0; ${borderRadiusStyle}" />`
-      const outlookImageTag = `<img src="${image.src}" alt="${image.alt}" width="${imageSize}" height="${imageSize}" style="display: block; border: 0; ${borderRadiusStyle}" />`
+      const safeSrc = sanitizeURL(image.src)
+      const safeAlt = escapeHTML(image.alt)
+      const safeLinkUrl = image.linkUrl ? sanitizeURL(image.linkUrl) : null
 
-      const modernContent = image.linkUrl
-        ? `<a href="${image.linkUrl}" target="_blank" rel="noopener noreferrer" style="display: block; line-height: 0; ${borderRadiusStyle} overflow: hidden;">${modernImageTag}</a>`
+      const modernImageTag = `<img src="${safeSrc}" alt="${safeAlt}" width="${imageSize}" height="${imageSize}" style="display: block; width: ${imageSize}px; height: ${imageSize}px; object-fit: cover; object-position: ${objectPosition}; border: 0; ${borderRadiusStyle}" />`
+      const outlookImageTag = `<img src="${safeSrc}" alt="${safeAlt}" width="${imageSize}" height="${imageSize}" style="display: block; border: 0; ${borderRadiusStyle}" />`
+
+      const modernContent = safeLinkUrl
+        ? `<a href="${safeLinkUrl}" target="_blank" rel="noopener noreferrer" style="display: block; line-height: 0; ${borderRadiusStyle} overflow: hidden;">${modernImageTag}</a>`
         : `<div style="line-height: 0; ${borderRadiusStyle} overflow: hidden;">${modernImageTag}</div>`
 
-      const outlookContent = image.linkUrl
-        ? `<a href="${image.linkUrl}" target="_blank" rel="noopener noreferrer">${outlookImageTag}</a>`
+      const outlookContent = safeLinkUrl
+        ? `<a href="${safeLinkUrl}" target="_blank" rel="noopener noreferrer">${outlookImageTag}</a>`
         : outlookImageTag
 
       // Use conditional comments for hybrid rendering
@@ -309,6 +316,9 @@ function generateButtonHTML(block: EmailBlock): string {
   // Calculate border radius percentage for VML (Outlook)
   const borderRadiusPercent = data.width ? Math.round((data.borderRadius / data.width) * 100) : 0
 
+  const safeUrl = sanitizeURL(data.linkUrl)
+  const safeText = escapeHTML(data.text)
+
   return `
 <table role="presentation" width="100%" cellspacing="0" cellpadding="0" border="0">
   <tr>
@@ -316,20 +326,20 @@ function generateButtonHTML(block: EmailBlock): string {
       <!--[if mso]>
       <v:roundrect xmlns:v="urn:schemas-microsoft-com:vml"
                    xmlns:w="urn:schemas-microsoft-com:office:word"
-                   href="${data.linkUrl}"
+                   href="${safeUrl}"
                    style="height:44px;v-text-anchor:middle;width:${data.width || 200}px;"
                    arcsize="${borderRadiusPercent}%"
                    strokecolor="${data.backgroundColor}"
                    fillcolor="${data.backgroundColor}">
         <w:anchorlock/>
         <center style="color:${data.textColor};font-family:Arial,sans-serif;font-size:16px;font-weight:bold;">
-          ${data.text}
+          ${safeText}
         </center>
       </v:roundrect>
       <![endif]-->
       <!--[if !mso]><!-->
-      <a href="${data.linkUrl}" target="_blank" rel="noopener noreferrer" style="background-color: ${data.backgroundColor}; border: 2px solid ${data.backgroundColor}; border-radius: ${data.borderRadius}px; color: ${data.textColor}; display: inline-block; font-family: Arial, Helvetica, sans-serif; font-size: 16px; font-weight: bold; line-height: 44px; text-align: center; text-decoration: none; width: ${data.width || 200}px; -webkit-text-size-adjust: none;">
-        ${data.text}
+      <a href="${safeUrl}" target="_blank" rel="noopener noreferrer" style="background-color: ${data.backgroundColor}; border: 2px solid ${data.backgroundColor}; border-radius: ${data.borderRadius}px; color: ${data.textColor}; display: inline-block; font-family: Arial, Helvetica, sans-serif; font-size: 16px; font-weight: bold; line-height: 44px; text-align: center; text-decoration: none; width: ${data.width || 200}px; -webkit-text-size-adjust: none;">
+        ${safeText}
       </a>
       <!--<![endif]-->
     </td>
@@ -483,8 +493,8 @@ function generateFooterHTML(block: EmailBlock): string {
 <table role="presentation" width="100%" cellspacing="0" cellpadding="0" border="0">
   <tr>
     <td align="center" style="padding-bottom: 24px;">
-      ${data.companyName ? `<div style="font-weight: 600; font-size: 16px; color: ${textColor}; margin-bottom: 8px;">${data.companyName}</div>` : ''}
-      ${data.address ? `<div style="font-size: ${fontSize}; color: ${textColor}; line-height: 1.5;">${data.address}</div>` : ''}
+      ${data.companyName ? `<div style="font-weight: 600; font-size: 16px; color: ${textColor}; margin-bottom: 8px;">${escapeHTML(data.companyName)}</div>` : ''}
+      ${data.address ? `<div style="font-size: ${fontSize}; color: ${textColor}; line-height: 1.5;">${escapeHTML(data.address)}</div>` : ''}
     </td>
   </tr>
 </table>`
@@ -502,10 +512,11 @@ function generateFooterHTML(block: EmailBlock): string {
       const platformName = social.platform === 'x' || social.platform === 'twitter' ? 'X' :
                            social.platform.charAt(0).toUpperCase() + social.platform.slice(1)
 
-      const iconHTML = `<img src="${iconUrl}" alt="${platformName}" width="32" height="32" style="display: block; border: 0;" />`
+      const safeIconUrl = sanitizeURL(iconUrl)
+      const iconHTML = `<img src="${safeIconUrl}" alt="${escapeHTML(platformName)}" width="32" height="32" style="display: block; border: 0;" />`
 
       return `<td align="center" width="${Math.floor(100 / data.socialLinks.length)}%" style="padding: 0 8px;">
-        <a href="${social.url}" target="_blank" rel="noopener noreferrer" style="display: inline-block;">
+        <a href="${sanitizeURL(social.url)}" target="_blank" rel="noopener noreferrer" style="display: inline-block;">
           ${iconHTML}
         </a>
       </td>`
@@ -528,7 +539,7 @@ function generateFooterHTML(block: EmailBlock): string {
   // Footer Links Section
   if (data.links.length > 0) {
     const linksHTML = data.links.map((link, index) =>
-      `<a href="${link.url}" style="color: ${linkColor}; text-decoration: none;">${link.text}</a>${index < data.links.length - 1 ? ' <span style="color: ' + textColor + ';">|</span> ' : ''}`
+      `<a href="${sanitizeURL(link.url)}" style="color: ${linkColor}; text-decoration: none;">${escapeHTML(link.text)}</a>${index < data.links.length - 1 ? ' <span style="color: ' + textColor + ';">|</span> ' : ''}`
     ).join('')
 
     footerContent += `
@@ -547,7 +558,7 @@ function generateFooterHTML(block: EmailBlock): string {
 <table role="presentation" width="100%" cellspacing="0" cellpadding="0" border="0">
   <tr>
     <td align="center" style="font-size: 12px; color: ${textColor}; opacity: 0.8; line-height: 1.5;">
-      ${data.legalText}
+      ${escapeHTML(data.legalText)}
     </td>
   </tr>
 </table>`

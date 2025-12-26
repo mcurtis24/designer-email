@@ -10,6 +10,7 @@ import DividerControls from '@/components/controls/DividerControls'
 import LayoutControls from '@/components/controls/LayoutControls'
 import FooterControls from '@/components/controls/FooterControls'
 import CommonControls from '@/components/controls/CommonControls'
+import QuickApplyToolbar from '@/components/ui/QuickApplyToolbar'
 import type { HeadingBlockData, TextBlockData, ImageBlockData, ImageGalleryBlockData, ButtonBlockData, SpacerBlockData, DividerBlockData, LayoutBlockData, FooterBlockData } from '@/types/email'
 
 export default function DesignControls() {
@@ -18,6 +19,7 @@ export default function DesignControls() {
   const blocks = useEmailStore((state) => state.email.blocks)
   const email = useEmailStore((state) => state.email)
   const setEmailSettings = useEmailStore((state) => state.setEmailSettings)
+  const brandColors = useEmailStore((state) => state.email.settings.brandColors)
 
   // Find the selected block reactively (including nested blocks in layouts)
   const selectedBlock = useMemo(() => {
@@ -49,6 +51,11 @@ export default function DesignControls() {
 
     return (
       <div className="space-y-4">
+        {/* Quick Apply Toolbar - ALWAYS VISIBLE when block selected */}
+        {brandColors.length > 0 && (
+          <QuickApplyToolbar brandColors={brandColors} />
+        )}
+
         {/* Block Type Header */}
         <div className="pb-2 border-b border-gray-200">
           <h3 className="text-sm font-semibold text-gray-900 capitalize">

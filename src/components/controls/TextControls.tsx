@@ -21,10 +21,14 @@ export default function TextControls({ block }: TextControlsProps) {
   const removeBrandColor = useEmailStore((state) => state.removeBrandColor)
   const blocks = useEmailStore((state) => state.email.blocks)
   const brandColors = useEmailStore((state) => state.email.settings.brandColors)
+  const typographyStyles = useEmailStore((state) => state.email.settings.typographyStyles || [])
   const data = block.data as TextBlockData
 
   // Extract document colors from all blocks
   const documentColors = useMemo(() => extractDocumentColors(blocks), [blocks])
+
+  // Get body typography style
+  const bodyStyle = typographyStyles.find(s => s.name === 'body')
 
   // Design mode toggle (desktop/mobile)
   const [designMode, setDesignMode] = useState<DesignMode>('desktop')
@@ -100,9 +104,90 @@ export default function TextControls({ block }: TextControlsProps) {
 
   return (
     <div className="space-y-4">
-      {/* Text Color */}
+      {/* Brand Colors - Quick Access */}
+      {brandColors.length > 0 && (
+        <div className="pb-3 border-b border-gray-200">
+          <label className="block text-xs font-medium text-gray-700 mb-2">
+            Brand Colors
+          </label>
+          <div className="flex flex-wrap gap-2">
+            {brandColors.slice(0, 6).map((brandColor) => (
+              <button
+                key={brandColor.color}
+                onClick={() => handleDataChange('color', brandColor.color)}
+                className="group relative"
+                title={brandColor.name || brandColor.color}
+              >
+                <div
+                  className="w-8 h-8 rounded border-2 border-gray-200 hover:border-blue-500 hover:scale-110 transition-all"
+                  style={{ backgroundColor: brandColor.color }}
+                />
+                <span className="absolute -bottom-5 left-1/2 -translate-x-1/2 text-xs text-gray-500 opacity-0 group-hover:opacity-100 whitespace-nowrap pointer-events-none">
+                  {brandColor.name}
+                </span>
+              </button>
+            ))}
+            {brandColors.length > 6 && (
+              <button
+                onClick={() => useEmailStore.getState().setActiveSidebarTab('branding')}
+                className="w-8 h-8 rounded border-2 border-dashed border-gray-300 hover:border-blue-500 flex items-center justify-center text-gray-400 text-xs transition-colors"
+                title="View all brand colors"
+              >
+                +{brandColors.length - 6}
+              </button>
+            )}
+          </div>
+        </div>
+      )}
+
+      {/* Typography Style Preset - Quick Apply */}
+      {bodyStyle && (
+        <div className="pb-3 border-b border-gray-200">
+          <label className="block text-xs font-medium text-gray-700 mb-2">
+            Typography Style
+          </label>
+          <button
+            onClick={() => {
+              updateBlock(block.id, {
+                data: {
+                  ...data,
+                  fontSize: bodyStyle.fontSize,
+                  fontWeight: bodyStyle.fontWeight,
+                  color: bodyStyle.color,
+                  lineHeight: bodyStyle.lineHeight,
+                  fontFamily: bodyStyle.fontFamily,
+                }
+              })
+            }}
+            className="w-full px-4 py-3 text-left border border-gray-200 rounded-lg hover:border-blue-500 hover:bg-blue-50 transition-all group"
+          >
+            <div className="flex items-center justify-between mb-1">
+              <span className="text-sm font-medium text-gray-900">Body Style</span>
+              <span className="text-xs text-blue-600 opacity-0 group-hover:opacity-100">Apply</span>
+            </div>
+            <div
+              className="text-xs text-gray-600"
+              style={{
+                fontFamily: bodyStyle.fontFamily,
+                fontSize: '14px',
+                color: bodyStyle.color
+              }}
+            >
+              {bodyStyle.fontFamily.split(',')[0].replace(/['"]/g, '')} · {bodyStyle.fontSize}
+            </div>
+          </button>
+          <button
+            onClick={() => useEmailStore.getState().setActiveSidebarTab('branding')}
+            className="w-full mt-2 text-xs text-blue-600 hover:text-blue-700"
+          >
+            Edit Typography Styles →
+          </button>
+        </div>
+      )}
+
+      {/* Text Color - Full Picker */}
       <ColorThemePicker
-        label="Text Color"
+        label="More Colors"
         value={data.color}
         onChange={(color) => handleDataChange('color', color)}
         documentColors={documentColors}
@@ -218,6 +303,38 @@ export default function TextControls({ block }: TextControlsProps) {
             </p>
           )}
         </div>
+
+        {/* Mobile Typography Hint - Show when no overrides exist */}
+        {designMode === 'mobile' && !hasMobileFontSize && !hasMobileLineHeight && (
+          <div className="mb-3 p-3 bg-blue-50 border border-blue-200 rounded-lg">
+            <div className="flex items-start gap-2">
+              <svg className="w-4 h-4 text-blue-600 mt-0.5 flex-shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 18h.01M8 21h8a2 2 0 002-2V5a2 2 0 00-2-2H8a2 2 0 00-2 2v14a2 2 0 002 2z" />
+              </svg>
+              <div>
+                <p className="text-xs font-medium text-blue-900 mb-1">
+                  Optimize for mobile?
+                </p>
+                <p className="text-xs text-blue-700 mb-2">
+                  70%+ of emails are opened on mobile. Set mobile-specific font sizes for better readability.
+                </p>
+                <button
+                  onClick={() => {
+                    // Set a suggested mobile font size (smaller than desktop)
+                    const desktopSize = parseInt(data.fontSize)
+                    if (!isNaN(desktopSize)) {
+                      const suggestedMobileSize = Math.max(14, Math.round(desktopSize * 0.875))
+                      handleDataChange('mobileFontSize', `${suggestedMobileSize}px`)
+                    }
+                  }}
+                  className="text-xs font-medium text-blue-600 hover:text-blue-700 hover:underline"
+                >
+                  Add mobile override →
+                </button>
+              </div>
+            </div>
+          </div>
+        )}
 
         {/* Mobile Font Size */}
         {designMode === 'mobile' && (

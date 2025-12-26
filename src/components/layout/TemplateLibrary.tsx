@@ -145,19 +145,22 @@ export default function TemplateLibrary() {
           return (
             <div
               key={meta.id}
-              className="relative border border-gray-200 rounded-lg overflow-hidden cursor-pointer hover:border-blue-500 hover:shadow-lg transition-all group"
-              role="button"
-              tabIndex={0}
-              onClick={() => handlePreviewTemplate(template)}
-              onKeyDown={(e) => {
-                if (e.key === 'Enter' || e.key === ' ') {
-                  e.preventDefault()
-                  handlePreviewTemplate(template)
-                }
-              }}
+              className="relative border border-gray-200 rounded-lg overflow-hidden hover:border-blue-500 hover:shadow-lg transition-all group"
             >
-              {/* Template Thumbnail */}
-              <div className="relative w-full bg-gray-50" style={{ height: '280px' }}>
+              {/* Template Thumbnail - Clickable for Preview */}
+              <div
+                className="relative w-full bg-gray-50 cursor-pointer"
+                style={{ height: '280px' }}
+                onClick={() => handlePreviewTemplate(template)}
+                role="button"
+                tabIndex={0}
+                onKeyDown={(e) => {
+                  if (e.key === 'Enter' || e.key === ' ') {
+                    e.preventDefault()
+                    handlePreviewTemplate(template)
+                  }
+                }}
+              >
                 <TemplateThumbnail template={template} className="w-full h-full" />
 
                 {/* Category Badge */}
@@ -169,32 +172,27 @@ export default function TemplateLibrary() {
                   {meta.category}
                 </span>
 
-                {/* Hover Overlay */}
-                <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-black/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-200 flex items-end justify-center pb-6 gap-3">
-                  <button
-                    onClick={(e) => {
-                      e.stopPropagation()
-                      handlePreviewTemplate(template)
-                    }}
-                    className="px-5 py-2.5 bg-white text-gray-900 text-sm font-medium rounded-lg shadow-lg hover:bg-gray-100 transition-colors"
-                  >
-                    Preview
-                  </button>
-                  <button
-                    onClick={(e) => {
-                      e.stopPropagation()
-                      handleLoadTemplate(template)
-                    }}
-                    className="px-5 py-2.5 bg-blue-600 text-white text-sm font-medium rounded-lg shadow-lg hover:bg-blue-700 transition-colors"
-                  >
-                    Use Template
-                  </button>
+                {/* Subtle Hover Overlay with Preview Hint */}
+                <div className="absolute inset-0 bg-gradient-to-t from-black/40 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-200 flex items-center justify-center">
+                  <div className="text-white text-sm font-medium flex items-center gap-2">
+                    <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z" />
+                    </svg>
+                    Click to preview
+                  </div>
                 </div>
               </div>
 
-              {/* Template Name */}
+              {/* Template Info & Actions - ALWAYS VISIBLE */}
               <div className="p-3 bg-white">
-                <h4 className="text-sm font-semibold text-gray-900 truncate">{meta.name}</h4>
+                <h4 className="text-sm font-semibold text-gray-900 mb-2 truncate">{meta.name}</h4>
+                <button
+                  onClick={() => handleLoadTemplate(template)}
+                  className="w-full px-4 py-2 bg-blue-600 text-white text-sm font-medium rounded-lg hover:bg-blue-700 transition-colors"
+                >
+                  Use Template
+                </button>
               </div>
             </div>
           )

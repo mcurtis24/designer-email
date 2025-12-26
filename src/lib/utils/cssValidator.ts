@@ -67,10 +67,21 @@ export function isValidLineHeight(value: string | number | undefined): boolean {
 
 /**
  * Sanitizes CSS value by escaping potentially dangerous characters
+ * DEPRECATED: Use type-specific validators (isValidCSSColor, isValidCSSLength, etc.) instead
+ * This function provides defense-in-depth but should not be relied upon as primary validation
  * @param value - CSS value to sanitize
  * @returns sanitized CSS value
  */
 export function sanitizeCSSValue(value: string): string {
-  // Remove potentially dangerous characters but keep valid CSS characters
-  return value.replace(/[<>{}()]/g, '')
+  if (!value || typeof value !== 'string') return ''
+
+  // Remove semicolons to prevent style injection escaping
+  // Remove potentially dangerous characters
+  // Keep valid CSS characters: letters, numbers, #, %, ., -, spaces, commas
+  return value
+    .replace(/;/g, '') // Prevent breaking out of style attribute
+    .replace(/[<>{}()]/g, '') // Remove brackets and braces
+    .replace(/javascript:/gi, '') // Remove javascript: protocol
+    .replace(/expression\(/gi, '') // Remove IE expression() attacks
+    .trim()
 }

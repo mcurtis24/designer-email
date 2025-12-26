@@ -130,30 +130,10 @@ export function ColorThemePicker({
                 className="w-full px-3 py-2 text-sm border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
               />
 
-              {/* Document colors */}
-              {documentColors.length > 0 && (
-                <div>
-                  <div className="flex items-center justify-between mb-1.5">
-                    <h3 className="text-xs font-semibold text-gray-700">Document colors</h3>
-                  </div>
-                  <div className="flex flex-wrap gap-1.5">
-                    {documentColors.filter(filterColor).map((color, index) => (
-                      <button
-                        key={`doc-${index}`}
-                        onClick={() => handleColorClick(color)}
-                        className="w-7 h-7 rounded border-2 border-gray-200 hover:border-blue-500 transition-colors"
-                        style={{ backgroundColor: color }}
-                        title={color}
-                      />
-                    ))}
-                  </div>
-                </div>
-              )}
-
-              {/* Brand Kit */}
+              {/* Brand Kit - PRIMARY (shown first) */}
               <div>
-                <div className="flex items-center justify-between mb-1.5">
-                  <h3 className="text-xs font-semibold text-gray-700">Brand Kit</h3>
+                <div className="flex items-center justify-between mb-2">
+                  <h3 className="text-sm font-semibold text-gray-900">Brand Kit</h3>
                 </div>
                 <div className="flex flex-wrap gap-1.5">
                   {/* Add color button */}
@@ -198,12 +178,32 @@ export function ColorThemePicker({
                 )}
               </div>
 
-              {/* Default solid colors */}
-              <div>
-                <div className="flex items-center justify-between mb-1.5">
-                  <h3 className="text-xs font-semibold text-gray-700">Default solid colors</h3>
+              {/* Document colors - SECONDARY */}
+              {documentColors.length > 0 && (
+                <div className="mt-4 pt-4 border-t border-gray-200">
+                  <div className="flex items-center justify-between mb-1.5">
+                    <h3 className="text-xs font-medium text-gray-600">Document colors</h3>
+                  </div>
+                  <div className="flex flex-wrap gap-1.5">
+                    {documentColors.filter(filterColor).map((color, index) => (
+                      <button
+                        key={`doc-${index}`}
+                        onClick={() => handleColorClick(color)}
+                        className="w-7 h-7 rounded border-2 border-gray-200 hover:border-blue-500 transition-colors"
+                        style={{ backgroundColor: color }}
+                        title={color}
+                      />
+                    ))}
+                  </div>
                 </div>
-                <div className="space-y-0.5">
+              )}
+
+              {/* Default solid colors - TERTIARY (collapsed by default) */}
+              <details className="mt-4 pt-4 border-t border-gray-200">
+                <summary className="text-xs font-medium text-gray-600 mb-2 cursor-pointer hover:text-gray-900 transition-colors">
+                  Default solid colors
+                </summary>
+                <div className="space-y-0.5 mt-2">
                   {DEFAULT_SOLID_COLORS.map((row, rowIndex) => (
                     <div key={`row-${rowIndex}`} className="flex gap-0.5">
                       {row.filter(filterColor).map((color, colIndex) => (
@@ -218,7 +218,7 @@ export function ColorThemePicker({
                     </div>
                   ))}
                 </div>
-              </div>
+              </details>
 
               {/* Custom color input */}
               <div className="pt-2 border-t border-gray-200">

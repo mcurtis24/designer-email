@@ -7,7 +7,6 @@ import { useState, useEffect } from 'react'
 import { Plus, Palette, Sparkles, RotateCcw } from 'lucide-react'
 import { useEmailStore } from '@/stores/emailStore'
 import ColorSwatchCard from '@/components/ui/ColorSwatchCard'
-import QuickApplyToolbar from '@/components/ui/QuickApplyToolbar'
 import TypographyStyleCard from '@/components/ui/TypographyStyleCard'
 import { ColorThemePicker } from '@/components/ui/ColorThemePicker'
 import { extractDocumentColors, findUnbrandedColors, generateColorName } from '@/lib/utils/colorUtils'
@@ -117,9 +116,6 @@ export default function BrandingTab() {
           Define and apply your brand colors consistently
         </p>
       </div>
-
-      {/* Quick Apply Toolbar (only shows when block is selected) */}
-      <QuickApplyToolbar brandColors={sortedBrandColors} />
 
       {/* Brand Colors Section */}
       <div>
