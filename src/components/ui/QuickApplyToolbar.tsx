@@ -76,7 +76,7 @@ export default function QuickApplyToolbar({ brandColors }: QuickApplyToolbarProp
       case 'spacer':
       case 'layout':
       case 'image':
-      case 'gallery':
+      case 'imageGallery':
         if (target === 'background') {
           updateBlock(selectedBlock.id, {
             styles: { ...selectedBlock.styles, backgroundColor: color },

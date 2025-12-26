@@ -3,7 +3,7 @@
  * Sends test emails using Resend API
  */
 
-import { config, isResendConfigured } from './config'
+import { isResendConfigured } from './config'
 import type { EmailDocument } from '@/types/email'
 import { generateEmailHTML } from './htmlGenerator'
 

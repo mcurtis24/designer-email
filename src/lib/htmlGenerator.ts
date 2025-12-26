@@ -40,7 +40,7 @@ import {
   isValidTextAlign,
   isValidLineHeight,
 } from './utils/cssValidator'
-import { escapeHTML, sanitizeHTML, sanitizeURL, sanitizeColor } from './sanitization'
+import { escapeHTML, sanitizeHTML, sanitizeURL } from './sanitization'
 
 // Helper to generate inline padding style
 function getPaddingStyle(padding?: any): string {

@@ -27,9 +27,6 @@ export default function TopNav() {
   // Memoize HTML generation for preview (without Outlook fallback to prevent duplication)
   const previewHTML = useMemo(() => generateEmailHTML(email, false), [email])
 
-  // Memoize HTML generation for export/send (with Outlook fallback)
-  const exportHTML = useMemo(() => generateEmailHTML(email, true), [email])
-
   const handlePreview = () => {
     setShowPreviewModal(true)
   }
@@ -113,6 +110,32 @@ export default function TopNav() {
             </svg>
           </button>
         </div>
+
+        {/* Divider */}
+        <div className="w-px h-6 bg-white/20"></div>
+
+        {/* History & Save Buttons */}
+        <div className="flex items-center gap-1">
+          <button
+            onClick={() => setShowVersionHistory(true)}
+            title="Version History"
+            className="p-2 text-white hover:bg-white/10 rounded-md transition-colors"
+          >
+            <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
+            </svg>
+          </button>
+          <button
+            onClick={() => setShowSaveDialog(true)}
+            title="Save Version"
+            className="p-2 text-white hover:bg-white/10 rounded-md transition-colors"
+          >
+            <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 21H5a2 2 0 01-2-2V5a2 2 0 012-2h11l5 5v11a2 2 0 01-2 2z" />
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 21v-8H7v8M7 3v5h8" />
+            </svg>
+          </button>
+        </div>
       </div>
 
       {/* Center Section - Title */}
@@ -140,24 +163,6 @@ export default function TopNav() {
             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
           </svg>
           Test Email
-        </button>
-        <button
-          onClick={() => setShowVersionHistory(true)}
-          className="flex items-center gap-2 px-4 py-2 text-sm font-medium text-gray-700 bg-white rounded-md hover:bg-gray-50 transition-colors"
-        >
-          <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
-          </svg>
-          History
-        </button>
-        <button
-          onClick={() => setShowSaveDialog(true)}
-          className="flex items-center gap-2 px-4 py-2 text-sm font-medium text-white bg-[#10b981] rounded-md hover:bg-[#059669] transition-colors"
-        >
-          <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8 7H5a2 2 0 00-2 2v9a2 2 0 002 2h14a2 2 0 002-2V9a2 2 0 00-2-2h-3m-1 4l-3 3m0 0l-3-3m3 3V4" />
-          </svg>
-          Save
         </button>
       </div>
 

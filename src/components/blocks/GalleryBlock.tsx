@@ -21,7 +21,7 @@ function GalleryBlock({ block, isSelected, onClick }: GalleryBlockProps) {
   const updateBlock = useEmailStore((state) => state.updateBlock)
   const setActiveSidebarTab = useEmailStore((state) => state.setActiveSidebarTab)
 
-  const handleImageSelect = (url: string, publicId?: string) => {
+  const handleImageSelect = (url: string) => {
     if (uploadingIndex !== null) {
       const newImages = [...data.images]
       newImages[uploadingIndex] = {

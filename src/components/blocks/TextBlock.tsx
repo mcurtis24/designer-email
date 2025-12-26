@@ -1,7 +1,7 @@
 import { useRef, useState, useEffect, useCallback, memo } from 'react'
 import type { EmailBlock, TextBlockData } from '@/types/email'
 import { useEmailStore } from '@/stores/emailStore'
-import { applyFormatToSelection, sanitizeEmailHTML } from '@/lib/richTextUtils'
+import { sanitizeEmailHTML } from '@/lib/richTextUtils'
 import DOMPurify from 'dompurify'
 
 interface TextBlockProps {
@@ -26,11 +26,6 @@ function TextBlock({ block, isSelected, onClick, onFormatRequest, onActiveStates
   const contentRef = useRef<HTMLDivElement>(null)
   const hasInitializedRef = useRef(false)
   const [isEditing, setIsEditing] = useState(false)
-  const [activeStates, setActiveStates] = useState({
-    isBold: false,
-    isItalic: false,
-    isUnderline: false,
-  })
   const updateBlock = useEmailStore((state) => state.updateBlock)
   const flushBatchedChanges = useEmailStore((state) => state.flushBatchedChanges)
   const setActiveSidebarTab = useEmailStore((state) => state.setActiveSidebarTab)
@@ -52,70 +47,6 @@ function TextBlock({ block, isSelected, onClick, onFormatRequest, onActiveStates
   const shouldHide = (isMobileViewport && styles.hideOnMobile) || (!isMobileViewport && styles.hideOnDesktop)
   if (shouldHide) {
     return null
-  }
-
-  // Get computed styles at current cursor position
-  const getCurrentSelectionStyles = () => {
-    if (!contentRef.current) return {}
-
-    const selection = window.getSelection()
-    if (!selection || selection.rangeCount === 0) return {}
-
-    let element = selection.anchorNode
-    if (!element) return {}
-
-    // If it's a text node, get its parent element
-    if (element.nodeType === Node.TEXT_NODE) {
-      element = element.parentElement
-    }
-
-    if (!element || !contentRef.current.contains(element as Node)) return {}
-
-    const computedStyles = window.getComputedStyle(element as Element)
-
-    return {
-      fontSize: computedStyles.fontSize,
-      fontFamily: computedStyles.fontFamily.replace(/['"]/g, '').split(',')[0].trim(),
-      color: computedStyles.color,
-    }
-  }
-
-  // Update block styles based on current selection
-  const updateBlockStylesFromSelection = () => {
-    const selectionStyles = getCurrentSelectionStyles()
-
-    if (Object.keys(selectionStyles).length === 0) return
-
-    const updates: any = { ...data }
-    let hasChanges = false
-
-    // Update font family
-    if (selectionStyles.fontFamily && selectionStyles.fontFamily !== data.fontFamily) {
-      updates.fontFamily = selectionStyles.fontFamily
-      hasChanges = true
-    }
-
-    // Update font size
-    if (selectionStyles.fontSize && selectionStyles.fontSize !== data.fontSize) {
-      updates.fontSize = selectionStyles.fontSize
-      hasChanges = true
-    }
-
-    // Update color (convert RGB to hex if needed)
-    if (selectionStyles.color) {
-      const rgb = selectionStyles.color.match(/\d+/g)
-      if (rgb && rgb.length >= 3) {
-        const hex = '#' + rgb.slice(0, 3).map(x => parseInt(x).toString(16).padStart(2, '0')).join('')
-        if (hex !== data.color) {
-          updates.color = hex
-          hasChanges = true
-        }
-      }
-    }
-
-    if (hasChanges) {
-      updateBlock(block.id, { data: updates })
-    }
   }
 
   // Helper to save selection as offsets (more robust across DOM changes)
@@ -150,7 +81,7 @@ function TextBlock({ block, isSelected, onClick, onFormatRequest, onActiveStates
       const range = document.createRange()
 
       let charIndex = 0
-      let nodeStack = [contentRef.current]
+      let nodeStack: Node[] = [contentRef.current]
       let node: Node | undefined
       let foundStart = false
       let stop = false
@@ -264,7 +195,7 @@ function TextBlock({ block, isSelected, onClick, onFormatRequest, onActiveStates
               tempDiv.appendChild(fragment)
 
               // Remove any existing fontSize styles from spans
-              const spans = tempDiv.querySelectorAll('span[style*="font-size"]')
+              const spans = tempDiv.querySelectorAll<HTMLSpanElement>('span[style*="font-size"]')
               spans.forEach(span => {
                 span.style.fontSize = ''
                 // If the span has no other styles, unwrap it
@@ -410,7 +341,6 @@ function TextBlock({ block, isSelected, onClick, onFormatRequest, onActiveStates
         isItalic: document.queryCommandState('italic'),
         isUnderline: document.queryCommandState('underline'),
       }
-      setActiveStates(newStates)
       onActiveStatesChange?.(newStates)
     } catch (e) {
       // queryCommandState can throw in some browsers

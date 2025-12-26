@@ -17,9 +17,8 @@ import type {
 } from '@/types/email'
 import { CircularHistoryBuffer, ActionBatcher } from '@/lib/historyManager'
 import { VersionManager } from '@/lib/versionManager'
-import { validateTemplate, TemplateValidationError } from '@/lib/templateValidator'
+import { validateTemplate } from '@/lib/templateValidator'
 import { stripToPlaceholders } from '@/lib/templatePlaceholders'
-import { deepClone } from '@/lib/utils/cloneUtils'
 import { getTemplateMetadata } from '@/lib/templates'
 
 interface EmailStore {
@@ -30,7 +29,7 @@ interface EmailStore {
   editorState: EditorState
 
   // Sidebar UI State
-  activeSidebarTab: 'blocks' | 'style' | 'templates' | 'assets' | 'branding'
+  activeSidebarTab: 'content' | 'blocks' | 'style' | 'templates' | 'assets' | 'branding'
   autoOpenColorPicker: boolean
 
   // History for Undo/Redo (using circular buffer for memory efficiency)
@@ -67,7 +66,7 @@ interface EmailStore {
   setSelectedGalleryImageIndex: (index: number) => void
 
   // Actions - Sidebar
-  setActiveSidebarTab: (tab: 'blocks' | 'style' | 'templates' | 'assets' | 'branding') => void
+  setActiveSidebarTab: (tab: 'content' | 'blocks' | 'style' | 'templates' | 'assets' | 'branding') => void
   setAutoOpenColorPicker: (value: boolean) => void
 
   // Actions - Viewport
@@ -176,7 +175,7 @@ export const useEmailStore = create<EmailStore>((set, get) => ({
       lastSaved: null,
     },
 
-    activeSidebarTab: 'blocks',
+    activeSidebarTab: 'content',
     autoOpenColorPicker: false,
 
     historyBuffer: new CircularHistoryBuffer<EmailBlock[]>(50),
@@ -784,13 +783,14 @@ export const useEmailStore = create<EmailStore>((set, get) => ({
         const stripped = stripToPlaceholders(validated)
 
         // 3. Ensure correct order properties
-        stripped.blocks.forEach((block: EmailBlock, index: number) => {
-          block.order = index
-        })
+        const blocksWithOrder = stripped.blocks.map((block, index) => ({
+          ...block,
+          order: index
+        } as EmailBlock))
 
         // 4. Reset history buffer
         state.historyBuffer.clear()
-        state.historyBuffer.push(stripped.blocks)
+        state.historyBuffer.push(blocksWithOrder)
 
         // 5. Get template metadata (works with both formats)
         const meta = getTemplateMetadata(template)
@@ -800,11 +800,17 @@ export const useEmailStore = create<EmailStore>((set, get) => ({
           email: {
             ...state.email,
             title: meta.name || 'Untitled Email',
-            blocks: stripped.blocks,
+            blocks: blocksWithOrder,
             settings: {
               ...state.email.settings,
               ...validated.settings,
               contentWidth: 600,  // Industry standard (not 640px)
+              // Ensure brandColors is always BrandColor[], not string[]
+              brandColors: Array.isArray(validated.settings.brandColors)
+                ? validated.settings.brandColors.map((c, index) =>
+                    typeof c === 'string' ? { color: c, order: index } : c
+                  )
+                : state.email.settings.brandColors,
             },
             updatedAt: new Date(),
           },
@@ -819,7 +825,7 @@ export const useEmailStore = create<EmailStore>((set, get) => ({
             isSaving: false,
             lastSaved: null,
           },
-          activeSidebarTab: 'blocks',
+          activeSidebarTab: 'content',
         }
       } catch (error: any) {
         console.error('Failed to load template:', error)

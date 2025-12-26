@@ -2,10 +2,11 @@ import { useSortable } from '@dnd-kit/sortable'
 import { CSS } from '@dnd-kit/utilities'
 import { memo } from 'react'
 import { useEmailStore } from '@/stores/emailStore'
+import type { GalleryImage } from '@/types/email'
 
 interface SortableGalleryImageProps {
   id: string
-  image: { src: string; alt: string; linkUrl?: string }
+  image: GalleryImage
   index: number
   isSelected: boolean
   uploadingIndex: number | null

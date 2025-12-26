@@ -19,7 +19,7 @@ function ImageBlock({ block, isSelected, onClick }: ImageBlockProps) {
   const [showImagePicker, setShowImagePicker] = useState(false)
   const imgRef = useRef<HTMLImageElement>(null)
 
-  const handleImageSelect = (url: string, publicId?: string) => {
+  const handleImageSelect = (url: string) => {
     setHasSetInitialDimensions(false)
     setImageAspectRatio(undefined)
     updateBlock(block.id, {

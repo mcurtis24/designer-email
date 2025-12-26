@@ -9,7 +9,7 @@ import { useEmailStore } from '@/stores/emailStore'
 import ColorSwatchCard from '@/components/ui/ColorSwatchCard'
 import TypographyStyleCard from '@/components/ui/TypographyStyleCard'
 import { ColorThemePicker } from '@/components/ui/ColorThemePicker'
-import { extractDocumentColors, findUnbrandedColors, generateColorName } from '@/lib/utils/colorUtils'
+import { findUnbrandedColors, generateColorName } from '@/lib/utils/colorUtils'
 
 export default function BrandingTab() {
   const brandColors = useEmailStore((state) => state.email.settings.brandColors)

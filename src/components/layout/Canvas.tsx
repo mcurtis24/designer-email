@@ -8,7 +8,6 @@ import { useEmailStore } from '@/stores/emailStore'
 import SortableBlock from '@/components/blocks/SortableBlock'
 import DropZoneBetween from '@/components/blocks/DropZoneBetween'
 import CanvasToolbar from './CanvasToolbar'
-import type { EmailBlock } from '@/types/email'
 
 interface CanvasProps {
   isDraggingFromLibrary?: boolean

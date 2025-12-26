@@ -68,15 +68,17 @@ export interface ImageBlockData {
   borderRadius?: number
 }
 
+export type GalleryImage = {
+  src: string
+  alt: string
+  linkUrl?: string
+  borderRadius?: number
+  objectPosition?: string // CSS object-position for image focal point (e.g., "50% 50%")
+}
+
 export interface ImageGalleryBlockData {
   layout: '2-col' | '3-col' | '4-col'
-  images: Array<{
-    src: string
-    alt: string
-    linkUrl?: string
-    borderRadius?: number
-    objectPosition?: string // CSS object-position for image focal point (e.g., "50% 50%")
-  }>
+  images: Array<GalleryImage>
   gap: number // spacing between images
   stackOnMobile?: boolean // Whether columns should stack vertically on mobile (default: true)
 }

@@ -155,27 +155,6 @@ export default function CommonControls({ block }: CommonControlsProps) {
     }
   }
 
-  const handleTextAlignChange = (align: 'left' | 'center' | 'right') => {
-    if (designMode === 'mobile') {
-      updateBlock(block.id, {
-        styles: {
-          ...block.styles,
-          mobileStyles: {
-            ...block.styles.mobileStyles,
-            textAlign: align,
-          },
-        },
-      })
-    } else {
-      updateBlock(block.id, {
-        styles: {
-          ...block.styles,
-          textAlign: align,
-        },
-      })
-    }
-  }
-
   const handleHideOnMobileChange = (hide: boolean) => {
     updateBlock(block.id, {
       styles: {

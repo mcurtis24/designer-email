@@ -4,7 +4,7 @@
  */
 
 import React, { useState, useEffect, useCallback } from 'react'
-import { Search, Upload, Trash2, Image as ImageIcon, Filter, X } from 'lucide-react'
+import { Search, Upload, Trash2, Image as ImageIcon, Filter } from 'lucide-react'
 import { getAssets, deleteAsset, getAssetCount } from '@/lib/assetStorage'
 import { useImageUpload } from '@/hooks/useImageUpload'
 import type { Asset, AssetFilters } from '@/types/asset'

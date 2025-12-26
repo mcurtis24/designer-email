@@ -239,7 +239,7 @@ export const spamWordsRule: ValidationRule = {
       'viagra', 'casino', 'lottery', 'weight loss',
     ]
 
-    const checkText = (text: string, blockId: string, blockType: string) => {
+    const checkText = (text: string, blockId: string, _blockType: string) => {
       const lowerText = text.toLowerCase()
       const foundWords = spamWords.filter(word => lowerText.includes(word.toLowerCase()))
 

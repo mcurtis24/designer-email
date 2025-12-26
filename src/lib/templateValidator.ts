@@ -4,7 +4,6 @@
  */
 
 import type { Template, LegacyTemplate, TemplateMetadata } from '@/types/template'
-import type { EmailBlock } from '@/types/email'
 
 /**
  * Custom error class for template validation failures

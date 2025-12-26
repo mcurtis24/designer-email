@@ -1,4 +1,11 @@
-import type { EmailBlock } from '../types/email'
+import type {
+  EmailBlock,
+  HeadingBlockData,
+  TextBlockData,
+  ButtonBlockData,
+  DividerBlockData,
+  LayoutBlockData
+} from '../types/email'
 
 /**
  * Extract all unique colors used in the email blocks
@@ -21,27 +28,37 @@ export function extractDocumentColors(blocks: EmailBlock[]): string[] {
 
     // Block-specific colors
     switch (block.type) {
-      case 'heading':
-        addColor(block.data.color)
+      case 'heading': {
+        const data = block.data as HeadingBlockData
+        addColor(data.color)
         break
-      case 'text':
-        addColor(block.data.color)
+      }
+      case 'text': {
+        const data = block.data as TextBlockData
+        addColor(data.color)
         // TODO: Could also extract colors from HTML content if needed
         break
-      case 'button':
-        addColor(block.data.backgroundColor)
-        addColor(block.data.textColor)
+      }
+      case 'button': {
+        const data = block.data as ButtonBlockData
+        addColor(data.backgroundColor)
+        addColor(data.textColor)
         break
-      case 'divider':
-        addColor(block.data.color)
+      }
+      case 'divider': {
+        const data = block.data as DividerBlockData
+        addColor(data.color)
         break
-      case 'layout':
+      }
+      case 'layout': {
+        const data = block.data as LayoutBlockData
         // Recursively extract from nested blocks
-        if (block.data.children) {
-          const nestedColors = extractDocumentColors(block.data.children)
+        if (data.children) {
+          const nestedColors = extractDocumentColors(data.children)
           nestedColors.forEach((color) => colors.add(color))
         }
         break
+      }
     }
   })
 

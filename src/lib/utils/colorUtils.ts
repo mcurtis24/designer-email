@@ -3,7 +3,16 @@
  * Functions for extracting and analyzing colors from email documents
  */
 
-import type { EmailBlock, BrandColor } from '@/types/email'
+import type {
+  EmailBlock,
+  BrandColor,
+  HeadingBlockData,
+  TextBlockData,
+  ButtonBlockData,
+  DividerBlockData,
+  FooterBlockData,
+  LayoutBlockData
+} from '@/types/email'
 
 /**
  * Extract all unique colors used in an email document
@@ -21,45 +30,55 @@ export function extractDocumentColors(blocks: EmailBlock[]): string[] {
     // Extract block-specific colors based on type
     switch (block.type) {
       case 'heading':
-      case 'text':
-        if (block.data.color) {
-          colors.add(block.data.color.toUpperCase())
+      case 'text': {
+        const data = block.data as HeadingBlockData | TextBlockData
+        if (data.color) {
+          colors.add(data.color.toUpperCase())
         }
         break
+      }
 
-      case 'button':
-        if (block.data.backgroundColor) {
-          colors.add(block.data.backgroundColor.toUpperCase())
+      case 'button': {
+        const data = block.data as ButtonBlockData
+        if (data.backgroundColor) {
+          colors.add(data.backgroundColor.toUpperCase())
         }
-        if (block.data.textColor) {
-          colors.add(block.data.textColor.toUpperCase())
+        if (data.textColor) {
+          colors.add(data.textColor.toUpperCase())
         }
         break
+      }
 
-      case 'divider':
-        if (block.data.color) {
-          colors.add(block.data.color.toUpperCase())
+      case 'divider': {
+        const data = block.data as DividerBlockData
+        if (data.color) {
+          colors.add(data.color.toUpperCase())
         }
         break
+      }
 
-      case 'footer':
-        if (block.data.backgroundColor) {
-          colors.add(block.data.backgroundColor.toUpperCase())
+      case 'footer': {
+        const data = block.data as FooterBlockData
+        if (data.backgroundColor) {
+          colors.add(data.backgroundColor.toUpperCase())
         }
-        if (block.data.textColor) {
-          colors.add(block.data.textColor.toUpperCase())
+        if (data.textColor) {
+          colors.add(data.textColor.toUpperCase())
         }
-        if (block.data.linkColor) {
-          colors.add(block.data.linkColor.toUpperCase())
+        if (data.linkColor) {
+          colors.add(data.linkColor.toUpperCase())
         }
         break
+      }
 
-      case 'layout':
+      case 'layout': {
+        const data = block.data as LayoutBlockData
         // Recursively extract from child blocks
-        if (block.data.children) {
-          block.data.children.forEach(extractFromBlock)
+        if (data.children) {
+          data.children.forEach(extractFromBlock)
         }
         break
+      }
     }
   }
 
