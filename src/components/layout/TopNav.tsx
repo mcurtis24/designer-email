@@ -6,6 +6,8 @@ import { isResendConfigured } from '@/lib/config'
 import PreviewModal from '@/components/ui/PreviewModal'
 import VersionHistoryModal from '@/components/ui/VersionHistoryModal'
 import SaveDialog from '@/components/ui/SaveDialog'
+import AccessibilityPanel from '@/components/ui/AccessibilityPanel'
+import { validateAccessibility, getIssueCounts } from '@/lib/validation/accessibility'
 
 export default function TopNav() {
   const email = useEmailStore((state) => state.email)
@@ -18,6 +20,7 @@ export default function TopNav() {
   const [showPreviewModal, setShowPreviewModal] = useState(false)
   const [showVersionHistory, setShowVersionHistory] = useState(false)
   const [showSaveDialog, setShowSaveDialog] = useState(false)
+  const [showAccessibilityPanel, setShowAccessibilityPanel] = useState(false)
   const [testEmail, setTestEmail] = useState('')
   const [testSubject, setTestSubject] = useState('')
   const [isSending, setIsSending] = useState(false)
@@ -26,6 +29,10 @@ export default function TopNav() {
 
   // Memoize HTML generation for preview (without Outlook fallback to prevent duplication)
   const previewHTML = useMemo(() => generateEmailHTML(email, false), [email])
+
+  // Memoize accessibility validation
+  const accessibilityIssues = useMemo(() => validateAccessibility(email), [email])
+  const issueCounts = useMemo(() => getIssueCounts(accessibilityIssues), [accessibilityIssues])
 
   const handlePreview = () => {
     setShowPreviewModal(true)
@@ -145,6 +152,25 @@ export default function TopNav() {
 
       {/* Right Section - Actions */}
       <div className="flex items-center gap-2">
+        {/* Accessibility Warnings */}
+        {issueCounts.total > 0 && (
+          <button
+            onClick={() => setShowAccessibilityPanel(true)}
+            className="relative flex items-center gap-2 px-4 py-2 text-sm font-medium text-gray-700 bg-white rounded-md hover:bg-gray-50 transition-colors border-2 border-yellow-400"
+            title={`${issueCounts.errors} errors, ${issueCounts.warnings} warnings`}
+          >
+            <svg className="w-4 h-4 text-yellow-600" fill="currentColor" viewBox="0 0 20 20">
+              <path fillRule="evenodd" d="M8.257 3.099c.765-1.36 2.722-1.36 3.486 0l5.58 9.92c.75 1.334-.213 2.98-1.742 2.98H4.42c-1.53 0-2.493-1.646-1.743-2.98l5.58-9.92zM11 13a1 1 0 11-2 0 1 1 0 012 0zm-1-8a1 1 0 00-1 1v3a1 1 0 002 0V6a1 1 0 00-1-1z" clipRule="evenodd" />
+            </svg>
+            <span className="font-semibold text-yellow-700">{issueCounts.total}</span>
+            {issueCounts.errors > 0 && (
+              <span className="absolute -top-1 -right-1 w-5 h-5 bg-red-500 text-white text-xs font-bold rounded-full flex items-center justify-center">
+                {issueCounts.errors}
+              </span>
+            )}
+          </button>
+        )}
+
         <button
           onClick={handlePreview}
           className="flex items-center gap-2 px-4 py-2 text-sm font-medium text-gray-700 bg-white rounded-md hover:bg-gray-50 transition-colors"
@@ -259,6 +285,14 @@ export default function TopNav() {
         isOpen={showSaveDialog}
         onClose={() => setShowSaveDialog(false)}
       />
+
+      {/* Accessibility Panel */}
+      {showAccessibilityPanel && (
+        <AccessibilityPanel
+          issues={accessibilityIssues}
+          onClose={() => setShowAccessibilityPanel(false)}
+        />
+      )}
     </nav>
   )
 }

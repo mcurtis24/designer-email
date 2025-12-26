@@ -223,6 +223,15 @@ export interface TypographyStyle {
   lineHeight: number // Line height multiplier (e.g., 1.5)
 }
 
+export interface SavedComponent {
+  id: string // Unique ID for the saved component
+  name: string // User-defined name (e.g., "Newsletter Header", "CTA Button")
+  block: EmailBlock // The complete block including data and styles
+  thumbnail?: string // Optional base64 thumbnail image
+  createdAt: Date
+  category?: string // Optional category (e.g., "Headers", "CTAs", "Footers")
+}
+
 export interface EmailSettings {
   backgroundColor: string
   contentWidth: number // 640px default

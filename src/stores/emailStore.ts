@@ -14,6 +14,7 @@ import type {
   ViewportState,
   BrandColor,
   TypographyStyle,
+  SavedComponent,
 } from '@/types/email'
 import { CircularHistoryBuffer, ActionBatcher } from '@/lib/historyManager'
 import { VersionManager } from '@/lib/versionManager'
@@ -31,6 +32,9 @@ interface EmailStore {
   // Sidebar UI State
   activeSidebarTab: 'content' | 'blocks' | 'style' | 'templates' | 'assets' | 'branding'
   autoOpenColorPicker: boolean
+
+  // Saved Components (persisted in localStorage)
+  savedComponents: SavedComponent[]
 
   // History for Undo/Redo (using circular buffer for memory efficiency)
   historyBuffer: CircularHistoryBuffer<EmailBlock[]>
@@ -83,6 +87,12 @@ interface EmailStore {
   updateTypographyStyle: (styleName: 'heading' | 'body', updates: Partial<TypographyStyle>) => void
   applyTypographyStyleToAll: (styleName: 'heading' | 'body') => void
   resetTypographyStyles: () => void
+
+  // Actions - Saved Components
+  saveComponent: (blockId: string, name: string, category?: string) => void
+  loadSavedComponent: (componentId: string) => EmailBlock
+  deleteSavedComponent: (componentId: string) => void
+  getSavedComponents: () => SavedComponent[]
 
   // Actions - History (Undo/Redo)
   undo: () => void
@@ -146,6 +156,33 @@ function createNewEmail(): EmailDocument {
   }
 }
 
+// Helper functions for localStorage persistence
+const SAVED_COMPONENTS_KEY = 'email-designer-saved-components'
+
+function loadSavedComponentsFromStorage(): SavedComponent[] {
+  try {
+    const stored = localStorage.getItem(SAVED_COMPONENTS_KEY)
+    if (!stored) return []
+    const parsed = JSON.parse(stored)
+    // Convert date strings back to Date objects
+    return parsed.map((comp: any) => ({
+      ...comp,
+      createdAt: new Date(comp.createdAt),
+    }))
+  } catch (error) {
+    console.error('Failed to load saved components from localStorage:', error)
+    return []
+  }
+}
+
+function saveSavedComponentsToStorage(components: SavedComponent[]) {
+  try {
+    localStorage.setItem(SAVED_COMPONENTS_KEY, JSON.stringify(components))
+  } catch (error) {
+    console.error('Failed to save components to localStorage:', error)
+  }
+}
+
 // Create action batcher outside the store to persist across store updates
 const createActionBatcher = (get: () => EmailStore) => {
   return new ActionBatcher((blocks: EmailBlock[]) => {
@@ -177,6 +214,8 @@ export const useEmailStore = create<EmailStore>((set, get) => ({
 
     activeSidebarTab: 'content',
     autoOpenColorPicker: false,
+
+    savedComponents: loadSavedComponentsFromStorage(),
 
     historyBuffer: new CircularHistoryBuffer<EmailBlock[]>(50),
     actionBatcher: actionBatcherInstance || (actionBatcherInstance = createActionBatcher(get)),
@@ -668,6 +707,65 @@ export const useEmailStore = create<EmailStore>((set, get) => ({
       },
       editorState: { ...state.editorState, isDirty: true },
     })),
+
+  // Saved Components Actions
+  saveComponent: (blockId, name, category) =>
+    set((state) => {
+      // Find the block to save
+      const block = state.email.blocks.find((b) => b.id === blockId)
+      if (!block) return state
+
+      // Create a copy of the block with a new ID
+      const componentBlock: EmailBlock = {
+        ...block,
+        id: nanoid(), // Generate new ID for the component
+      }
+
+      // Create the saved component
+      const savedComponent: SavedComponent = {
+        id: nanoid(),
+        name,
+        block: componentBlock,
+        createdAt: new Date(),
+        category,
+      }
+
+      const newComponents = [...state.savedComponents, savedComponent]
+      saveSavedComponentsToStorage(newComponents)
+
+      return {
+        savedComponents: newComponents,
+      }
+    }),
+
+  loadSavedComponent: (componentId) => {
+    const state = get()
+    const component = state.savedComponents.find((c) => c.id === componentId)
+    if (!component) {
+      throw new Error(`Saved component not found: ${componentId}`)
+    }
+
+    // Return a copy with a new ID
+    return {
+      ...component.block,
+      id: nanoid(),
+    }
+  },
+
+  deleteSavedComponent: (componentId) =>
+    set((state) => {
+      const newComponents = state.savedComponents.filter((c) => c.id !== componentId)
+      saveSavedComponentsToStorage(newComponents)
+
+      return {
+        savedComponents: newComponents,
+      }
+    }),
+
+  getSavedComponents: () => {
+    const state = get()
+    return state.savedComponents
+  },
 
   // History Actions (Undo/Redo)
   undo: () =>

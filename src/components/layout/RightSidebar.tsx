@@ -4,6 +4,7 @@ import DesignControls from './DesignControls'
 import TemplateLibrary from './TemplateLibrary'
 import { AssetLibrary } from './AssetLibrary'
 import BrandingTab from './BrandingTab'
+import SavedComponentsLibrary from './SavedComponentsLibrary'
 import { useEmailStore } from '@/stores/emailStore'
 
 // Right sidebar with consolidated 3-tab navigation
@@ -69,6 +70,19 @@ export default function RightSidebar() {
               </h3>
               <BlockLibrary />
             </div>
+
+            {/* Saved Components Library - Collapsible */}
+            <details className="border-b border-gray-100" open>
+              <summary className="px-4 py-3 text-xs font-semibold text-gray-500 uppercase tracking-wide cursor-pointer hover:bg-gray-50 transition-colors flex items-center justify-between group">
+                <span>Saved Components</span>
+                <svg className="w-4 h-4 text-gray-400 group-hover:text-gray-600 transition-transform group-open:rotate-180" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
+                </svg>
+              </summary>
+              <div className="border-t border-gray-100">
+                <SavedComponentsLibrary />
+              </div>
+            </details>
 
             {/* Asset Library - Collapsible */}
             <details className="border-b border-gray-100" open>

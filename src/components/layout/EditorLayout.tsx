@@ -92,6 +92,7 @@ export default function EditorLayout() {
   const blocks = useEmailStore((state) => state.email.blocks)
   const reorderBlocks = useEmailStore((state) => state.reorderBlocks)
   const addBlockToLayoutColumn = useEmailStore((state) => state.addBlockToLayoutColumn)
+  const loadSavedComponent = useEmailStore((state) => state.loadSavedComponent)
 
   const handleDragStart = (event: DragStartEvent) => {
     const activeId = event.active.id as string
@@ -117,6 +118,10 @@ export default function EditorLayout() {
     const isAsset = activeIdStr.startsWith('asset:')
     const assetData = isAsset ? active.data?.current?.asset : null
 
+    // Check if dragging a saved component
+    const isSavedComponent = activeIdStr.startsWith('saved-component:')
+    const savedComponentData = isSavedComponent ? active.data?.current?.component : null
+
     // Check if we're dropping into a layout column
     if (overIdStr.includes('-col-')) {
       // Parse layout block ID and column index from drop zone ID
@@ -129,7 +134,10 @@ export default function EditorLayout() {
       const activeBlock = blocks.find((b) => b.id === active.id)
       if (!activeBlock) {
         let newBlock
-        if (isAsset && assetData) {
+        if (isSavedComponent && savedComponentData) {
+          // Load saved component as a new block
+          newBlock = loadSavedComponent(savedComponentData.id)
+        } else if (isAsset && assetData) {
           // Create ImageBlock with asset URL
           newBlock = createBlock('image', 0)
           newBlock.data = {
@@ -157,7 +165,10 @@ export default function EditorLayout() {
       const activeBlock = blocks.find((b) => b.id === active.id)
       if (!activeBlock) {
         let newBlock
-        if (isAsset && assetData) {
+        if (isSavedComponent && savedComponentData) {
+          // Load saved component as a new block
+          newBlock = loadSavedComponent(savedComponentData.id)
+        } else if (isAsset && assetData) {
           // Create ImageBlock with asset URL
           newBlock = createBlock('image', insertIndex)
           newBlock.data = {
@@ -191,7 +202,10 @@ export default function EditorLayout() {
       // Adding new block from library - insert at position of block we're over
       const insertIndex = blocks.findIndex((b) => b.id === over.id)
       let newBlock
-      if (isAsset && assetData) {
+      if (isSavedComponent && savedComponentData) {
+        // Load saved component as a new block
+        newBlock = loadSavedComponent(savedComponentData.id)
+      } else if (isAsset && assetData) {
         // Create ImageBlock with asset URL
         newBlock = createBlock('image', insertIndex)
         newBlock.data = {
@@ -207,7 +221,10 @@ export default function EditorLayout() {
     } else if (over.id === 'canvas-drop-zone' && !activeBlock) {
       // Adding new block from library to canvas
       let newBlock
-      if (isAsset && assetData) {
+      if (isSavedComponent && savedComponentData) {
+        // Load saved component as a new block
+        newBlock = loadSavedComponent(savedComponentData.id)
+      } else if (isAsset && assetData) {
         // Create ImageBlock with asset URL
         newBlock = createBlock('image', blocks.length)
         newBlock.data = {
