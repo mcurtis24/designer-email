@@ -5,9 +5,87 @@
 
 import React, { useState, useEffect, useCallback } from 'react'
 import { Search, Upload, Trash2, Image as ImageIcon, Filter } from 'lucide-react'
+import { useDraggable } from '@dnd-kit/core'
 import { getAssets, deleteAsset, getAssetCount } from '@/lib/assetStorage'
 import { useImageUpload } from '@/hooks/useImageUpload'
 import type { Asset, AssetFilters } from '@/types/asset'
+
+// Draggable Asset Component
+interface DraggableAssetProps {
+  asset: Asset
+  selectionMode: boolean
+  onAssetClick: (asset: Asset) => void
+  onDelete: (asset: Asset, e: React.MouseEvent) => void
+}
+
+const DraggableAsset: React.FC<DraggableAssetProps> = ({
+  asset,
+  selectionMode,
+  onAssetClick,
+  onDelete
+}) => {
+  const { attributes, listeners, setNodeRef, isDragging } = useDraggable({
+    id: `asset:${asset.id}`,
+    data: {
+      type: 'asset',
+      asset: asset
+    }
+  })
+
+  return (
+    <div
+      ref={setNodeRef}
+      {...attributes}
+      {...listeners}
+      onClick={() => onAssetClick(asset)}
+      className={`group relative aspect-square bg-gray-100 rounded-lg overflow-hidden border-2 transition-all ${
+        selectionMode
+          ? 'cursor-pointer hover:border-blue-500 hover:shadow-md'
+          : 'cursor-grab active:cursor-grabbing hover:border-blue-400 hover:shadow-lg'
+      } ${
+        isDragging ? 'opacity-50 scale-95 shadow-2xl' : ''
+      }`}
+    >
+      <img
+        src={asset.url}
+        alt={asset.filename}
+        className="w-full h-full object-cover"
+      />
+
+      {/* Overlay with actions */}
+      <div className="absolute inset-0 bg-black/0 group-hover:bg-black/50 transition-colors pointer-events-none">
+        <div className="absolute inset-0 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity">
+          <button
+            onClick={(e) => onDelete(asset, e)}
+            className="p-2 bg-red-600 text-white rounded-lg hover:bg-red-700 transition-colors pointer-events-auto"
+            title="Delete"
+          >
+            <Trash2 className="w-4 h-4" />
+          </button>
+        </div>
+      </div>
+
+      {/* Drag hint */}
+      {!selectionMode && (
+        <div className="absolute top-2 right-2 opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none">
+          <div className="px-2 py-1 bg-blue-600 text-white text-xs font-medium rounded shadow-lg">
+            Drag to canvas
+          </div>
+        </div>
+      )}
+
+      {/* Info */}
+      <div className="absolute bottom-0 left-0 right-0 p-2 bg-gradient-to-t from-black/60 to-transparent opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none">
+        <p className="text-xs text-white font-medium truncate">
+          {asset.filename}
+        </p>
+        <p className="text-xs text-white/80">
+          {asset.width} × {asset.height} • {asset.format.toUpperCase()}
+        </p>
+      </div>
+    </div>
+  )
+}
 
 interface AssetLibraryProps {
   onAssetSelect?: (url: string, publicId: string) => void
@@ -269,44 +347,13 @@ export const AssetLibrary: React.FC<AssetLibraryProps> = ({
         ) : (
           <div className="grid grid-cols-2 gap-4">
             {assets.map(asset => (
-              <div
+              <DraggableAsset
                 key={asset.id}
-                onClick={() => handleAssetClick(asset)}
-                className={`group relative aspect-square bg-gray-100 rounded-lg overflow-hidden border-2 transition-all ${
-                  selectionMode
-                    ? 'cursor-pointer hover:border-blue-500 hover:shadow-md'
-                    : 'border-transparent'
-                }`}
-              >
-                <img
-                  src={asset.url}
-                  alt={asset.filename}
-                  className="w-full h-full object-cover"
-                />
-
-                {/* Overlay with actions */}
-                <div className="absolute inset-0 bg-black/0 group-hover:bg-black/50 transition-colors">
-                  <div className="absolute inset-0 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity">
-                    <button
-                      onClick={(e) => handleDelete(asset, e)}
-                      className="p-2 bg-red-600 text-white rounded-lg hover:bg-red-700 transition-colors"
-                      title="Delete"
-                    >
-                      <Trash2 className="w-4 h-4" />
-                    </button>
-                  </div>
-                </div>
-
-                {/* Info */}
-                <div className="absolute bottom-0 left-0 right-0 p-2 bg-gradient-to-t from-black/60 to-transparent opacity-0 group-hover:opacity-100 transition-opacity">
-                  <p className="text-xs text-white font-medium truncate">
-                    {asset.filename}
-                  </p>
-                  <p className="text-xs text-white/80">
-                    {asset.width} × {asset.height} • {asset.format.toUpperCase()}
-                  </p>
-                </div>
-              </div>
+                asset={asset}
+                selectionMode={selectionMode}
+                onAssetClick={handleAssetClick}
+                onDelete={handleDelete}
+              />
             ))}
           </div>
         )}

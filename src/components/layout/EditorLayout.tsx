@@ -110,8 +110,14 @@ export default function EditorLayout() {
       return
     }
 
-    // Check if we're dropping into a layout column
+    const activeIdStr = String(active.id)
     const overIdStr = String(over.id)
+
+    // Check if dragging an asset
+    const isAsset = activeIdStr.startsWith('asset:')
+    const assetData = isAsset ? active.data?.current?.asset : null
+
+    // Check if we're dropping into a layout column
     if (overIdStr.includes('-col-')) {
       // Parse layout block ID and column index from drop zone ID
       // Format: {layoutBlockId}-col-{columnIndex}
@@ -122,8 +128,19 @@ export default function EditorLayout() {
       // Only handle new blocks from library for now
       const activeBlock = blocks.find((b) => b.id === active.id)
       if (!activeBlock) {
-        const blockType = active.id as BlockType
-        const newBlock = createBlock(blockType, 0) // Order doesn't matter for nested blocks
+        let newBlock
+        if (isAsset && assetData) {
+          // Create ImageBlock with asset URL
+          newBlock = createBlock('image', 0)
+          newBlock.data = {
+            ...newBlock.data,
+            src: assetData.url,
+            alt: assetData.filename || 'Image'
+          }
+        } else {
+          const blockType = active.id as BlockType
+          newBlock = createBlock(blockType, 0) // Order doesn't matter for nested blocks
+        }
         addBlockToLayoutColumn(layoutBlockId, columnIndex, newBlock)
       }
 
@@ -139,8 +156,19 @@ export default function EditorLayout() {
       // Only handle new blocks from library
       const activeBlock = blocks.find((b) => b.id === active.id)
       if (!activeBlock) {
-        const blockType = active.id as BlockType
-        const newBlock = createBlock(blockType, insertIndex)
+        let newBlock
+        if (isAsset && assetData) {
+          // Create ImageBlock with asset URL
+          newBlock = createBlock('image', insertIndex)
+          newBlock.data = {
+            ...newBlock.data,
+            src: assetData.url,
+            alt: assetData.filename || 'Image'
+          }
+        } else {
+          const blockType = active.id as BlockType
+          newBlock = createBlock(blockType, insertIndex)
+        }
         addBlockAtIndex(newBlock, insertIndex)
       }
 
@@ -161,16 +189,36 @@ export default function EditorLayout() {
       reorderBlocks(oldIndex, newIndex)
     } else if (!activeBlock && overBlock) {
       // Adding new block from library - insert at position of block we're over
-      const blockType = active.id as BlockType
       const insertIndex = blocks.findIndex((b) => b.id === over.id)
-      const newBlock = createBlock(blockType, insertIndex)
+      let newBlock
+      if (isAsset && assetData) {
+        // Create ImageBlock with asset URL
+        newBlock = createBlock('image', insertIndex)
+        newBlock.data = {
+          ...newBlock.data,
+          src: assetData.url,
+          alt: assetData.filename || 'Image'
+        }
+      } else {
+        const blockType = active.id as BlockType
+        newBlock = createBlock(blockType, insertIndex)
+      }
       addBlockAtIndex(newBlock, insertIndex)
     } else if (over.id === 'canvas-drop-zone' && !activeBlock) {
       // Adding new block from library to canvas
-      const blockType = active.id as BlockType
-
-      // Create a new block with the next order number
-      const newBlock = createBlock(blockType, blocks.length)
+      let newBlock
+      if (isAsset && assetData) {
+        // Create ImageBlock with asset URL
+        newBlock = createBlock('image', blocks.length)
+        newBlock.data = {
+          ...newBlock.data,
+          src: assetData.url,
+          alt: assetData.filename || 'Image'
+        }
+      } else {
+        const blockType = active.id as BlockType
+        newBlock = createBlock(blockType, blocks.length)
+      }
 
       // Add the block to the store
       addBlock(newBlock)
@@ -205,6 +253,27 @@ export default function EditorLayout() {
       {/* Drag Overlay - shows what's being dragged */}
       <DragOverlay dropAnimation={null}>
         {activeId ? (() => {
+          const activeIdStr = String(activeId)
+
+          // Check if dragging an asset
+          if (activeIdStr.startsWith('asset:')) {
+            // Show asset thumbnail preview
+            return (
+              <div className="w-32 h-32 rounded-lg border-2 border-blue-500 bg-white shadow-2xl opacity-90 cursor-grabbing transform scale-105 transition-transform overflow-hidden">
+                <div className="relative w-full h-full">
+                  <div className="absolute inset-0 flex items-center justify-center">
+                    <svg className="w-12 h-12 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z" />
+                    </svg>
+                  </div>
+                  <div className="absolute bottom-0 left-0 right-0 bg-blue-600 text-white text-xs font-medium text-center py-1">
+                    Drop to add image
+                  </div>
+                </div>
+              </div>
+            )
+          }
+
           // Check if dragging an existing block from canvas
           const existingBlock = blocks.find((b) => b.id === activeId)
 

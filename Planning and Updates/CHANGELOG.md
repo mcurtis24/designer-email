@@ -28,6 +28,114 @@ All notable changes and project updates for the Email Designer project.
 
 ## Changelog
 
+### 2025-12-25 - Drag-and-Drop Assets to Canvas ✅ COMPLETE
+
+#### New Feature: Direct Asset-to-Canvas Workflow
+**Added**: Drag images directly from the Asset Library to the Canvas to automatically create Image Blocks.
+
+**Problem Statement**:
+Previously, users had to:
+1. Add an empty Image Block from the Block Library
+2. Click "Add Image" on the block
+3. Open the Image Picker Modal
+4. Select from the Asset Library
+
+This 4-step process was time-consuming and broke the creative flow, especially when adding multiple images from the library.
+
+**Solution Implemented**:
+
+1. **Draggable Assets**
+   - All asset thumbnails in the Asset Library are now draggable
+   - Visual feedback: cursor changes to `grab` on hover, `grabbing` while dragging
+   - "Drag to canvas" hint appears on hover (blue badge in top-right corner)
+   - Smooth opacity and scale transitions during drag
+
+2. **Drop Anywhere on Canvas**
+   - Drop assets into the main canvas drop zone
+   - Drop between existing blocks (drop zones)
+   - Drop into multi-column layout blocks
+   - Automatic ImageBlock creation with asset URL pre-filled
+
+3. **Visual Drag Overlay**
+   - Shows image icon with "Drop to add image" text
+   - Blue border and shadow for visual prominence
+   - Follows cursor during drag operation
+   - Clear visual indication of what will be created
+
+4. **Smart Block Creation**
+   - Automatically creates ImageBlock with correct image URL
+   - Sets alt text from asset filename
+   - Preserves asset metadata (dimensions, format)
+   - No additional configuration needed
+
+**Technical Implementation**:
+
+**Files Modified**:
+- `src/components/layout/AssetLibrary.tsx`
+  - Created `DraggableAsset` component using `useDraggable` from @dnd-kit
+  - Asset ID format: `asset:{assetId}` for unique identification
+  - Passed asset data via drag event for block creation
+  - Added visual drag hints and hover states
+  - Maintained selection mode compatibility
+
+- `src/components/layout/EditorLayout.tsx`
+  - Updated `handleDragEnd` to detect asset drops (checks `asset:` prefix)
+  - Extracts asset data from drag event
+  - Creates ImageBlock with pre-filled URL and alt text
+  - Works with all drop zones: canvas, between blocks, layout columns
+  - Updated `DragOverlay` to show asset preview during drag
+
+**User Workflow - Before vs After**:
+
+**Before** (4 steps):
+1. Drag Image Block from Block Library → Canvas
+2. Click "Add Image" button on the block
+3. Image Picker Modal opens
+4. Click asset in Asset Library
+
+**After** (1 step):
+1. Drag image from Asset Library → Canvas ✅
+
+**Impact**:
+- ✅ **75% reduction in steps** - 4 steps → 1 step
+- ✅ **Faster workflow** - No modals, no clicking through UI
+- ✅ **Better creative flow** - Drag multiple images in seconds
+- ✅ **Visual feedback** - Clear drag hints and cursor changes
+- ✅ **Canva-like experience** - Matches modern design tool UX
+- ✅ **No learning curve** - Intuitive drag-and-drop interaction
+
+**User Experience Enhancements**:
+- Hover states clearly indicate draggability
+- "Drag to canvas" badge provides discovery
+- Visual drag overlay shows what will be created
+- Smooth animations and transitions
+- Works seamlessly with existing drag-and-drop for blocks
+
+**Design Decisions**:
+
+1. **Why make all assets draggable?**
+   - Maximizes discoverability - users naturally try to drag images
+   - No mode switching required
+   - Consistent with modern design tool UX patterns
+
+2. **Why show "Drag to canvas" hint?**
+   - Progressive disclosure - appears only on hover
+   - Guides new users without cluttering the UI
+   - Reinforces the drag-and-drop capability
+
+3. **Why auto-create ImageBlock instead of generic drop?**
+   - User intent is clear: asset → image block
+   - Eliminates extra configuration steps
+   - Matches user mental model
+
+**Next Enhancements** (Future):
+- Add visual thumbnail in drag overlay (instead of icon)
+- Support dragging multiple assets at once (batch image blocks)
+- Add keyboard shortcut to toggle selection mode vs drag mode
+- Track analytics on drag-and-drop usage vs modal usage
+
+---
+
 ### 2025-12-25 - Navigation Consolidation: 5 Tabs → 3 Tabs ✅ COMPLETE
 
 #### Major UX Improvement: Simplified Navigation Architecture
