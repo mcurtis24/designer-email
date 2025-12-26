@@ -6,6 +6,7 @@ import { isResendConfigured } from '@/lib/config'
 import PreviewModal from '@/components/ui/PreviewModal'
 import VersionHistoryModal from '@/components/ui/VersionHistoryModal'
 import SaveDialog from '@/components/ui/SaveDialog'
+import SaveTemplateDialog from '@/components/ui/SaveTemplateDialog'
 import AccessibilityPanel from '@/components/ui/AccessibilityPanel'
 import { validateAccessibility, getIssueCounts } from '@/lib/validation/accessibility'
 
@@ -20,6 +21,7 @@ export default function TopNav() {
   const [showPreviewModal, setShowPreviewModal] = useState(false)
   const [showVersionHistory, setShowVersionHistory] = useState(false)
   const [showSaveDialog, setShowSaveDialog] = useState(false)
+  const [showSaveTemplateDialog, setShowSaveTemplateDialog] = useState(false)
   const [showAccessibilityPanel, setShowAccessibilityPanel] = useState(false)
   const [testEmail, setTestEmail] = useState('')
   const [testSubject, setTestSubject] = useState('')
@@ -172,6 +174,17 @@ export default function TopNav() {
         )}
 
         <button
+          onClick={() => setShowSaveTemplateDialog(true)}
+          className="flex items-center gap-2 px-4 py-2 text-sm font-medium text-gray-700 bg-white rounded-md hover:bg-gray-50 transition-colors border border-gray-300"
+          title="Save current email as a reusable template"
+        >
+          <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 5a2 2 0 012-2h10a2 2 0 012 2v16l-7-3.5L5 21V5z" />
+          </svg>
+          Save as Template
+        </button>
+
+        <button
           onClick={handlePreview}
           className="flex items-center gap-2 px-4 py-2 text-sm font-medium text-gray-700 bg-white rounded-md hover:bg-gray-50 transition-colors"
         >
@@ -293,6 +306,16 @@ export default function TopNav() {
           onClose={() => setShowAccessibilityPanel(false)}
         />
       )}
+
+      {/* Save Template Dialog */}
+      <SaveTemplateDialog
+        isOpen={showSaveTemplateDialog}
+        onClose={() => setShowSaveTemplateDialog(false)}
+        onSuccess={() => {
+          setShowSaveTemplateDialog(false)
+          alert('Template saved successfully! You can find it in the "My Templates" tab.')
+        }}
+      />
     </nav>
   )
 }

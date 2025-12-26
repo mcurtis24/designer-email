@@ -232,6 +232,44 @@ export interface SavedComponent {
   category?: string // Optional category (e.g., "Headers", "CTAs", "Footers")
 }
 
+export type TemplateCategory =
+  | 'newsletter'
+  | 'promotion'
+  | 'announcement'
+  | 'transactional'
+  | 'event'
+  | 'update'
+  | 'welcome'
+  | 'other'
+
+export type TemplateSource = 'system' | 'user' | 'imported'
+
+export interface UserTemplate {
+  id: string // Unique template ID
+  name: string // User-defined template name
+  description?: string // Optional description
+  category: TemplateCategory // Template category for filtering
+  tags: string[] // Searchable tags
+
+  // Email content
+  blocks: EmailBlock[] // Full email blocks
+  settings: EmailSettings // Email-level settings (background, width, etc.)
+
+  // Visual preview
+  thumbnail: string // Base64 PNG image (auto-generated)
+  thumbnailGeneratedAt: Date
+
+  // Metadata
+  createdAt: Date
+  updatedAt: Date
+  lastUsedAt?: Date // Last time template was loaded
+  useCount: number // Number of times template was used
+
+  // Source tracking
+  source: TemplateSource // 'user' for user-created templates
+  version: number // Template version for future migrations
+}
+
 export interface EmailSettings {
   backgroundColor: string
   contentWidth: number // 640px default

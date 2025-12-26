@@ -15,6 +15,8 @@ import type {
   BrandColor,
   TypographyStyle,
   SavedComponent,
+  UserTemplate,
+  TemplateCategory,
 } from '@/types/email'
 import { CircularHistoryBuffer, ActionBatcher } from '@/lib/historyManager'
 import { VersionManager } from '@/lib/versionManager'
@@ -35,6 +37,9 @@ interface EmailStore {
 
   // Saved Components (persisted in localStorage)
   savedComponents: SavedComponent[]
+
+  // User Templates (persisted in localStorage)
+  userTemplates: UserTemplate[]
 
   // History for Undo/Redo (using circular buffer for memory efficiency)
   historyBuffer: CircularHistoryBuffer<EmailBlock[]>
@@ -93,6 +98,16 @@ interface EmailStore {
   loadSavedComponent: (componentId: string) => EmailBlock
   deleteSavedComponent: (componentId: string) => void
   getSavedComponents: () => SavedComponent[]
+
+  // Actions - User Templates
+  saveEmailAsTemplate: (name: string, category: TemplateCategory, description?: string, tags?: string[]) => Promise<void>
+  loadUserTemplate: (templateId: string) => void
+  deleteUserTemplate: (templateId: string) => void
+  updateUserTemplate: (templateId: string, updates: Partial<Pick<UserTemplate, 'name' | 'description' | 'category' | 'tags'>>) => void
+  duplicateUserTemplate: (templateId: string) => Promise<void>
+  getUserTemplates: () => UserTemplate[]
+  exportUserTemplate: (templateId: string) => string
+  importUserTemplate: (jsonString: string) => void
 
   // Actions - History (Undo/Redo)
   undo: () => void
@@ -158,6 +173,7 @@ function createNewEmail(): EmailDocument {
 
 // Helper functions for localStorage persistence
 const SAVED_COMPONENTS_KEY = 'email-designer-saved-components'
+const USER_TEMPLATES_KEY = 'email-designer-user-templates'
 
 function loadSavedComponentsFromStorage(): SavedComponent[] {
   try {
@@ -180,6 +196,33 @@ function saveSavedComponentsToStorage(components: SavedComponent[]) {
     localStorage.setItem(SAVED_COMPONENTS_KEY, JSON.stringify(components))
   } catch (error) {
     console.error('Failed to save components to localStorage:', error)
+  }
+}
+
+function loadUserTemplatesFromStorage(): UserTemplate[] {
+  try {
+    const stored = localStorage.getItem(USER_TEMPLATES_KEY)
+    if (!stored) return []
+    const parsed = JSON.parse(stored)
+    // Convert date strings back to Date objects
+    return parsed.map((template: any) => ({
+      ...template,
+      createdAt: new Date(template.createdAt),
+      updatedAt: new Date(template.updatedAt),
+      thumbnailGeneratedAt: new Date(template.thumbnailGeneratedAt),
+      lastUsedAt: template.lastUsedAt ? new Date(template.lastUsedAt) : undefined,
+    }))
+  } catch (error) {
+    console.error('Failed to load user templates from localStorage:', error)
+    return []
+  }
+}
+
+function saveUserTemplatesToStorage(templates: UserTemplate[]) {
+  try {
+    localStorage.setItem(USER_TEMPLATES_KEY, JSON.stringify(templates))
+  } catch (error) {
+    console.error('Failed to save user templates to localStorage:', error)
   }
 }
 
@@ -216,6 +259,7 @@ export const useEmailStore = create<EmailStore>((set, get) => ({
     autoOpenColorPicker: false,
 
     savedComponents: loadSavedComponentsFromStorage(),
+    userTemplates: loadUserTemplatesFromStorage(),
 
     historyBuffer: new CircularHistoryBuffer<EmailBlock[]>(50),
     actionBatcher: actionBatcherInstance || (actionBatcherInstance = createActionBatcher(get)),
@@ -765,6 +809,222 @@ export const useEmailStore = create<EmailStore>((set, get) => ({
   getSavedComponents: () => {
     const state = get()
     return state.savedComponents
+  },
+
+  // User Template Actions
+  saveEmailAsTemplate: async (name, category, description, tags = []) => {
+    const state = get()
+    const { email } = state
+
+    // Import thumbnail generator
+    const { generateThumbnail } = await import('@/lib/thumbnailGenerator')
+
+    // Generate thumbnail (async operation)
+    const thumbnail = await generateThumbnail(email)
+
+    // Create new template
+    const newTemplate: UserTemplate = {
+      id: nanoid(),
+      name,
+      description,
+      category,
+      tags,
+      blocks: JSON.parse(JSON.stringify(email.blocks)), // Deep copy
+      settings: JSON.parse(JSON.stringify(email.settings)), // Deep copy
+      thumbnail,
+      thumbnailGeneratedAt: new Date(),
+      createdAt: new Date(),
+      updatedAt: new Date(),
+      useCount: 0,
+      source: 'user',
+      version: 1,
+    }
+
+    const newTemplates = [...state.userTemplates, newTemplate]
+    saveUserTemplatesToStorage(newTemplates)
+
+    set({
+      userTemplates: newTemplates,
+    })
+  },
+
+  loadUserTemplate: (templateId) => {
+    const state = get()
+    const template = state.userTemplates.find((t) => t.id === templateId)
+
+    if (!template) {
+      console.error(`Template not found: ${templateId}`)
+      return
+    }
+
+    // Clear history buffer for new email
+    state.historyBuffer.clear()
+
+    // Load template blocks and settings
+    const loadedBlocks = JSON.parse(JSON.stringify(template.blocks)) // Deep copy
+    const loadedSettings = JSON.parse(JSON.stringify(template.settings)) // Deep copy
+
+    // Regenerate IDs for all blocks to avoid conflicts
+    const regenerateIds = (blocks: EmailBlock[]): EmailBlock[] => {
+      return blocks.map((block) => {
+        const newBlock = { ...block, id: nanoid() }
+
+        // Regenerate IDs for nested blocks in layouts
+        if (block.type === 'layout') {
+          const layoutData = block.data as any
+          if (layoutData.children && Array.isArray(layoutData.children)) {
+            newBlock.data = {
+              ...layoutData,
+              children: regenerateIds(layoutData.children),
+            }
+          }
+        }
+
+        return newBlock
+      })
+    }
+
+    const blocksWithNewIds = regenerateIds(loadedBlocks)
+
+    // Update email with template content
+    state.historyBuffer.push(blocksWithNewIds)
+
+    set((state) => ({
+      email: {
+        ...state.email,
+        blocks: blocksWithNewIds,
+        settings: loadedSettings,
+        updatedAt: new Date(),
+      },
+      editorState: {
+        ...state.editorState,
+        selectedBlockId: null,
+        isDirty: true,
+      },
+      // Update template usage stats
+      userTemplates: state.userTemplates.map((t) =>
+        t.id === templateId
+          ? {
+              ...t,
+              lastUsedAt: new Date(),
+              useCount: t.useCount + 1,
+            }
+          : t
+      ),
+    }))
+
+    // Save updated usage stats
+    saveUserTemplatesToStorage(get().userTemplates)
+  },
+
+  deleteUserTemplate: (templateId) =>
+    set((state) => {
+      const newTemplates = state.userTemplates.filter((t) => t.id !== templateId)
+      saveUserTemplatesToStorage(newTemplates)
+
+      return {
+        userTemplates: newTemplates,
+      }
+    }),
+
+  updateUserTemplate: (templateId, updates) =>
+    set((state) => {
+      const newTemplates = state.userTemplates.map((t) =>
+        t.id === templateId
+          ? {
+              ...t,
+              ...updates,
+              updatedAt: new Date(),
+            }
+          : t
+      )
+
+      saveUserTemplatesToStorage(newTemplates)
+
+      return {
+        userTemplates: newTemplates,
+      }
+    }),
+
+  duplicateUserTemplate: async (templateId) => {
+    const state = get()
+    const template = state.userTemplates.find((t) => t.id === templateId)
+
+    if (!template) {
+      console.error(`Template not found: ${templateId}`)
+      return
+    }
+
+    // Create duplicate with new ID and name
+    const duplicate: UserTemplate = {
+      ...JSON.parse(JSON.stringify(template)), // Deep copy
+      id: nanoid(),
+      name: `${template.name} (Copy)`,
+      createdAt: new Date(),
+      updatedAt: new Date(),
+      lastUsedAt: undefined,
+      useCount: 0,
+    }
+
+    const newTemplates = [...state.userTemplates, duplicate]
+    saveUserTemplatesToStorage(newTemplates)
+
+    set({
+      userTemplates: newTemplates,
+    })
+  },
+
+  getUserTemplates: () => {
+    const state = get()
+    return state.userTemplates
+  },
+
+  exportUserTemplate: (templateId) => {
+    const state = get()
+    const template = state.userTemplates.find((t) => t.id === templateId)
+
+    if (!template) {
+      throw new Error(`Template not found: ${templateId}`)
+    }
+
+    return JSON.stringify(template, null, 2)
+  },
+
+  importUserTemplate: (jsonString) => {
+    try {
+      const imported = JSON.parse(jsonString)
+
+      // Validate required fields
+      if (!imported.name || !imported.blocks || !imported.settings) {
+        throw new Error('Invalid template format')
+      }
+
+      // Create new template with fresh ID and dates
+      const newTemplate: UserTemplate = {
+        ...imported,
+        id: nanoid(),
+        createdAt: new Date(),
+        updatedAt: new Date(),
+        thumbnailGeneratedAt: imported.thumbnailGeneratedAt
+          ? new Date(imported.thumbnailGeneratedAt)
+          : new Date(),
+        lastUsedAt: undefined,
+        useCount: 0,
+        source: 'imported' as const,
+        version: imported.version || 1,
+      }
+
+      const state = get()
+      const newTemplates = [...state.userTemplates, newTemplate]
+      saveUserTemplatesToStorage(newTemplates)
+
+      set({
+        userTemplates: newTemplates,
+      })
+    } catch (error) {
+      console.error('Failed to import template:', error)
+      throw new Error('Invalid template file')
+    }
   },
 
   // History Actions (Undo/Redo)
