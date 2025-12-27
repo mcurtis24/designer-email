@@ -156,6 +156,71 @@ export default function TopNav() {
             </svg>
           </button>
         </div>
+
+        {/* Divider */}
+        <div className="w-px h-6 bg-white/20"></div>
+
+        {/* Viewport Mode Toggle */}
+        <div className="flex items-center bg-white/10 rounded-lg p-1">
+          <button
+            onClick={() => setViewportMode('desktop')}
+            className={`flex items-center gap-1.5 px-2 py-1 text-xs font-medium rounded transition-all ${
+              viewportMode === 'desktop'
+                ? 'bg-white text-gray-900 shadow-sm'
+                : 'text-white hover:text-gray-200'
+            }`}
+            title="Desktop view (640px)"
+          >
+            <svg className="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9.75 17L9 20l-1 1h8l-1-1-.75-3M3 13h18M5 17h14a2 2 0 002-2V5a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
+            </svg>
+            Desktop
+          </button>
+          <button
+            onClick={() => setViewportMode('mobile')}
+            className={`flex items-center gap-1.5 px-2 py-1 text-xs font-medium rounded transition-all ${
+              viewportMode === 'mobile'
+                ? 'bg-white text-gray-900 shadow-sm'
+                : 'text-white hover:text-gray-200'
+            }`}
+            title="Mobile view (375px)"
+          >
+            <svg className="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 18h.01M8 21h8a2 2 0 002-2V5a2 2 0 00-2-2H8a2 2 0 00-2 2v14a2 2 0 002 2z" />
+            </svg>
+            Mobile
+          </button>
+        </div>
+
+        {/* Zoom Control */}
+        <div className="flex items-center gap-1 bg-white/10 rounded-lg px-2 py-1">
+          <button
+            onClick={() => setZoom(Math.max(50, zoom - 10))}
+            className="p-0.5 text-white hover:text-gray-200 transition-colors"
+            title="Zoom out"
+          >
+            <svg className="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0zM13 10H7" />
+            </svg>
+          </button>
+          <span className="text-white text-xs font-medium min-w-[40px] text-center">{zoom}%</span>
+          <button
+            onClick={() => setZoom(Math.min(200, zoom + 10))}
+            className="p-0.5 text-white hover:text-gray-200 transition-colors"
+            title="Zoom in"
+          >
+            <svg className="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0zM10 7v3m0 0v3m0-3h3m-3 0H7" />
+            </svg>
+          </button>
+          <button
+            onClick={() => setZoom(100)}
+            className="ml-0.5 px-1.5 py-0.5 text-xs font-medium text-white hover:bg-white/20 rounded transition-colors"
+            title="Reset zoom to 100%"
+          >
+            Reset
+          </button>
+        </div>
       </div>
 
       {/* Center Section - Title */}
@@ -165,68 +230,6 @@ export default function TopNav() {
 
       {/* Right Section - Actions */}
       <div className="flex items-center gap-2">
-        {/* Viewport Mode Toggle */}
-        <div className="flex items-center bg-white/10 rounded-lg p-1 mr-2">
-          <button
-            onClick={() => setViewportMode('desktop')}
-            className={`flex items-center gap-1.5 px-3 py-1.5 text-sm font-medium rounded-md transition-all ${
-              viewportMode === 'desktop'
-                ? 'bg-white text-gray-900 shadow-sm'
-                : 'text-white hover:text-gray-200'
-            }`}
-            title="Desktop view (640px)"
-          >
-            <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9.75 17L9 20l-1 1h8l-1-1-.75-3M3 13h18M5 17h14a2 2 0 002-2V5a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
-            </svg>
-            Desktop
-          </button>
-          <button
-            onClick={() => setViewportMode('mobile')}
-            className={`flex items-center gap-1.5 px-3 py-1.5 text-sm font-medium rounded-md transition-all ${
-              viewportMode === 'mobile'
-                ? 'bg-white text-gray-900 shadow-sm'
-                : 'text-white hover:text-gray-200'
-            }`}
-            title="Mobile view (375px)"
-          >
-            <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 18h.01M8 21h8a2 2 0 002-2V5a2 2 0 00-2-2H8a2 2 0 00-2 2v14a2 2 0 002 2z" />
-            </svg>
-            Mobile
-          </button>
-        </div>
-
-        {/* Zoom Control */}
-        <div className="flex items-center gap-2 bg-white/10 rounded-lg px-3 py-1.5 mr-2">
-          <button
-            onClick={() => setZoom(Math.max(50, zoom - 10))}
-            className="p-1 text-white hover:text-gray-200 transition-colors"
-            title="Zoom out"
-          >
-            <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0zM13 10H7" />
-            </svg>
-          </button>
-          <span className="text-white text-sm font-medium min-w-[50px] text-center">{zoom}%</span>
-          <button
-            onClick={() => setZoom(Math.min(200, zoom + 10))}
-            className="p-1 text-white hover:text-gray-200 transition-colors"
-            title="Zoom in"
-          >
-            <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0zM10 7v3m0 0v3m0-3h3m-3 0H7" />
-            </svg>
-          </button>
-          <button
-            onClick={() => setZoom(100)}
-            className="ml-1 px-2 py-0.5 text-xs font-medium text-white hover:bg-white/20 rounded transition-colors"
-            title="Reset zoom to 100%"
-          >
-            Reset
-          </button>
-        </div>
-
         {/* Accessibility Warnings */}
         {issueCounts.total > 0 && (
           <button
