@@ -523,21 +523,29 @@ interface ControlUsage {
 
 ### Missing Industry-Standard Blocks
 
-#### 16. Video Block (2-3 days)
-**Status:** HIGH PRIORITY - 4/5 competitors have this
+#### 16. Video Block (COMPLETED - December 26, 2025)
+**Status:** ✅ COMPLETED
 **Implementation:**
-- Thumbnail upload
-- Video URL (YouTube, Vimeo, custom)
-- Play button overlay styling
-- Fallback for non-supporting clients
+- ✅ Thumbnail upload (auto-fetched for YouTube)
+- ✅ Video URL (YouTube, Vimeo, custom)
+- ✅ Play button overlay styling
+- ✅ Fallback for non-supporting clients (linked thumbnail)
+- ✅ Width control (200-640px)
+- ✅ Border radius control
+- ✅ Alignment options
+- ✅ Alt text for accessibility
+- ✅ Email-safe HTML generation
 
-#### 17. Social Icons Block (4-6 hours)
-**Status:** HIGH PRIORITY - Standalone, not just in footer
+#### 17. Social Icons Block (COMPLETED - December 26, 2025)
+**Status:** ✅ COMPLETED
 **Implementation:**
-- Icon style selection (colored, monochrome, outlined)
-- Icon size control
-- Link inputs
-- Horizontal/vertical layout
+- ✅ Icon style selection (colored, monochrome, outlined, circular, square)
+- ✅ Icon size control (24-48px)
+- ✅ Link inputs for each platform
+- ✅ Horizontal layout with customizable spacing
+- ✅ 9 platform support (Facebook, X/Twitter, Instagram, LinkedIn, YouTube, TikTok, Pinterest, GitHub, Custom)
+- ✅ Custom icon color for monochrome/outlined styles
+- ✅ Email-safe HTML generation with inline SVG
 
 #### 18. Countdown Timer Block (3-4 days)
 **Status:** MEDIUM PRIORITY

@@ -40,6 +40,7 @@ export default function TemplateThumbnail({ template, className = '' }: Template
             color,
             order: index,
           })),
+          socialLinks: [],
         },
         createdAt: new Date(),
         updatedAt: new Date(),

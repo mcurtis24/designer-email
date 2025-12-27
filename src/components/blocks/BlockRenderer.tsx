@@ -9,6 +9,8 @@ import {
   isDividerBlock,
   isLayoutBlock,
   isFooterBlock,
+  isVideoBlock,
+  isSocialIconsBlock,
 } from '@/lib/typeGuards'
 import HeadingBlock from './HeadingBlock'
 import TextBlock from './TextBlock'
@@ -19,6 +21,8 @@ import SpacerBlock from './SpacerBlock'
 import DividerBlock from './DividerBlock'
 import LayoutBlock from './LayoutBlock'
 import FooterBlock from './FooterBlock'
+import VideoBlock from './VideoBlock'
+import SocialIconsBlock from './SocialIconsBlock'
 
 interface BlockRendererProps {
   block: EmailBlock
@@ -76,6 +80,16 @@ export default function BlockRenderer({ block, isSelected = false, onClick, onFo
     case 'footer':
       if (isFooterBlock(block)) {
         return <FooterBlock block={block} isSelected={isSelected} onClick={clickHandler} />
+      }
+      break
+    case 'video':
+      if (isVideoBlock(block)) {
+        return <VideoBlock block={block} isSelected={isSelected} onClick={clickHandler} />
+      }
+      break
+    case 'socialIcons':
+      if (isSocialIconsBlock(block)) {
+        return <SocialIconsBlock block={block} isSelected={isSelected} onClick={clickHandler} />
       }
       break
     default:

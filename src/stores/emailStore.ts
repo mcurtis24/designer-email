@@ -13,6 +13,8 @@ import type {
   EditorState,
   ViewportState,
   BrandColor,
+  SocialLink,
+  SocialPlatform,
   TypographyStyle,
   SavedComponent,
   UserTemplate,
@@ -103,6 +105,12 @@ interface EmailStore {
   updateBrandColorName: (color: string, name: string) => void
   reorderBrandColors: (colors: BrandColor[]) => void
 
+  // Actions - Social Links
+  addSocialLink: (platform: SocialPlatform, url: string, iconUrl?: string) => void
+  removeSocialLink: (platform: SocialPlatform) => void
+  updateSocialLink: (platform: SocialPlatform, url: string, iconUrl?: string) => void
+  reorderSocialLinks: (links: SocialLink[]) => void
+
   // Actions - Typography Styles
   updateTypographyStyle: (styleName: 'heading' | 'body', updates: Partial<TypographyStyle>) => void
   applyTypographyStyleToAll: (styleName: 'heading' | 'body') => void
@@ -166,6 +174,12 @@ function createNewEmail(): EmailDocument {
       fontFamily: 'Arial, Helvetica, sans-serif',
       textColor: '#333333',
       brandColors: [],
+      socialLinks: [
+        { platform: 'facebook', url: 'https://facebook.com' },
+        { platform: 'x', url: 'https://twitter.com' },
+        { platform: 'instagram', url: 'https://instagram.com' },
+        { platform: 'linkedin', url: 'https://linkedin.com' },
+      ],
       typographyStyles: [
         {
           name: 'heading',
@@ -711,6 +725,83 @@ export const useEmailStore = create<EmailStore>((set, get) => ({
         settings: {
           ...state.email.settings,
           brandColors: colors.map((color, index) => ({ ...color, order: index })),
+        },
+        updatedAt: new Date(),
+      },
+      editorState: { ...state.editorState, isDirty: true },
+    })),
+
+  // Social Links Actions
+  addSocialLink: (platform, url, iconUrl) =>
+    set((state) => {
+      // Ensure socialLinks exists (migration for old emails)
+      const currentSocialLinks = state.email.settings.socialLinks || []
+
+      // Don't add duplicates
+      if (currentSocialLinks.some((sl) => sl.platform === platform)) {
+        return state
+      }
+
+      const newSocialLink: SocialLink = {
+        platform,
+        url,
+        iconUrl,
+      }
+
+      return {
+        email: {
+          ...state.email,
+          settings: {
+            ...state.email.settings,
+            socialLinks: [...currentSocialLinks, newSocialLink],
+          },
+          updatedAt: new Date(),
+        },
+        editorState: { ...state.editorState, isDirty: true },
+      }
+    }),
+
+  removeSocialLink: (platform) =>
+    set((state) => {
+      const currentSocialLinks = state.email.settings.socialLinks || []
+      return {
+        email: {
+          ...state.email,
+          settings: {
+            ...state.email.settings,
+            socialLinks: currentSocialLinks.filter((sl) => sl.platform !== platform),
+          },
+          updatedAt: new Date(),
+        },
+        editorState: { ...state.editorState, isDirty: true },
+      }
+    }),
+
+  updateSocialLink: (platform, url, iconUrl) =>
+    set((state) => {
+      const currentSocialLinks = state.email.settings.socialLinks || []
+      return {
+        email: {
+          ...state.email,
+          settings: {
+            ...state.email.settings,
+            socialLinks: currentSocialLinks.map((sl) =>
+              sl.platform === platform ? { ...sl, url, iconUrl } : sl
+            ),
+          },
+          updatedAt: new Date(),
+        },
+        editorState: { ...state.editorState, isDirty: true },
+      }
+    }),
+
+  reorderSocialLinks: (links) =>
+    set((state) => ({
+      email: {
+        ...state.email,
+        settings: {
+          ...state.email.settings,
+          socialLinks: links,
         },
         updatedAt: new Date(),
       },

@@ -173,6 +173,7 @@ export default function TemplateLibrary() {
             color,
             order: index,
           })),
+          socialLinks: [],
         },
         createdAt: new Date(),
         updatedAt: new Date(),

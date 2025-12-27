@@ -6,7 +6,8 @@ interface FooterControlsProps {
   block: EmailBlock & { data: FooterBlockData }
 }
 
-const SOCIAL_PLATFORMS: Array<FooterBlockData['socialLinks'][0]['platform']> = [
+type SocialPlatformType = 'facebook' | 'x' | 'instagram' | 'linkedin' | 'youtube' | 'tiktok'
+const SOCIAL_PLATFORMS: SocialPlatformType[] = [
   'facebook',
   'x',
   'instagram',
@@ -17,6 +18,11 @@ const SOCIAL_PLATFORMS: Array<FooterBlockData['socialLinks'][0]['platform']> = [
 
 export default function FooterControls({ block }: FooterControlsProps) {
   const updateBlock = useEmailStore((state) => state.updateBlock)
+  const socialLinks = useEmailStore((state) => state.email.settings.socialLinks) || []
+  const addSocialLink = useEmailStore((state) => state.addSocialLink)
+  const removeSocialLink = useEmailStore((state) => state.removeSocialLink)
+  const updateSocialLink = useEmailStore((state) => state.updateSocialLink)
+
   const [newLinkText, setNewLinkText] = useState('')
   const [newLinkUrl, setNewLinkUrl] = useState('')
 
@@ -48,29 +54,15 @@ export default function FooterControls({ block }: FooterControlsProps) {
   }
 
   const handleToggleSocial = (platform: typeof SOCIAL_PLATFORMS[0], checked: boolean) => {
-    const newSocialLinks = checked
-      ? [...block.data.socialLinks, { platform, url: '' }]
-      : block.data.socialLinks.filter((s) => s.platform !== platform)
-
-    updateBlock(block.id, {
-      data: {
-        ...block.data,
-        socialLinks: newSocialLinks,
-      },
-    })
+    if (checked) {
+      addSocialLink(platform, '')
+    } else {
+      removeSocialLink(platform)
+    }
   }
 
   const handleSocialUrlChange = (platform: typeof SOCIAL_PLATFORMS[0], url: string) => {
-    const newSocialLinks = block.data.socialLinks.map((s) =>
-      s.platform === platform ? { ...s, url } : s
-    )
-
-    updateBlock(block.id, {
-      data: {
-        ...block.data,
-        socialLinks: newSocialLinks,
-      },
-    })
+    updateSocialLink(platform, url)
   }
 
   const handleAddLink = () => {
@@ -147,14 +139,15 @@ export default function FooterControls({ block }: FooterControlsProps) {
         </div>
       </div>
 
-      {/* Social Media Links */}
+      {/* Social Media Links - Global */}
       <div>
         <label className="block text-sm font-medium text-gray-700 mb-2">
           Social Media Links
+          <span className="text-xs text-gray-500 font-normal ml-2">(Global - shared across blocks)</span>
         </label>
         <div className="space-y-2">
           {SOCIAL_PLATFORMS.map((platform) => {
-            const existing = block.data.socialLinks.find((s) => s.platform === platform)
+            const existing = socialLinks.find((s) => s.platform === platform)
             return (
               <div key={platform}>
                 <label className="flex items-center gap-2 mb-1">

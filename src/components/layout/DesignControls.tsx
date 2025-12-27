@@ -11,8 +11,10 @@ import SpacerControls from '@/components/controls/SpacerControls'
 import DividerControls from '@/components/controls/DividerControls'
 import LayoutControls from '@/components/controls/LayoutControls'
 import FooterControls from '@/components/controls/FooterControls'
+import VideoControls from '@/components/controls/VideoControls'
+import SocialIconsControls from '@/components/controls/SocialIconsControls'
 import CommonControls from '@/components/controls/CommonControls'
-import type { HeadingBlockData, TextBlockData, ImageBlockData, ImageGalleryBlockData, ButtonBlockData, SpacerBlockData, DividerBlockData, LayoutBlockData, FooterBlockData } from '@/types/email'
+import type { HeadingBlockData, TextBlockData, ImageBlockData, ImageGalleryBlockData, ButtonBlockData, SpacerBlockData, DividerBlockData, LayoutBlockData, FooterBlockData, VideoBlockData, SocialIconsBlockData } from '@/types/email'
 
 export default function DesignControls() {
   // Subscribe to selectedBlockId and blocks for reactive updates
@@ -95,6 +97,8 @@ export default function DesignControls() {
             {selectedBlock.type === 'divider' && <DividerControls block={selectedBlock as typeof selectedBlock & { data: DividerBlockData }} />}
             {selectedBlock.type === 'layout' && <LayoutControls block={selectedBlock as typeof selectedBlock & { data: LayoutBlockData }} />}
             {selectedBlock.type === 'footer' && <FooterControls block={selectedBlock as typeof selectedBlock & { data: FooterBlockData }} />}
+            {selectedBlock.type === 'video' && <VideoControls block={selectedBlock as typeof selectedBlock & { data: VideoBlockData }} />}
+            {selectedBlock.type === 'socialIcons' && <SocialIconsControls block={selectedBlock as typeof selectedBlock & { data: SocialIconsBlockData }} />}
           </CollapsibleSection>
 
           {/* LAYOUT Section (Common controls) */}

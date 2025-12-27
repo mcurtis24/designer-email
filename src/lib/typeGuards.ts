@@ -16,6 +16,8 @@ import type {
   DividerBlockData,
   LayoutBlockData,
   FooterBlockData,
+  VideoBlockData,
+  SocialIconsBlockData,
 } from '../types/email'
 
 // ============================================================================
@@ -56,6 +58,14 @@ export function isLayoutBlock(block: EmailBlock): block is EmailBlock & { data: 
 
 export function isFooterBlock(block: EmailBlock): block is EmailBlock & { data: FooterBlockData } {
   return block.type === 'footer'
+}
+
+export function isVideoBlock(block: EmailBlock): block is EmailBlock & { data: VideoBlockData } {
+  return block.type === 'video'
+}
+
+export function isSocialIconsBlock(block: EmailBlock): block is EmailBlock & { data: SocialIconsBlockData } {
+  return block.type === 'socialIcons'
 }
 
 // ============================================================================

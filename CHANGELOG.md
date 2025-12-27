@@ -7,6 +7,68 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Added - December 27, 2025 (Morning Session)
+
+#### Global Social Links Manager
+- **Centralized Social Links Architecture**: Eliminated redundancy between Footer and Social Icons blocks
+  - Social links now stored globally in `email.settings.socialLinks` (similar to brand colors)
+  - Both Footer and Social Icons blocks read from the same centralized source
+  - Footer block controls manage the global links (add, remove, edit URLs)
+  - Social Icons block controls focus on styling only (icon style, size, spacing, alignment)
+  - Impact: Improved UX by eliminating duplicate data entry, "configure once, use everywhere" pattern
+- **EmailStore Actions**: Added 4 new state management actions
+  - `addSocialLink()` - Add new social platform with URL
+  - `removeSocialLink()` - Remove social platform
+  - `updateSocialLink()` - Update URL for existing platform
+  - `reorderSocialLinks()` - Reorder social links (future drag-and-drop support)
+- **Type System Updates**: Refactored type definitions for global social links
+  - Added `SocialLink` interface with platform, url, and optional iconUrl
+  - Moved `socialLinks` from `FooterBlockData` to `EmailSettings`
+  - Updated `SocialIconsBlockData` to remove icons array, use global links with optional filtering
+  - Updated `htmlGenerator.ts` to pass settings through generation chain
+- **Backward Compatibility**: Migration handling for old emails
+  - Added `|| []` fallbacks throughout codebase for undefined socialLinks
+  - Store actions check for undefined and create empty arrays
+  - No data loss, graceful degradation for emails created before this update
+- **Social Icons Controls UI Enhancement**:
+  - Added prominent blue info box explaining global system with bullet points
+  - Added styled preview section showing active social links (read-only)
+  - Added "Styling Options" section header for clear visual hierarchy
+  - Improved spacing and visual organization
+  - Clear messaging: "Manage links in Footer block controls"
+- **Bug Fixes**:
+  - Fixed Social Icons block click handling to properly activate style sidebar
+  - Added `setActiveSidebarTab('style')` call on block click (was missing)
+  - Fixed TypeScript errors in htmlGenerator.ts (missing imports, type annotations)
+  - Fixed runtime errors when old emails don't have socialLinks field
+- **Impact**:
+  - Eliminates user confusion about where to manage social links
+  - Reduces time to configure social links (configure once vs per-block)
+  - Prevents inconsistencies between Footer and Social Icons blocks
+  - Professional UX pattern matching brand colors system
+
+### Added - December 26, 2025 (Late Evening Session)
+
+#### Phase 2: Video & Social Icons Blocks (Competitive Parity)
+- **Video Block**: Full support for embedding videos in emails
+  - YouTube, Vimeo, and custom video URL support
+  - Automatic YouTube thumbnail fetching (maxresdefault quality)
+  - Customizable video width (200-640px)
+  - Border radius control for rounded corners
+  - Alignment options (left, center, right)
+  - Alt text for accessibility
+  - Email-safe HTML generation with linked thumbnail
+  - Impact: Matches 4/5 major competitors (Unlayer, Stripo, Beefree, Topol)
+- **Social Icons Block**: Standalone social media icon component
+  - Support for 9 platforms: Facebook, X/Twitter, Instagram, LinkedIn, YouTube, TikTok, Pinterest, GitHub, Custom
+  - 5 icon styles: Colored, Monochrome, Outlined, Circular, Square
+  - Customizable icon size (24-48px)
+  - Adjustable spacing between icons
+  - Alignment options (left, center, right)
+  - Custom icon color for monochrome/outlined styles
+  - Inline SVG icons for email compatibility
+  - Impact: Provides flexibility beyond footer-only social links
+
 ### Added - December 26, 2025 (Evening Session)
 
 #### Brand Identity & UI Polish
@@ -188,8 +250,8 @@ See [planning_and_updates/comprehensive-review-2025.md](planning_and_updates/com
 - [x] **Style Tab Restructure - Block Migrations**: HeadingControls, TextControls, ButtonControls using shared components
 
 ### Phase 2: Competitive Parity (Weeks 3-6)
-- [ ] Video Block
-- [ ] Social Icons Block (standalone)
+- [x] Video Block (COMPLETED - December 26, 2025)
+- [x] Social Icons Block (standalone) (COMPLETED - December 26, 2025)
 - [ ] Template Library Expansion (8 → 30+ templates)
 - [ ] AI Alt Text Generation
 - [ ] Typography Quick-Apply Presets

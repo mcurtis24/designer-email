@@ -110,6 +110,25 @@ export default function BlockLibrary() {
         </svg>
       )
     },
+    {
+      id: 'video',
+      label: 'Video',
+      icon: (
+        <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M14.752 11.168l-3.197-2.132A1 1 0 0010 9.87v4.263a1 1 0 001.555.832l3.197-2.132a1 1 0 000-1.664z" />
+          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+        </svg>
+      )
+    },
+    {
+      id: 'socialIcons',
+      label: 'Social Icons',
+      icon: (
+        <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 8h2a2 2 0 012 2v6a2 2 0 01-2 2h-2v4l-4-4H9a1.994 1.994 0 01-1.414-.586m0 0L11 14h4a2 2 0 002-2V6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2v4l.586-.586z" />
+        </svg>
+      )
+    },
   ]
 
   return (
@@ -135,7 +154,8 @@ export default function BlockLibrary() {
           MEDIA
         </h2>
         <div className="grid grid-cols-2 gap-3">
-          {contentBlocks.slice(2, 4).map((block) => (
+          {/* Image, Gallery, Video */}
+          {[contentBlocks[2], contentBlocks[3], contentBlocks[9]].map((block) => (
             <DraggableBlockItem
               key={block.id}
               id={block.id}
@@ -151,6 +171,7 @@ export default function BlockLibrary() {
           LAYOUT
         </h2>
         <div className="grid grid-cols-2 gap-3">
+          {/* Button, Spacer, Divider, Columns */}
           {contentBlocks.slice(4, 8).map((block) => (
             <DraggableBlockItem
               key={block.id}
@@ -167,7 +188,8 @@ export default function BlockLibrary() {
           FOOTER
         </h2>
         <div className="grid grid-cols-2 gap-3">
-          {contentBlocks.slice(8, 9).map((block) => (
+          {/* Footer, Social Icons */}
+          {[contentBlocks[8], contentBlocks[10]].map((block) => (
             <DraggableBlockItem
               key={block.id}
               id={block.id}

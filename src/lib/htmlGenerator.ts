@@ -24,6 +24,7 @@
 import type {
   EmailDocument,
   EmailBlock,
+  EmailSettings,
   HeadingBlockData,
   TextBlockData,
   ImageBlockData,
@@ -33,6 +34,10 @@ import type {
   DividerBlockData,
   LayoutBlockData,
   FooterBlockData,
+  VideoBlockData,
+  SocialIconsBlockData,
+  SocialPlatform,
+  SocialLink,
 } from '@/types/email'
 import {
   isValidCSSLength,
@@ -378,9 +383,10 @@ function generateDividerHTML(block: EmailBlock): string {
 }
 
 // Generate HTML for a layout/row block
-function generateLayoutHTML(block: EmailBlock): string {
+function generateLayoutHTML(block: EmailBlock, settings?: EmailSettings): string {
   const data = block.data as LayoutBlockData
   const { styles } = block
+  // Note: settings parameter is for nested blocks that may need it (footer, social icons)
 
   if (data.children.length === 0) {
     return `<!-- Empty layout block -->`
@@ -440,7 +446,7 @@ function generateLayoutHTML(block: EmailBlock): string {
     const mobileClass = data.stackOnMobile !== false ? 'mobile-full-width' : ''
 
     return `<td ${mobileClass ? `class="${mobileClass}"` : ''} width="${columnWidth}" valign="top" style="width: ${columnWidth}px;${paddingRight > 0 ? ` padding-right: ${paddingRight}px;` : ''}">
-      ${generateBlockHTML(childBlock)}
+      ${generateBlockHTML(childBlock, settings)}
     </td>`
   }).join('\n')
 
@@ -476,7 +482,7 @@ const SOCIAL_ICON_URLS: Record<string, string> = {
 }
 
 // Generate HTML for a footer block
-function generateFooterHTML(block: EmailBlock): string {
+function generateFooterHTML(block: EmailBlock, settings?: EmailSettings): string {
   const data = block.data as FooterBlockData
   const { styles } = block
 
@@ -500,9 +506,10 @@ function generateFooterHTML(block: EmailBlock): string {
 </table>`
   }
 
-  // Social Icons Section (NON-STACKING on mobile)
-  if (data.socialLinks.length > 0) {
-    const iconsHTML = data.socialLinks.map((social) => {
+  // Social Icons Section (NON-STACKING on mobile) - Uses global social links
+  const socialLinks = settings?.socialLinks || []
+  if (socialLinks.length > 0) {
+    const iconsHTML = socialLinks.map((social: SocialLink) => {
       // Use img tags for all icons (email-safe)
       // For custom icons, use provided URL. For platform icons, use CDN URLs
       const iconUrl = social.platform === 'custom' && social.iconUrl
@@ -515,7 +522,7 @@ function generateFooterHTML(block: EmailBlock): string {
       const safeIconUrl = sanitizeURL(iconUrl)
       const iconHTML = `<img src="${safeIconUrl}" alt="${escapeHTML(platformName)}" width="32" height="32" style="display: block; border: 0;" />`
 
-      return `<td align="center" width="${Math.floor(100 / data.socialLinks.length)}%" style="padding: 0 8px;">
+      return `<td align="center" width="${Math.floor(100 / socialLinks.length)}%" style="padding: 0 8px;">
         <a href="${sanitizeURL(social.url)}" target="_blank" rel="noopener noreferrer" style="display: inline-block;">
           ${iconHTML}
         </a>
@@ -574,8 +581,100 @@ function generateFooterHTML(block: EmailBlock): string {
 </table>`
 }
 
+// Generate HTML for a video block
+function generateVideoHTML(block: EmailBlock): string {
+  const data = block.data as VideoBlockData
+  const { styles } = block
+
+  const width = data.width || 560
+  const thumbnail = sanitizeURL(data.thumbnailSrc)
+  const videoUrl = sanitizeURL(data.videoUrl)
+  const alt = escapeHTML(data.alt || 'Video thumbnail')
+
+  // Video thumbnail with play button overlay
+  // Links to video URL - most email clients will open in browser
+  const borderRadiusStyle = data.borderRadius ? `border-radius: ${data.borderRadius}px;` : ''
+
+  return `
+<table role="presentation" width="100%" cellspacing="0" cellpadding="0" border="0">
+  <tr>
+    <td align="${data.alignment}" style="${getPaddingStyle(styles.padding)} ${styles.backgroundColor ? `background-color: ${styles.backgroundColor};` : ''}">
+      <a href="${videoUrl}" target="_blank" rel="noopener noreferrer" style="display: inline-block; position: relative; max-width: 100%;">
+        <img src="${thumbnail}" alt="${alt}" width="${width}" style="display: block; width: 100%; max-width: ${width}px; height: auto; border: 0; ${borderRadiusStyle}" />
+      </a>
+    </td>
+  </tr>
+</table>`
+}
+
+// Platform colors for social icons
+const platformColors: Record<SocialPlatform, string> = {
+  facebook: '#1877F2',
+  x: '#000000',
+  twitter: '#1DA1F2',
+  instagram: '#E4405F',
+  linkedin: '#0A66C2',
+  youtube: '#FF0000',
+  tiktok: '#000000',
+  pinterest: '#E60023',
+  github: '#181717',
+  custom: '#666666',
+}
+
+// Generate HTML for a social icons block
+function generateSocialIconsHTML(block: EmailBlock, settings?: EmailSettings): string {
+  const data = block.data as SocialIconsBlockData
+  const { styles } = block
+
+  // Use global social links
+  const socialLinks = settings?.socialLinks || []
+
+  // Filter by visible platforms if specified
+  const displayedIcons = data.visiblePlatforms && data.visiblePlatforms.length > 0
+    ? socialLinks.filter((link: SocialLink) => data.visiblePlatforms!.includes(link.platform))
+    : socialLinks
+
+  if (displayedIcons.length === 0) {
+    return `<!-- Social icons block with no icons -->`
+  }
+
+  // Generate individual icon HTML
+  const iconsHTML = displayedIcons.map((icon: SocialLink) => {
+    const iconColor = data.iconStyle === 'monochrome' || data.iconStyle === 'outlined'
+      ? (data.iconColor || '#666666')
+      : platformColors[icon.platform as keyof typeof platformColors] || '#666666'
+
+    const bgColor = data.iconStyle === 'outlined' ? 'transparent' : iconColor
+    const borderStyle = data.iconStyle === 'outlined' ? `border: 2px solid ${iconColor};` : ''
+    const borderRadius = data.iconStyle === 'circular' ? '50%' :
+                        data.iconStyle === 'square' ? '0' : '4px'
+
+    const safeUrl = sanitizeURL(icon.url || '#')
+
+    return `
+      <td style="padding: 0 ${data.spacing / 2}px;">
+        <a href="${safeUrl}" target="_blank" rel="noopener noreferrer" style="display: inline-block; width: ${data.iconSize}px; height: ${data.iconSize}px; background-color: ${bgColor}; ${borderStyle} border-radius: ${borderRadius}; text-decoration: none;">
+          <span style="display: block; width: ${data.iconSize}px; height: ${data.iconSize}px; line-height: ${data.iconSize}px; text-align: center; color: #ffffff; font-size: ${data.iconSize * 0.5}px;">●</span>
+        </a>
+      </td>`
+  }).join('')
+
+  return `
+<table role="presentation" width="100%" cellspacing="0" cellpadding="0" border="0">
+  <tr>
+    <td align="${data.alignment}" style="${getPaddingStyle(styles.padding)} ${styles.backgroundColor ? `background-color: ${styles.backgroundColor};` : ''}">
+      <table role="presentation" cellspacing="0" cellpadding="0" border="0" style="display: inline-block;">
+        <tr>
+          ${iconsHTML}
+        </tr>
+      </table>
+    </td>
+  </tr>
+</table>`
+}
+
 // Main function to generate HTML for a single block
-function generateBlockHTML(block: EmailBlock): string {
+function generateBlockHTML(block: EmailBlock, settings?: EmailSettings): string {
   switch (block.type) {
     case 'heading':
       return generateHeadingHTML(block)
@@ -592,9 +691,13 @@ function generateBlockHTML(block: EmailBlock): string {
     case 'divider':
       return generateDividerHTML(block)
     case 'layout':
-      return generateLayoutHTML(block)
+      return generateLayoutHTML(block, settings)
     case 'footer':
-      return generateFooterHTML(block)
+      return generateFooterHTML(block, settings)
+    case 'video':
+      return generateVideoHTML(block)
+    case 'socialIcons':
+      return generateSocialIconsHTML(block, settings)
     default:
       return `<!-- Unknown block type: ${block.type} -->`
   }
@@ -608,7 +711,7 @@ export function generateEmailHTML(email: EmailDocument, includeOutlookFallback: 
   const sortedBlocks = [...blocks].sort((a, b) => a.order - b.order)
 
   // Generate HTML for all blocks
-  const blocksHTML = sortedBlocks.map(generateBlockHTML).join('\n')
+  const blocksHTML = sortedBlocks.map(block => generateBlockHTML(block, settings)).join('\n')
 
   return `<!DOCTYPE html>
 <html lang="en" xmlns="http://www.w3.org/1999/xhtml" xmlns:v="urn:schemas-microsoft-com:vml" xmlns:o="urn:schemas-microsoft-com:office:office">

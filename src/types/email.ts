@@ -120,13 +120,6 @@ export interface FooterBlockData {
   companyName: string
   address: string
 
-  // Social media links (4 max for common layout)
-  socialLinks: Array<{
-    platform: 'facebook' | 'x' | 'twitter' | 'instagram' | 'linkedin' | 'youtube' | 'tiktok' | 'custom'
-    url: string
-    iconUrl?: string // For custom platform
-  }>
-
   // Footer links
   links: Array<{
     text: string
@@ -141,6 +134,32 @@ export interface FooterBlockData {
   textColor?: string
   linkColor?: string
   fontSize?: string
+
+  // Note: Social media links are now global (email.settings.socialLinks)
+  // Both Footer and Social Icons blocks use the same source
+}
+
+export interface VideoBlockData {
+  videoUrl: string // YouTube, Vimeo, or custom video URL
+  thumbnailSrc: string // Thumbnail image URL (fallback for email clients)
+  alt: string // Alt text for thumbnail
+  width?: number // Video width in pixels
+  alignment: 'left' | 'center' | 'right'
+  borderRadius?: number
+}
+
+export type SocialPlatform = 'facebook' | 'x' | 'twitter' | 'instagram' | 'linkedin' | 'youtube' | 'tiktok' | 'pinterest' | 'github' | 'custom'
+
+export interface SocialIconsBlockData {
+  // Styling preferences (uses global email.settings.socialLinks for actual links)
+  iconSize: number // px (24, 32, 40, 48)
+  iconStyle: 'colored' | 'monochrome' | 'outlined' | 'circular' | 'square'
+  iconColor?: string // For monochrome and outlined styles
+  spacing: number // Gap between icons in px
+  alignment: 'left' | 'center' | 'right'
+
+  // Optional: Filter which platforms to display (if empty, show all)
+  visiblePlatforms?: SocialPlatform[]
 }
 
 // ============================================================================
@@ -157,6 +176,8 @@ export type BlockType =
   | 'divider'
   | 'layout'
   | 'footer'
+  | 'video'
+  | 'socialIcons'
 
 export type BlockData =
   | HeadingBlockData
@@ -168,6 +189,8 @@ export type BlockData =
   | DividerBlockData
   | LayoutBlockData
   | FooterBlockData
+  | VideoBlockData
+  | SocialIconsBlockData
 
 // ============================================================================
 // Email Block
@@ -211,6 +234,12 @@ export interface BrandColor {
   color: string // Hex color code
   name?: string // Optional user-defined name
   order: number // Display order
+}
+
+export interface SocialLink {
+  platform: SocialPlatform
+  url: string
+  iconUrl?: string // For custom platform
 }
 
 export interface TypographyStyle {
@@ -289,6 +318,7 @@ export interface EmailSettings {
   textColor: string
   brandColors: BrandColor[] // Brand kit colors with names
   typographyStyles?: TypographyStyle[] // Typography presets
+  socialLinks: SocialLink[] // Global social media links (used by Footer and Social Icons blocks)
 }
 
 export interface EmailVersion {
@@ -373,6 +403,14 @@ export function isDividerBlock(block: EmailBlock): block is EmailBlock & { data:
   return block.type === 'divider'
 }
 
+export function isVideoBlock(block: EmailBlock): block is EmailBlock & { data: VideoBlockData } {
+  return block.type === 'video'
+}
+
+export function isSocialIconsBlock(block: EmailBlock): block is EmailBlock & { data: SocialIconsBlockData } {
+  return block.type === 'socialIcons'
+}
+
 // ============================================================================
 // Default Values
 // ============================================================================
@@ -390,6 +428,7 @@ export const defaultEmailSettings: EmailSettings = {
   fontFamily: 'Arial, Helvetica, sans-serif',
   textColor: '#333333',
   brandColors: [], // Empty by default, user can add brand colors
+  socialLinks: [], // Empty by default, user can add social links
   typographyStyles: [
     {
       name: 'heading',

@@ -15,6 +15,8 @@ import type {
   DividerBlockData,
   LayoutBlockData,
   FooterBlockData,
+  VideoBlockData,
+  SocialIconsBlockData,
   BlockType,
 } from '@/types/email'
 import { defaultSpacing } from '@/types/email'
@@ -189,7 +191,6 @@ export function createFooterBlock(order: number): EmailBlock {
   const data: FooterBlockData = {
     companyName: '',
     address: '',
-    socialLinks: [],
     links: [
       { text: 'Unsubscribe', url: '{{unsubscribe_url}}' },
       { text: 'Privacy Policy', url: 'https://example.com/privacy' },
@@ -208,6 +209,47 @@ export function createFooterBlock(order: number): EmailBlock {
     data,
     styles: {
       padding: { top: '40px', right: '20px', bottom: '40px', left: '20px' },
+    },
+  }
+}
+
+export function createVideoBlock(order: number): EmailBlock {
+  const data: VideoBlockData = {
+    videoUrl: 'https://www.youtube.com/watch?v=dQw4w9WgXcQ',
+    thumbnailSrc: 'https://img.youtube.com/vi/dQw4w9WgXcQ/maxresdefault.jpg',
+    alt: 'Video thumbnail',
+    width: 560,
+    alignment: 'center',
+    borderRadius: 8,
+  }
+
+  return {
+    id: nanoid(),
+    type: 'video',
+    order,
+    data,
+    styles: {
+      padding: { ...defaultSpacing },
+    },
+  }
+}
+
+export function createSocialIconsBlock(order: number): EmailBlock {
+  const data: SocialIconsBlockData = {
+    iconSize: 32,
+    iconStyle: 'colored',
+    spacing: 12,
+    alignment: 'center',
+    // Uses global email.settings.socialLinks
+  }
+
+  return {
+    id: nanoid(),
+    type: 'socialIcons',
+    order,
+    data,
+    styles: {
+      padding: { ...defaultSpacing },
     },
   }
 }
@@ -233,6 +275,10 @@ export function createBlock(type: BlockType, order: number): EmailBlock {
       return createLayoutBlock(order)
     case 'footer':
       return createFooterBlock(order)
+    case 'video':
+      return createVideoBlock(order)
+    case 'socialIcons':
+      return createSocialIconsBlock(order)
     default:
       // Default to text block if unknown type
       return createTextBlock(order)

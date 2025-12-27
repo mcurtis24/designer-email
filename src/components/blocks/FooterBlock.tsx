@@ -22,6 +22,7 @@ const SOCIAL_ICON_URLS: Record<string, string> = {
 function FooterBlock({ block, isSelected, onClick }: FooterBlockProps) {
   const { data, styles } = block
   const setActiveSidebarTab = useEmailStore((state) => state.setActiveSidebarTab)
+  const socialLinks = useEmailStore((state) => state.email.settings.socialLinks) || []
 
   const handleClick = (e: React.MouseEvent) => {
     e.stopPropagation()
@@ -65,8 +66,8 @@ function FooterBlock({ block, isSelected, onClick }: FooterBlockProps) {
         </div>
       )}
 
-      {/* Social Icons */}
-      {data.socialLinks.length > 0 && (
+      {/* Social Icons - Uses global social links */}
+      {socialLinks.length > 0 && (
         <div style={{
           display: 'flex',
           justifyContent: 'center',
@@ -74,7 +75,7 @@ function FooterBlock({ block, isSelected, onClick }: FooterBlockProps) {
           marginBottom: '24px',
           flexWrap: 'wrap'
         }}>
-          {data.socialLinks.map((social, index) => (
+          {socialLinks.map((social, index) => (
             <a
               key={index}
               href={social.url || '#'}
@@ -147,7 +148,7 @@ function FooterBlock({ block, isSelected, onClick }: FooterBlockProps) {
       )}
 
       {/* Empty state */}
-      {!data.companyName && !data.address && data.socialLinks.length === 0 && data.links.length === 0 && !data.legalText && (
+      {!data.companyName && !data.address && socialLinks.length === 0 && data.links.length === 0 && !data.legalText && (
         <div style={{
           textAlign: 'center',
           padding: '40px 20px',
