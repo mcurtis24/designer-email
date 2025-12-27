@@ -17,6 +17,7 @@ import type {
   SavedComponent,
   UserTemplate,
   TemplateCategory,
+  TemplateVersion,
 } from '@/types/email'
 import { CircularHistoryBuffer, ActionBatcher } from '@/lib/historyManager'
 import { VersionManager } from '@/lib/versionManager'
@@ -40,6 +41,9 @@ interface EmailStore {
 
   // User Templates (persisted in localStorage)
   userTemplates: UserTemplate[]
+
+  // Track which template is currently loaded (for update feature)
+  loadedTemplateId: string | null
 
   // History for Undo/Redo (using circular buffer for memory efficiency)
   historyBuffer: CircularHistoryBuffer<EmailBlock[]>
@@ -104,10 +108,16 @@ interface EmailStore {
   loadUserTemplate: (templateId: string) => void
   deleteUserTemplate: (templateId: string) => void
   updateUserTemplate: (templateId: string, updates: Partial<Pick<UserTemplate, 'name' | 'description' | 'category' | 'tags'>>) => void
+  updateTemplateContent: (templateId?: string) => Promise<void>
   duplicateUserTemplate: (templateId: string) => Promise<void>
   getUserTemplates: () => UserTemplate[]
   exportUserTemplate: (templateId: string) => string
   importUserTemplate: (jsonString: string) => void
+  createTemplateVersion: (templateId: string, message?: string) => void
+  restoreTemplateVersion: (templateId: string, versionId: string) => void
+  getTemplateVersions: (templateId: string) => TemplateVersion[]
+  deleteMultipleTemplates: (templateIds: string[]) => void
+  exportMultipleTemplates: (templateIds: string[]) => void
 
   // Actions - History (Undo/Redo)
   undo: () => void
@@ -260,6 +270,7 @@ export const useEmailStore = create<EmailStore>((set, get) => ({
 
     savedComponents: loadSavedComponentsFromStorage(),
     userTemplates: loadUserTemplatesFromStorage(),
+    loadedTemplateId: null,
 
     historyBuffer: new CircularHistoryBuffer<EmailBlock[]>(50),
     actionBatcher: actionBatcherInstance || (actionBatcherInstance = createActionBatcher(get)),
@@ -901,6 +912,8 @@ export const useEmailStore = create<EmailStore>((set, get) => ({
         selectedBlockId: null,
         isDirty: true,
       },
+      // Track loaded template for update feature
+      loadedTemplateId: templateId,
       // Update template usage stats
       userTemplates: state.userTemplates.map((t) =>
         t.id === templateId
@@ -945,6 +958,69 @@ export const useEmailStore = create<EmailStore>((set, get) => ({
         userTemplates: newTemplates,
       }
     }),
+
+  updateTemplateContent: async (templateId?: string) => {
+    const state = get()
+    const targetId = templateId || state.loadedTemplateId
+
+    if (!targetId) {
+      console.error('No template ID provided and no template is currently loaded')
+      return
+    }
+
+    const template = state.userTemplates.find((t) => t.id === targetId)
+
+    if (!template) {
+      console.error(`Template not found: ${targetId}`)
+      return
+    }
+
+    // Create version snapshot before updating
+    get().createTemplateVersion(targetId, 'Auto-save before update')
+
+    try {
+      // Deep copy current email blocks and settings
+      const updatedBlocks = JSON.parse(JSON.stringify(state.email.blocks))
+      const updatedSettings = JSON.parse(JSON.stringify(state.email.settings))
+
+      // Generate new thumbnail
+      const { generateThumbnail } = await import('@/lib/thumbnailGenerator')
+      let newThumbnail = template.thumbnail
+
+      try {
+        newThumbnail = await generateThumbnail(state.email, {
+          width: 320,
+          quality: 0.7,
+          scale: 0.5,
+        })
+      } catch (err) {
+        console.error('Failed to regenerate thumbnail, keeping old one:', err)
+      }
+
+      // Update template
+      const newTemplates = state.userTemplates.map((t) =>
+        t.id === targetId
+          ? {
+              ...t,
+              blocks: updatedBlocks,
+              settings: updatedSettings,
+              thumbnail: newThumbnail,
+              thumbnailGeneratedAt: new Date(),
+              updatedAt: new Date(),
+            }
+          : t
+      )
+
+      saveUserTemplatesToStorage(newTemplates)
+
+      set({
+        userTemplates: newTemplates,
+      })
+    } catch (error) {
+      console.error('Failed to update template content:', error)
+      throw error
+    }
+  },
 
   duplicateUserTemplate: async (templateId) => {
     const state = get()
@@ -1025,6 +1101,113 @@ export const useEmailStore = create<EmailStore>((set, get) => ({
       console.error('Failed to import template:', error)
       throw new Error('Invalid template file')
     }
+  },
+
+  createTemplateVersion: (templateId, message) => {
+    const state = get()
+    const template = state.userTemplates.find((t) => t.id === templateId)
+
+    if (!template) {
+      console.error(`Template not found: ${templateId}`)
+      return
+    }
+
+    // Create new version snapshot
+    const newVersion: TemplateVersion = {
+      id: nanoid(),
+      timestamp: new Date(),
+      blocks: JSON.parse(JSON.stringify(template.blocks)), // Deep copy
+      settings: JSON.parse(JSON.stringify(template.settings)), // Deep copy
+      message,
+      thumbnail: template.thumbnail,
+    }
+
+    // Get existing versions and add new one at the beginning
+    const versions = template.versions || []
+    const updatedVersions = [newVersion, ...versions].slice(0, 10) // Keep max 10 versions
+
+    // Update template with new versions array
+    const newTemplates = state.userTemplates.map((t) =>
+      t.id === templateId ? { ...t, versions: updatedVersions } : t
+    )
+
+    saveUserTemplatesToStorage(newTemplates)
+    set({ userTemplates: newTemplates })
+  },
+
+  restoreTemplateVersion: (templateId, versionId) => {
+    const state = get()
+    const template = state.userTemplates.find((t) => t.id === templateId)
+
+    if (!template) {
+      console.error(`Template not found: ${templateId}`)
+      return
+    }
+
+    const version = template.versions?.find((v) => v.id === versionId)
+
+    if (!version) {
+      console.error(`Version not found: ${versionId}`)
+      return
+    }
+
+    // Create a checkpoint before restoring (save current state as a version)
+    get().createTemplateVersion(templateId, 'Before restore')
+
+    // Restore blocks and settings from version
+    const newTemplates = state.userTemplates.map((t) =>
+      t.id === templateId
+        ? {
+            ...t,
+            blocks: JSON.parse(JSON.stringify(version.blocks)), // Deep copy
+            settings: JSON.parse(JSON.stringify(version.settings)), // Deep copy
+            updatedAt: new Date(),
+          }
+        : t
+    )
+
+    saveUserTemplatesToStorage(newTemplates)
+    set({ userTemplates: newTemplates })
+  },
+
+  getTemplateVersions: (templateId) => {
+    const state = get()
+    const template = state.userTemplates.find((t) => t.id === templateId)
+
+    if (!template) {
+      console.error(`Template not found: ${templateId}`)
+      return []
+    }
+
+    return template.versions || []
+  },
+
+  deleteMultipleTemplates: (templateIds) => {
+    const state = get()
+    const newTemplates = state.userTemplates.filter((t) => !templateIds.includes(t.id))
+
+    saveUserTemplatesToStorage(newTemplates)
+    set({ userTemplates: newTemplates })
+  },
+
+  exportMultipleTemplates: (templateIds) => {
+    const state = get()
+    const templatesToExport = state.userTemplates.filter((t) => templateIds.includes(t.id))
+
+    // Create individual JSON files for each template
+    templatesToExport.forEach((template) => {
+      const jsonString = JSON.stringify(template, null, 2)
+      const blob = new Blob([jsonString], { type: 'application/json' })
+      const url = URL.createObjectURL(blob)
+      const a = document.createElement('a')
+      a.href = url
+      const fileName = `${template.name.replace(/[^a-z0-9]/gi, '-').toLowerCase()}-template.json`
+      a.download = fileName
+      document.body.appendChild(a)
+      a.click()
+      document.body.removeChild(a)
+      URL.revokeObjectURL(url)
+    })
   },
 
   // History Actions (Undo/Redo)
@@ -1117,6 +1300,7 @@ export const useEmailStore = create<EmailStore>((set, get) => ({
 
       return {
         email: createNewEmail(),
+        loadedTemplateId: null, // Clear loaded template
         editorState: {
           selectedBlockId: null,
           editingBlockId: null,
@@ -1172,6 +1356,7 @@ export const useEmailStore = create<EmailStore>((set, get) => ({
             },
             updatedAt: new Date(),
           },
+          loadedTemplateId: null, // Clear loaded template (system templates can't be updated)
           editorState: {
             selectedBlockId: null,
             editingBlockId: null,

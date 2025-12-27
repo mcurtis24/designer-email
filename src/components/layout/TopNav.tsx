@@ -16,6 +16,9 @@ export default function TopNav() {
   const redo = useEmailStore((state) => state.redo)
   const canUndo = useEmailStore((state) => state.canUndo())
   const canRedo = useEmailStore((state) => state.canRedo())
+  const loadedTemplateId = useEmailStore((state) => state.loadedTemplateId)
+  const userTemplates = useEmailStore((state) => state.userTemplates)
+  const updateTemplateContent = useEmailStore((state) => state.updateTemplateContent)
 
   const [showTestModal, setShowTestModal] = useState(false)
   const [showPreviewModal, setShowPreviewModal] = useState(false)
@@ -23,11 +26,15 @@ export default function TopNav() {
   const [showSaveDialog, setShowSaveDialog] = useState(false)
   const [showSaveTemplateDialog, setShowSaveTemplateDialog] = useState(false)
   const [showAccessibilityPanel, setShowAccessibilityPanel] = useState(false)
+  const [isUpdatingTemplate, setIsUpdatingTemplate] = useState(false)
   const [testEmail, setTestEmail] = useState('')
   const [testSubject, setTestSubject] = useState('')
   const [isSending, setIsSending] = useState(false)
   const [sendError, setSendError] = useState<string | null>(null)
   const [sendSuccess, setSendSuccess] = useState(false)
+
+  // Get loaded template name
+  const loadedTemplate = loadedTemplateId ? userTemplates.find(t => t.id === loadedTemplateId) : null
 
   // Memoize HTML generation for preview (without Outlook fallback to prevent duplication)
   const previewHTML = useMemo(() => generateEmailHTML(email, false), [email])
@@ -173,10 +180,49 @@ export default function TopNav() {
           </button>
         )}
 
+        {/* Update Template Button - Only shows when a user template is loaded */}
+        {loadedTemplateId && loadedTemplate && (
+          <button
+            onClick={async () => {
+              if (confirm(`Update template "${loadedTemplate.name}" with current changes?`)) {
+                setIsUpdatingTemplate(true)
+                try {
+                  await updateTemplateContent()
+                  alert('Template updated successfully!')
+                } catch (error) {
+                  alert('Failed to update template. Please try again.')
+                } finally {
+                  setIsUpdatingTemplate(false)
+                }
+              }
+            }}
+            disabled={isUpdatingTemplate}
+            className="flex items-center gap-2 px-4 py-2 text-sm font-medium text-white bg-green-600 rounded-md hover:bg-green-700 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+            title={`Update "${loadedTemplate.name}" with current changes`}
+          >
+            {isUpdatingTemplate ? (
+              <>
+                <svg className="animate-spin h-4 w-4" fill="none" viewBox="0 0 24 24">
+                  <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4" />
+                  <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z" />
+                </svg>
+                <span>Updating...</span>
+              </>
+            ) : (
+              <>
+                <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15" />
+                </svg>
+                <span>Update "{loadedTemplate.name.length > 15 ? loadedTemplate.name.substring(0, 15) + '...' : loadedTemplate.name}"</span>
+              </>
+            )}
+          </button>
+        )}
+
         <button
           onClick={() => setShowSaveTemplateDialog(true)}
           className="flex items-center gap-2 px-4 py-2 text-sm font-medium text-gray-700 bg-white rounded-md hover:bg-gray-50 transition-colors border border-gray-300"
-          title="Save current email as a reusable template"
+          title="Save current email as a new template"
         >
           <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 5a2 2 0 012-2h10a2 2 0 012 2v16l-7-3.5L5 21V5z" />

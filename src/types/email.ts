@@ -244,6 +244,15 @@ export type TemplateCategory =
 
 export type TemplateSource = 'system' | 'user' | 'imported'
 
+export interface TemplateVersion {
+  id: string
+  timestamp: Date
+  blocks: EmailBlock[]
+  settings: EmailSettings
+  message?: string // Optional version message
+  thumbnail?: string // Optional thumbnail for version
+}
+
 export interface UserTemplate {
   id: string // Unique template ID
   name: string // User-defined template name
@@ -258,6 +267,9 @@ export interface UserTemplate {
   // Visual preview
   thumbnail: string // Base64 PNG image (auto-generated)
   thumbnailGeneratedAt: Date
+
+  // Version history (max 10 versions)
+  versions?: TemplateVersion[]
 
   // Metadata
   createdAt: Date

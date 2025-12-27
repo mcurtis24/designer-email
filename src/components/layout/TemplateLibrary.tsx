@@ -3,29 +3,37 @@
  * Displays email templates with filtering and loading functionality
  */
 
-import { useState, useRef } from 'react'
+import { useState, useRef, useMemo } from 'react'
 import { useEmailStore } from '@/stores/emailStore'
 import { templates, type Template, getTemplateMetadata } from '@/lib/templates'
 import { generateEmailHTML } from '@/lib/htmlGenerator'
 import PreviewModal from '@/components/ui/PreviewModal'
 import TemplateThumbnail from '@/components/ui/TemplateThumbnail'
 import TemplateCard from '@/components/ui/TemplateCard'
+import TemplateAnalyticsModal from '@/components/ui/TemplateAnalyticsModal'
 import type { EmailDocument } from '@/types/email'
 
 type TabType = 'system' | 'user'
+type SortOption = 'newest' | 'oldest' | 'name-asc' | 'name-desc' | 'most-used' | 'least-used'
 
 export default function TemplateLibrary() {
   const [activeTab, setActiveTab] = useState<TabType>('system')
   const [category, setCategory] = useState<string>('all')
   const [searchQuery, setSearchQuery] = useState('')
+  const [sortBy, setSortBy] = useState<SortOption>('newest')
   const [showPreview, setShowPreview] = useState(false)
   const [previewHTML, setPreviewHTML] = useState('')
   const [previewTemplate, setPreviewTemplate] = useState<Template | null>(null)
+  const [selectionMode, setSelectionMode] = useState(false)
+  const [selectedTemplateIds, setSelectedTemplateIds] = useState<string[]>([])
+  const [showAnalytics, setShowAnalytics] = useState(false)
   const fileInputRef = useRef<HTMLInputElement>(null)
 
   const loadTemplate = useEmailStore((state) => state.loadTemplate)
   const userTemplates = useEmailStore((state) => state.userTemplates)
   const importUserTemplate = useEmailStore((state) => state.importUserTemplate)
+  const deleteMultipleTemplates = useEmailStore((state) => state.deleteMultipleTemplates)
+  const exportMultipleTemplates = useEmailStore((state) => state.exportMultipleTemplates)
 
   // Filter system templates by category
   const filteredTemplates = category === 'all'
@@ -45,6 +53,28 @@ export default function TemplateLibrary() {
 
     return matchesCategory && matchesSearch
   })
+
+  // Sort filtered user templates
+  const sortedUserTemplates = useMemo(() => {
+    const templates = [...filteredUserTemplates]
+
+    switch (sortBy) {
+      case 'newest':
+        return templates.sort((a, b) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime())
+      case 'oldest':
+        return templates.sort((a, b) => new Date(a.createdAt).getTime() - new Date(b.createdAt).getTime())
+      case 'name-asc':
+        return templates.sort((a, b) => a.name.localeCompare(b.name))
+      case 'name-desc':
+        return templates.sort((a, b) => b.name.localeCompare(a.name))
+      case 'most-used':
+        return templates.sort((a, b) => (b.useCount || 0) - (a.useCount || 0))
+      case 'least-used':
+        return templates.sort((a, b) => (a.useCount || 0) - (b.useCount || 0))
+      default:
+        return templates
+    }
+  }, [filteredUserTemplates, sortBy])
 
   // Get unique categories from user templates
   const userCategories = Array.from(new Set(userTemplates.map((t) => t.category)))
@@ -73,6 +103,50 @@ export default function TemplateLibrary() {
       }
     }
     reader.readAsText(file)
+  }
+
+  // Bulk operation handlers
+  const toggleSelectionMode = () => {
+    setSelectionMode(!selectionMode)
+    setSelectedTemplateIds([]) // Clear selections when toggling mode
+  }
+
+  const toggleTemplateSelection = (templateId: string) => {
+    setSelectedTemplateIds((prev) =>
+      prev.includes(templateId)
+        ? prev.filter((id) => id !== templateId)
+        : [...prev, templateId]
+    )
+  }
+
+  const selectAllTemplates = () => {
+    setSelectedTemplateIds(sortedUserTemplates.map((t) => t.id))
+  }
+
+  const deselectAllTemplates = () => {
+    setSelectedTemplateIds([])
+  }
+
+  const handleBulkDelete = () => {
+    if (selectedTemplateIds.length === 0) return
+
+    const count = selectedTemplateIds.length
+    const confirmation = confirm(
+      `Delete ${count} template${count > 1 ? 's' : ''}? This action cannot be undone.`
+    )
+
+    if (confirmation) {
+      deleteMultipleTemplates(selectedTemplateIds)
+      setSelectedTemplateIds([])
+      alert(`${count} template${count > 1 ? 's' : ''} deleted successfully!`)
+    }
+  }
+
+  const handleBulkExport = () => {
+    if (selectedTemplateIds.length === 0) return
+
+    exportMultipleTemplates(selectedTemplateIds)
+    alert(`${selectedTemplateIds.length} template${selectedTemplateIds.length > 1 ? 's' : ''} exported successfully!`)
   }
 
   const handlePreviewTemplate = (template: Template) => {
@@ -198,43 +272,133 @@ export default function TemplateLibrary() {
         </button>
       </div>
 
-      {/* User Templates: Search Bar + Import Button */}
+      {/* User Templates: Search Bar + Import Button + Sort */}
       {activeTab === 'user' && (
-        <div className="flex gap-2">
-          <div className="flex-1 relative">
-            <input
-              type="text"
-              value={searchQuery}
-              onChange={(e) => setSearchQuery(e.target.value)}
-              placeholder="Search templates by name, description, or tags..."
-              className="w-full pl-9 pr-3 py-2 text-sm border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
-            />
-            <svg
-              className="absolute left-3 top-2.5 w-4 h-4 text-gray-400"
-              fill="none"
-              stroke="currentColor"
-              viewBox="0 0 24 24"
+        <>
+          <div className="flex gap-2">
+            <div className="flex-1 relative">
+              <input
+                type="text"
+                value={searchQuery}
+                onChange={(e) => setSearchQuery(e.target.value)}
+                placeholder="Search templates by name, description, or tags..."
+                className="w-full pl-9 pr-3 py-2 text-sm border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+              />
+              <svg
+                className="absolute left-3 top-2.5 w-4 h-4 text-gray-400"
+                fill="none"
+                stroke="currentColor"
+                viewBox="0 0 24 24"
+              >
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
+              </svg>
+            </div>
+            <button
+              onClick={() => fileInputRef.current?.click()}
+              className="px-4 py-2 text-sm font-medium text-gray-700 bg-white border border-gray-300 rounded-md hover:bg-gray-50 transition-colors flex items-center gap-2"
             >
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
-            </svg>
+              <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-8l-4-4m0 0L8 8m4-4v12" />
+              </svg>
+              Import
+            </button>
+            <input
+              ref={fileInputRef}
+              type="file"
+              accept=".json"
+              onChange={handleImportTemplate}
+              className="hidden"
+            />
           </div>
-          <button
-            onClick={() => fileInputRef.current?.click()}
-            className="px-4 py-2 text-sm font-medium text-gray-700 bg-white border border-gray-300 rounded-md hover:bg-gray-50 transition-colors flex items-center gap-2"
-          >
-            <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-8l-4-4m0 0L8 8m4-4v12" />
-            </svg>
-            Import
-          </button>
-          <input
-            ref={fileInputRef}
-            type="file"
-            accept=".json"
-            onChange={handleImportTemplate}
-            className="hidden"
-          />
-        </div>
+
+          {/* Sort Dropdown + Selection Mode Toggle */}
+          <div className="flex items-center gap-2">
+            <label htmlFor="sort-templates" className="text-sm text-gray-600 font-medium">
+              Sort by:
+            </label>
+            <select
+              id="sort-templates"
+              value={sortBy}
+              onChange={(e) => setSortBy(e.target.value as SortOption)}
+              className="px-3 py-1.5 text-sm border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 bg-white"
+            >
+              <option value="newest">Newest First</option>
+              <option value="oldest">Oldest First</option>
+              <option value="name-asc">Name (A-Z)</option>
+              <option value="name-desc">Name (Z-A)</option>
+              <option value="most-used">Most Used</option>
+              <option value="least-used">Least Used</option>
+            </select>
+            <button
+              onClick={() => setShowAnalytics(true)}
+              className="px-4 py-2 text-sm font-medium rounded-md transition-colors flex items-center gap-2 bg-white text-gray-700 border border-gray-300 hover:bg-gray-50"
+              title="View Analytics"
+            >
+              <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z" />
+              </svg>
+              Analytics
+            </button>
+            <button
+              onClick={toggleSelectionMode}
+              className={`px-4 py-2 text-sm font-medium rounded-md transition-colors flex items-center gap-2 ${
+                selectionMode
+                  ? 'bg-blue-600 text-white hover:bg-blue-700'
+                  : 'bg-white text-gray-700 border border-gray-300 hover:bg-gray-50'
+              }`}
+            >
+              <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-6 9l2 2 4-4" />
+              </svg>
+              {selectionMode ? 'Cancel' : 'Select'}
+            </button>
+          </div>
+
+          {/* Bulk Actions Toolbar */}
+          {selectionMode && (
+            <div className="flex items-center justify-between p-3 bg-blue-50 border border-blue-200 rounded-lg">
+              <div className="flex items-center gap-3">
+                <span className="text-sm font-medium text-blue-900">
+                  {selectedTemplateIds.length} selected
+                </span>
+                <button
+                  onClick={selectAllTemplates}
+                  className="text-sm text-blue-600 hover:text-blue-700 font-medium"
+                >
+                  Select All
+                </button>
+                <button
+                  onClick={deselectAllTemplates}
+                  className="text-sm text-blue-600 hover:text-blue-700 font-medium"
+                >
+                  Deselect All
+                </button>
+              </div>
+              <div className="flex items-center gap-2">
+                <button
+                  onClick={handleBulkExport}
+                  disabled={selectedTemplateIds.length === 0}
+                  className="px-4 py-2 text-sm font-medium text-gray-700 bg-white border border-gray-300 rounded-md hover:bg-gray-50 transition-colors disabled:opacity-50 disabled:cursor-not-allowed flex items-center gap-2"
+                >
+                  <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4" />
+                  </svg>
+                  Export Selected
+                </button>
+                <button
+                  onClick={handleBulkDelete}
+                  disabled={selectedTemplateIds.length === 0}
+                  className="px-4 py-2 text-sm font-medium text-white bg-red-600 border border-red-600 rounded-md hover:bg-red-700 transition-colors disabled:opacity-50 disabled:cursor-not-allowed flex items-center gap-2"
+                >
+                  <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
+                  </svg>
+                  Delete Selected
+                </button>
+              </div>
+            </div>
+          )}
+        </>
       )}
 
       {/* Category Filters */}
@@ -387,7 +551,7 @@ export default function TemplateLibrary() {
                 Browse system templates
               </button>
             </div>
-          ) : filteredUserTemplates.length === 0 ? (
+          ) : sortedUserTemplates.length === 0 ? (
             <div className="text-center py-12">
               <svg
                 className="w-12 h-12 mx-auto mb-3 text-gray-400"
@@ -415,8 +579,14 @@ export default function TemplateLibrary() {
             </div>
           ) : (
             <div className="grid grid-cols-1 gap-4">
-              {filteredUserTemplates.map((template) => (
-                <TemplateCard key={template.id} template={template} />
+              {sortedUserTemplates.map((template) => (
+                <TemplateCard
+                  key={template.id}
+                  template={template}
+                  selectionMode={selectionMode}
+                  isSelected={selectedTemplateIds.includes(template.id)}
+                  onToggleSelection={() => toggleTemplateSelection(template.id)}
+                />
               ))}
             </div>
           )}
@@ -448,6 +618,14 @@ export default function TemplateLibrary() {
           )
         }
       />
+
+      {/* Analytics Modal */}
+      {showAnalytics && activeTab === 'user' && (
+        <TemplateAnalyticsModal
+          templates={userTemplates}
+          onClose={() => setShowAnalytics(false)}
+        />
+      )}
     </div>
   )
 }

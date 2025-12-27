@@ -2,15 +2,28 @@ import { useState } from 'react'
 import { UserTemplate } from '@/types/email'
 import { useEmailStore } from '@/stores/emailStore'
 import BlockRenderer from '@/components/blocks/BlockRenderer'
+import EditTemplateDialog from './EditTemplateDialog'
+import { TemplateVersionHistory } from './TemplateVersionHistory'
 
 interface TemplateCardProps {
   template: UserTemplate
   onLoadTemplate?: (template: UserTemplate) => void
+  selectionMode?: boolean
+  isSelected?: boolean
+  onToggleSelection?: () => void
 }
 
-export default function TemplateCard({ template, onLoadTemplate }: TemplateCardProps) {
+export default function TemplateCard({
+  template,
+  onLoadTemplate,
+  selectionMode = false,
+  isSelected = false,
+  onToggleSelection
+}: TemplateCardProps) {
   const [showActions, setShowActions] = useState(false)
   const [showDeleteConfirm, setShowDeleteConfirm] = useState(false)
+  const [showEditDialog, setShowEditDialog] = useState(false)
+  const [showVersionHistory, setShowVersionHistory] = useState(false)
 
   const deleteUserTemplate = useEmailStore((state) => state.deleteUserTemplate)
   const duplicateUserTemplate = useEmailStore((state) => state.duplicateUserTemplate)
@@ -21,6 +34,14 @@ export default function TemplateCard({ template, onLoadTemplate }: TemplateCardP
     if (confirm(`Load "${template.name}"? This will replace your current email.`)) {
       loadUserTemplate(template.id)
       onLoadTemplate?.(template)
+    }
+  }
+
+  const handleCardClick = () => {
+    if (selectionMode) {
+      onToggleSelection?.()
+    } else {
+      handleLoad()
     }
   }
 
@@ -92,7 +113,7 @@ export default function TemplateCard({ template, onLoadTemplate }: TemplateCardP
         <div
           className="relative w-full bg-gray-50 cursor-pointer overflow-hidden"
           style={{ height: '280px' }}
-          onClick={handleLoad}
+          onClick={handleCardClick}
         >
           {/* Render actual template blocks */}
           <div
@@ -135,15 +156,39 @@ export default function TemplateCard({ template, onLoadTemplate }: TemplateCardP
             {template.category}
           </span>
 
-          {/* Source Badge (User Created) */}
-          <span className="absolute top-3 left-3 px-2.5 py-1 text-xs font-medium rounded-md bg-white text-gray-700 shadow-sm border border-gray-200">
-            My Template
-          </span>
+          {/* Source Badge (User Created) / Checkbox */}
+          {selectionMode ? (
+            <div className="absolute top-3 left-3 z-10">
+              <button
+                onClick={(e) => {
+                  e.stopPropagation()
+                  onToggleSelection?.()
+                }}
+                className={`w-6 h-6 rounded border-2 flex items-center justify-center transition-all ${
+                  isSelected
+                    ? 'bg-blue-600 border-blue-600'
+                    : 'bg-white border-gray-300 hover:border-blue-400'
+                }`}
+              >
+                {isSelected && (
+                  <svg className="w-4 h-4 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={3} d="M5 13l4 4L19 7" />
+                  </svg>
+                )}
+              </button>
+            </div>
+          ) : (
+            <span className="absolute top-3 left-3 px-2.5 py-1 text-xs font-medium rounded-md bg-white text-gray-700 shadow-sm border border-gray-200">
+              My Template
+            </span>
+          )}
 
           {/* Hover Overlay */}
-          <div className="absolute inset-0 bg-gradient-to-t from-black/40 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-200 flex items-center justify-center">
-            <div className="text-white text-sm font-medium">Click to load</div>
-          </div>
+          {!selectionMode && (
+            <div className="absolute inset-0 bg-gradient-to-t from-black/40 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-200 flex items-center justify-center">
+              <div className="text-white text-sm font-medium">Click to load</div>
+            </div>
+          )}
         </div>
 
         {/* Template Info */}
@@ -207,6 +252,32 @@ export default function TemplateCard({ template, onLoadTemplate }: TemplateCardP
               <button
                 onClick={(e) => {
                   e.stopPropagation()
+                  setShowEditDialog(true)
+                }}
+                className="flex-1 px-3 py-1.5 bg-white border border-gray-300 text-gray-700 text-xs font-medium rounded hover:bg-gray-50 transition-colors flex items-center justify-center gap-1"
+                title="Edit template"
+              >
+                <svg className="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z" />
+                </svg>
+                Edit
+              </button>
+              <button
+                onClick={(e) => {
+                  e.stopPropagation()
+                  setShowVersionHistory(true)
+                }}
+                className="flex-1 px-3 py-1.5 bg-white border border-gray-300 text-gray-700 text-xs font-medium rounded hover:bg-gray-50 transition-colors flex items-center justify-center gap-1"
+                title="Version history"
+              >
+                <svg className="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
+                </svg>
+                History
+              </button>
+              <button
+                onClick={(e) => {
+                  e.stopPropagation()
                   handleDuplicate()
                 }}
                 className="flex-1 px-3 py-1.5 bg-white border border-gray-300 text-gray-700 text-xs font-medium rounded hover:bg-gray-50 transition-colors flex items-center justify-center gap-1"
@@ -246,6 +317,26 @@ export default function TemplateCard({ template, onLoadTemplate }: TemplateCardP
           )}
         </div>
       </div>
+
+      {/* Edit Template Dialog */}
+      <EditTemplateDialog
+        template={template}
+        isOpen={showEditDialog}
+        onClose={() => setShowEditDialog(false)}
+        onSuccess={() => {
+          setShowEditDialog(false)
+          // Template will automatically update in the grid via store reactivity
+        }}
+      />
+
+      {/* Version History Modal */}
+      {showVersionHistory && (
+        <TemplateVersionHistory
+          templateId={template.id}
+          templateName={template.name}
+          onClose={() => setShowVersionHistory(false)}
+        />
+      )}
 
       {/* Delete Confirmation Modal */}
       {showDeleteConfirm && (

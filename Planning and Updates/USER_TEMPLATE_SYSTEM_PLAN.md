@@ -1410,7 +1410,7 @@ localStorage (Local) ←→ Cloud Database (Firebase/Supabase)
 - Select multiple templates (checkbox mode)
 - Bulk delete selected templates
 - Bulk export selected templates
-- Storage usage meter in UI
+- ~~Storage usage meter in UI~~ REMOVED (cloud storage planned)
 - Auto-archive old templates (optional)
 - Track template usage stats (useCount, lastUsedAt)
 
@@ -1419,12 +1419,12 @@ localStorage (Local) ←→ Cloud Database (Firebase/Supabase)
 - Version history shows timestamps and changes
 - Restore version creates new current version
 - Bulk operations work on 2+ templates
-- Storage meter shows accurate percentage
-- Auto-archive suggests templates to export
+- ~~Storage meter shows accurate percentage~~ REMOVED (cloud storage planned)
+- Auto-archive suggests templates to export (optional)
 
 **Files to Create**:
 - `/src/components/ui/TemplateVersionHistory.tsx` - Version history modal
-- `/src/components/ui/StorageUsageMeter.tsx` - Storage indicator
+- ~~`/src/components/ui/StorageUsageMeter.tsx`~~ REMOVED (cloud storage planned)
 - `/src/components/ui/BulkTemplateActions.tsx` - Bulk action toolbar
 
 **Files to Modify**:
@@ -1439,8 +1439,8 @@ localStorage (Local) ←→ Cloud Database (Firebase/Supabase)
 - [ ] Select 3 templates - verify bulk toolbar appears
 - [ ] Bulk delete 2 templates - verify removed
 - [ ] Bulk export 3 templates - verify ZIP downloaded
-- [ ] Storage meter - verify accurate at 50%, 80%, 95%
-- [ ] Auto-archive - verify oldest templates suggested
+- ~~Storage meter~~ REMOVED (cloud storage planned)
+- [ ] Auto-archive - verify oldest templates suggested (optional)
 
 ---
 
@@ -1976,7 +1976,7 @@ export const useEmailStore = create<EmailStore>((set, get) => ({
 - Sort dropdown
 - Grid layout (2 columns on tablet, 3 on desktop)
 - Empty states for each tab
-- Storage usage meter (bottom of sidebar)
+- ~~Storage usage meter~~ REMOVED (cloud storage planned)
 - Responsive design
 
 ---

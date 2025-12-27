@@ -143,12 +143,12 @@ interface UserTemplate {
 
 ---
 
-### Phase 3: Versioning & Analytics (2-3 days)
+### Phase 3: Versioning & Bulk Operations
 - ✅ Template version history
 - ✅ Restore previous version
-- ✅ Bulk operations
-- ✅ Storage usage meter
-- ✅ Usage analytics
+- ❌ Bulk operations (pending)
+- ~~Storage usage meter~~ REMOVED (cloud storage planned)
+- ⭕ Usage analytics (optional)
 
 ---
 
