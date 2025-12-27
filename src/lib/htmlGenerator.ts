@@ -617,6 +617,9 @@ export function generateEmailHTML(email: EmailDocument, includeOutlookFallback: 
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="x-apple-disable-message-reformatting">
+  <meta name="format-detection" content="telephone=no">
+  <meta name="color-scheme" content="light dark">
+  <meta name="supported-color-schemes" content="light dark">
   <title>${title}</title>
   <!--[if mso]>
   <style type="text/css">
@@ -723,6 +726,70 @@ export function generateEmailHTML(email: EmailDocument, includeOutlookFallback: 
         line-height: 1.4 !important;
       }
       /* Body text stays at default size - don't scale down */
+    }
+
+    /* Dark mode styles */
+    @media (prefers-color-scheme: dark) {
+      /* Override body and container backgrounds for dark mode */
+      body {
+        background-color: #000000 !important;
+      }
+
+      .email-container {
+        background-color: #1a1a1a !important;
+      }
+
+      /* Invert light backgrounds to dark */
+      [bgcolor="#ffffff"],
+      [bgcolor="#FFFFFF"],
+      [style*="background-color: #ffffff"],
+      [style*="background-color: #FFFFFF"],
+      [style*="background-color: rgb(255, 255, 255)"] {
+        background-color: #1a1a1a !important;
+      }
+
+      [bgcolor="#f9fafb"],
+      [bgcolor="#F9FAFB"],
+      [style*="background-color: #f9fafb"],
+      [style*="background-color: #F9FAFB"] {
+        background-color: #262626 !important;
+      }
+
+      /* Ensure text readability in dark mode */
+      h1, h2, h3, h4, h5, h6 {
+        color: #ffffff !important;
+      }
+
+      p, div, span, td {
+        color: #e5e5e5 !important;
+      }
+
+      /* Links remain visible */
+      a {
+        color: #60a5fa !important;
+      }
+
+      /* Buttons: invert backgrounds while maintaining branding */
+      .button-container a {
+        background-color: #2563eb !important;
+        color: #ffffff !important;
+      }
+
+      /* Borders and dividers */
+      [style*="border-color"],
+      hr {
+        border-color: #404040 !important;
+      }
+
+      /* Images: prevent inversion (keep original) */
+      img {
+        opacity: 0.9;
+      }
+
+      /* Footer text */
+      .footer-text {
+        color: #a3a3a3 !important;
+      }
     }
   </style>
 </head>

@@ -8,6 +8,8 @@ import { useEmailStore } from '@/stores/emailStore'
 import type { EmailBlock, TextBlockData } from '@/types/email'
 import { ColorThemePicker } from '@/components/ui/ColorThemePicker'
 import { extractDocumentColors } from '@/lib/colorUtils'
+import { FontFamilyControl } from '@/components/controls/shared/FontFamilyControl'
+import { SizeControl } from '@/components/controls/shared/SizeControl'
 
 type DesignMode = 'desktop' | 'mobile'
 
@@ -185,6 +187,24 @@ export default function TextControls({ block }: TextControlsProps) {
         </div>
       )}
 
+      {/* Font Family */}
+      <FontFamilyControl
+        label="Font Family"
+        value={data.fontFamily}
+        onChange={(fontFamily) => handleDataChange('fontFamily', fontFamily)}
+      />
+
+      {/* Font Size */}
+      <SizeControl
+        label="Font Size"
+        value={data.fontSize}
+        onChange={(fontSize) => handleDataChange('fontSize', fontSize)}
+        min={10}
+        max={48}
+        step={1}
+        unit="px"
+      />
+
       {/* Text Color - Full Picker */}
       <ColorThemePicker
         label="More Colors"
@@ -251,20 +271,15 @@ export default function TextControls({ block }: TextControlsProps) {
       </div>
 
       {/* Line Height */}
-      <div>
-        <label className="block text-sm font-medium text-gray-700 mb-2">
-          Line Height
-        </label>
-        <input
-          type="number"
-          step="0.1"
-          min="1"
-          max="3"
-          value={data.lineHeight}
-          onChange={(e) => handleDataChange('lineHeight', parseFloat(e.target.value))}
-          className="w-full px-3 py-2 text-sm border border-gray-300 rounded-md"
-        />
-      </div>
+      <SizeControl
+        label="Line Height"
+        value={data.lineHeight.toString()}
+        onChange={(lineHeight) => handleDataChange('lineHeight', parseFloat(lineHeight))}
+        min={1.0}
+        max={3.0}
+        step={0.1}
+        unit=""
+      />
 
       {/* Mobile Typography Overrides */}
       <div className="pt-3 border-t border-gray-200">

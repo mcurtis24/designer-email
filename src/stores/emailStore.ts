@@ -37,6 +37,11 @@ interface EmailStore {
   activeSidebarTab: 'content' | 'blocks' | 'style' | 'templates' | 'assets' | 'branding'
   autoOpenColorPicker: boolean
 
+  // UI State (collapsible sections, etc.)
+  uiState: {
+    collapsedSections: { [sectionKey: string]: boolean }
+  }
+
   // Saved Components (persisted in localStorage)
   savedComponents: SavedComponent[]
 
@@ -82,6 +87,11 @@ interface EmailStore {
   // Actions - Sidebar
   setActiveSidebarTab: (tab: 'content' | 'blocks' | 'style' | 'templates' | 'assets' | 'branding') => void
   setAutoOpenColorPicker: (value: boolean) => void
+
+  // Actions - UI State
+  setSectionState: (blockType: string, sectionName: string, isOpen: boolean) => void
+  collapseAllSections: () => void
+  expandAllSections: () => void
 
   // Actions - Viewport
   setViewportMode: (mode: ViewportState['mode']) => void
@@ -268,6 +278,10 @@ export const useEmailStore = create<EmailStore>((set, get) => ({
 
     activeSidebarTab: 'content',
     autoOpenColorPicker: false,
+
+    uiState: {
+      collapsedSections: {},
+    },
 
     savedComponents: loadSavedComponentsFromStorage(),
     userTemplates: loadUserTemplatesFromStorage(),
@@ -576,6 +590,46 @@ export const useEmailStore = create<EmailStore>((set, get) => ({
     set(() => ({
       autoOpenColorPicker: value,
     })),
+
+  // UI State Actions
+  setSectionState: (blockType, sectionName, isOpen) =>
+    set((state) => ({
+      uiState: {
+        ...state.uiState,
+        collapsedSections: {
+          ...state.uiState.collapsedSections,
+          [`${blockType}:${sectionName}`]: isOpen,
+        },
+      },
+    })),
+
+  collapseAllSections: () =>
+    set((state) => {
+      const collapsed: { [key: string]: boolean } = {}
+      Object.keys(state.uiState.collapsedSections).forEach(key => {
+        collapsed[key] = false
+      })
+      return {
+        uiState: {
+          ...state.uiState,
+          collapsedSections: collapsed,
+        },
+      }
+    }),
+
+  expandAllSections: () =>
+    set((state) => {
+      const expanded: { [key: string]: boolean } = {}
+      Object.keys(state.uiState.collapsedSections).forEach(key => {
+        expanded[key] = true
+      })
+      return {
+        uiState: {
+          ...state.uiState,
+          collapsedSections: expanded,
+        },
+      }
+    }),
 
   // Viewport Actions
   setViewportMode: (mode) =>

@@ -8,6 +8,8 @@ import { useEmailStore } from '@/stores/emailStore'
 import type { EmailBlock, ButtonBlockData } from '@/types/email'
 import { ColorThemePicker } from '@/components/ui/ColorThemePicker'
 import { extractDocumentColors } from '@/lib/colorUtils'
+import { AlignmentControl } from '@/components/controls/shared/AlignmentControl'
+import { SizeControl } from '@/components/controls/shared/SizeControl'
 
 interface ButtonControlsProps {
   block: EmailBlock & { data: ButtonBlockData }
@@ -64,51 +66,23 @@ export default function ButtonControls({ block }: ButtonControlsProps) {
       </div>
 
       {/* Button Width */}
-      <div>
-        <label className="block text-sm font-medium text-gray-700 mb-2">
-          Button Width (px)
-        </label>
-        <div className="flex gap-2">
-          <input
-            type="range"
-            min="100"
-            max="400"
-            value={data.width}
-            onChange={(e) => handleDataChange('width', parseInt(e.target.value))}
-            className="flex-1"
-          />
-          <input
-            type="number"
-            value={data.width}
-            onChange={(e) => handleDataChange('width', parseInt(e.target.value))}
-            className="w-20 px-2 py-1.5 text-sm border border-gray-300 rounded-md"
-            min="100"
-            max="400"
-          />
-        </div>
-      </div>
+      <SizeControl
+        label="Button Width"
+        value={(data.width || 200).toString()}
+        onChange={(width) => handleDataChange('width', parseInt(width))}
+        min={100}
+        max={400}
+        step={10}
+        unit="px"
+      />
 
       {/* Alignment */}
-      <div>
-        <label className="block text-sm font-medium text-gray-700 mb-2">
-          Alignment
-        </label>
-        <div className="flex gap-2">
-          {(['left', 'center', 'right'] as const).map((align) => (
-            <button
-              key={align}
-              onClick={() => handleDataChange('alignment', align)}
-              className={`flex-1 px-3 py-2 text-sm border rounded-md transition-colors capitalize ${
-                data.alignment === align
-                  ? 'bg-blue-600 text-white border-blue-600'
-                  : 'border-gray-300 hover:bg-gray-50'
-              }`}
-            >
-              {align}
-            </button>
-          ))}
-        </div>
-      </div>
+      <AlignmentControl
+        label="Alignment"
+        value={data.alignment}
+        onChange={(alignment) => handleDataChange('alignment', alignment)}
+        showJustify={false}
+      />
 
       {/* Button Background Color */}
       <ColorThemePicker
@@ -133,29 +107,15 @@ export default function ButtonControls({ block }: ButtonControlsProps) {
       />
 
       {/* Border Radius */}
-      <div>
-        <label className="block text-sm font-medium text-gray-700 mb-2">
-          Border Radius (px)
-        </label>
-        <div className="flex gap-2">
-          <input
-            type="range"
-            min="0"
-            max="50"
-            value={data.borderRadius}
-            onChange={(e) => handleDataChange('borderRadius', parseInt(e.target.value))}
-            className="flex-1"
-          />
-          <input
-            type="number"
-            value={data.borderRadius}
-            onChange={(e) => handleDataChange('borderRadius', parseInt(e.target.value))}
-            className="w-20 px-2 py-1.5 text-sm border border-gray-300 rounded-md"
-            min="0"
-            max="50"
-          />
-        </div>
-      </div>
+      <SizeControl
+        label="Border Radius"
+        value={data.borderRadius.toString()}
+        onChange={(borderRadius) => handleDataChange('borderRadius', parseInt(borderRadius))}
+        min={0}
+        max={50}
+        step={1}
+        unit="px"
+      />
     </div>
   )
 }
