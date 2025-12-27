@@ -9,6 +9,22 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Fixed - December 27, 2025 (Afternoon Session)
 
+#### Style Tab UX Improvements
+- **Brand Styles Section**: Implemented functional brand color application
+  - Brand color swatches now apply colors when clicked (was non-functional, only console.log)
+  - Smart color application based on block type:
+    - Heading/Text: Applies to text color
+    - Button: Applies to button background color
+    - Divider: Applies to divider line color
+    - Footer: Applies to footer background color
+    - Image/Gallery/Layout/Video/SocialIcons/Spacer: Applies to block background color
+  - Impact: Makes Brand Styles section actually useful for quick color application
+- **Edit Typography Styles Link**: Fixed non-functional link in heading/text controls
+  - Added `showBrandingModal` state management to email store
+  - Link now properly opens the Brand Kit Management modal
+  - Previously called `setActiveSidebarTab('branding')` which was redirected to 'style' tab
+  - Impact: Users can now access typography style management from block controls
+
 #### Video Block Bug Fixes
 - **Style Sidebar Activation**: Fixed video block not activating style sidebar when clicked
   - Added `useEmailStore` import and `setActiveSidebarTab('style')` call to click handler

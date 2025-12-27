@@ -38,6 +38,7 @@ interface EmailStore {
   // Sidebar UI State
   activeSidebarTab: 'content' | 'blocks' | 'style' | 'templates' | 'assets' | 'branding'
   autoOpenColorPicker: boolean
+  showBrandingModal: boolean
 
   // UI State (collapsible sections, etc.)
   uiState: {
@@ -89,6 +90,7 @@ interface EmailStore {
   // Actions - Sidebar
   setActiveSidebarTab: (tab: 'content' | 'blocks' | 'style' | 'templates' | 'assets' | 'branding') => void
   setAutoOpenColorPicker: (value: boolean) => void
+  setShowBrandingModal: (value: boolean) => void
 
   // Actions - UI State
   setSectionState: (blockType: string, sectionName: string, isOpen: boolean) => void
@@ -292,6 +294,7 @@ export const useEmailStore = create<EmailStore>((set, get) => ({
 
     activeSidebarTab: 'content',
     autoOpenColorPicker: false,
+    showBrandingModal: false,
 
     uiState: {
       collapsedSections: {},
@@ -603,6 +606,11 @@ export const useEmailStore = create<EmailStore>((set, get) => ({
   setAutoOpenColorPicker: (value) =>
     set(() => ({
       autoOpenColorPicker: value,
+    })),
+
+  setShowBrandingModal: (value) =>
+    set(() => ({
+      showBrandingModal: value,
     })),
 
   // UI State Actions

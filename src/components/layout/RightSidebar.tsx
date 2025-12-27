@@ -1,4 +1,3 @@
-import { useState } from 'react'
 import BlockLibrary from './BlockLibrary'
 import DesignControls from './DesignControls'
 import TemplateLibrary from './TemplateLibrary'
@@ -12,7 +11,8 @@ export default function RightSidebar() {
   const activeTab = useEmailStore((state) => state.activeSidebarTab)
   const setActiveTab = useEmailStore((state) => state.setActiveSidebarTab)
   const blocks = useEmailStore((state) => state.email.blocks)
-  const [showBrandingModal, setShowBrandingModal] = useState(false)
+  const showBrandingModal = useEmailStore((state) => state.showBrandingModal)
+  const setShowBrandingModal = useEmailStore((state) => state.setShowBrandingModal)
 
   // Map old tab types to new consolidated tabs
   const currentTab =

@@ -129,8 +129,55 @@ export default function DesignControls() {
                     <button
                       key={index}
                       onClick={() => {
-                        // Apply brand color - will implement specific logic per block type
-                        console.log('Apply brand color:', brandColor)
+                        const color = brandColor.color
+                        const updateBlock = useEmailStore.getState().updateBlock
+
+                        // Apply brand color based on block type
+                        switch (selectedBlock.type) {
+                          case 'heading':
+                          case 'text':
+                            // Apply to text color
+                            updateBlock(selectedBlock.id, {
+                              data: { ...selectedBlock.data, color }
+                            })
+                            break
+
+                          case 'button':
+                            // Apply to button background color
+                            updateBlock(selectedBlock.id, {
+                              data: { ...selectedBlock.data, backgroundColor: color }
+                            })
+                            break
+
+                          case 'divider':
+                            // Apply to divider color
+                            updateBlock(selectedBlock.id, {
+                              data: { ...selectedBlock.data, color }
+                            })
+                            break
+
+                          case 'footer':
+                            // Apply to footer background color
+                            updateBlock(selectedBlock.id, {
+                              data: { ...selectedBlock.data, backgroundColor: color }
+                            })
+                            break
+
+                          case 'image':
+                          case 'imageGallery':
+                          case 'spacer':
+                          case 'layout':
+                          case 'video':
+                          case 'socialIcons':
+                            // Apply to block background color
+                            updateBlock(selectedBlock.id, {
+                              styles: { ...selectedBlock.styles, backgroundColor: color }
+                            })
+                            break
+
+                          default:
+                            console.warn('Brand color application not implemented for block type:', selectedBlock.type)
+                        }
                       }}
                       className="group relative w-full aspect-square rounded-md border-2 border-gray-200 hover:border-blue-500 transition-colors"
                       style={{ backgroundColor: brandColor.color }}

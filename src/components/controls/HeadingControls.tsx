@@ -21,6 +21,7 @@ export default function HeadingControls({ block }: HeadingControlsProps) {
   const updateBlock = useEmailStore((state) => state.updateBlock)
   const addBrandColor = useEmailStore((state) => state.addBrandColor)
   const removeBrandColor = useEmailStore((state) => state.removeBrandColor)
+  const setShowBrandingModal = useEmailStore((state) => state.setShowBrandingModal)
   const blocks = useEmailStore((state) => state.email.blocks)
   const brandColors = useEmailStore((state) => state.email.settings.brandColors)
   const typographyStyles = useEmailStore((state) => state.email.settings.typographyStyles || [])
@@ -237,7 +238,7 @@ export default function HeadingControls({ block }: HeadingControlsProps) {
             </div>
           </button>
           <button
-            onClick={() => useEmailStore.getState().setActiveSidebarTab('branding')}
+            onClick={() => setShowBrandingModal(true)}
             className="w-full mt-2 text-xs text-blue-600 hover:text-blue-700"
           >
             Edit Typography Styles →
