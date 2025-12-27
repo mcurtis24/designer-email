@@ -100,15 +100,11 @@ export default function TopNav() {
     <nav className="h-[60px] bg-[#1e3a5f] flex items-center justify-between px-6">
       {/* Left Section */}
       <div className="flex items-center gap-6">
-        <button className="flex items-center gap-2 text-white hover:text-gray-200 transition-colors">
-          <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" />
-          </svg>
-          <span className="text-sm font-medium">Back</span>
-        </button>
+        {/* App Title */}
+        <h1 className="text-2xl font-bold text-white">Designer Email</h1>
 
         {/* Undo/Redo Buttons */}
-        <div className="flex items-center gap-1 ml-2">
+        <div className="flex items-center gap-1">
           <button
             onClick={undo}
             disabled={!canUndo}
@@ -221,11 +217,6 @@ export default function TopNav() {
             Reset
           </button>
         </div>
-      </div>
-
-      {/* Center Section - Title */}
-      <div className="absolute left-1/2 transform -translate-x-1/2">
-        <h1 className="text-xl font-semibold text-white">Designer Email</h1>
       </div>
 
       {/* Right Section - Actions */}
