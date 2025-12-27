@@ -1,12 +1,13 @@
 import { DndContext, DragEndEvent, DragOverlay, DragStartEvent } from '@dnd-kit/core'
-import { useState, ReactNode } from 'react'
+import { useState, ReactNode, useEffect } from 'react'
 import TopNav from './TopNav'
 import Canvas from './Canvas'
 import RightSidebar from './RightSidebar'
 import { useEmailStore } from '@/stores/emailStore'
 import { createBlock } from '@/lib/blockDefaults'
-import type { BlockType } from '@/types/email'
+import type { BlockType, EmailBlock } from '@/types/email'
 import BlockRenderer from '@/components/blocks/BlockRenderer'
+import { useAI } from '@/lib/ai/AIContext'
 
 // Block type metadata for drag overlay
 const blockMetadata: Record<string, { label: string; icon: ReactNode }> = {
@@ -90,9 +91,27 @@ export default function EditorLayout() {
   const addBlock = useEmailStore((state) => state.addBlock)
   const addBlockAtIndex = useEmailStore((state) => state.addBlockAtIndex)
   const blocks = useEmailStore((state) => state.email.blocks)
+  const clearAllBlocks = useEmailStore((state) => state.clearAllBlocks)
   const reorderBlocks = useEmailStore((state) => state.reorderBlocks)
   const addBlockToLayoutColumn = useEmailStore((state) => state.addBlockToLayoutColumn)
   const loadSavedComponent = useEmailStore((state) => state.loadSavedComponent)
+
+  // Connect AI to email store
+  const { setApplyBlocksCallback } = useAI()
+
+  useEffect(() => {
+    // Set up callback for AI to apply blocks to editor
+    setApplyBlocksCallback((aiBlocks: EmailBlock[]) => {
+      // Clear existing blocks and add new AI-generated blocks
+      clearAllBlocks()
+      aiBlocks.forEach((block) => addBlock(block))
+    })
+
+    // Cleanup
+    return () => {
+      setApplyBlocksCallback(null)
+    }
+  }, [setApplyBlocksCallback, clearAllBlocks, addBlock])
 
   const handleDragStart = (event: DragStartEvent) => {
     const activeId = event.active.id as string

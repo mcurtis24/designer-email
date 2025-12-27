@@ -2,6 +2,9 @@ import EditorLayout from './components/layout/EditorLayout'
 import { useAutoSave } from './hooks/useAutoSave'
 import { useKeyboardShortcuts } from './hooks/useKeyboardShortcuts'
 import { Toaster } from 'react-hot-toast'
+import { AIProvider } from './lib/ai/AIContext'
+import { AIFloatingButton } from './components/ai/AIFloatingButton'
+import { AISidebar } from './components/ai/AISidebar'
 
 function App() {
   // Enable auto-save
@@ -11,33 +14,40 @@ function App() {
   useKeyboardShortcuts()
 
   return (
-    <div className="h-screen w-screen overflow-hidden">
-      <EditorLayout />
-      <Toaster
-        position="bottom-left"
-        toastOptions={{
-          duration: 3000,
-          style: {
-            background: '#363636',
-            color: '#fff',
-          },
-          success: {
-            duration: 2000,
-            iconTheme: {
-              primary: '#10b981',
-              secondary: '#fff',
+    <AIProvider>
+      <div className="h-screen w-screen overflow-hidden">
+        <EditorLayout />
+
+        {/* AI Components */}
+        <AIFloatingButton />
+        <AISidebar />
+
+        <Toaster
+          position="bottom-left"
+          toastOptions={{
+            duration: 3000,
+            style: {
+              background: '#363636',
+              color: '#fff',
             },
-          },
-          error: {
-            duration: 5000,
-            iconTheme: {
-              primary: '#ef4444',
-              secondary: '#fff',
+            success: {
+              duration: 2000,
+              iconTheme: {
+                primary: '#10b981',
+                secondary: '#fff',
+              },
             },
-          },
-        }}
-      />
-    </div>
+            error: {
+              duration: 5000,
+              iconTheme: {
+                primary: '#ef4444',
+                secondary: '#fff',
+              },
+            },
+          }}
+        />
+      </div>
+    </AIProvider>
   )
 }
 
