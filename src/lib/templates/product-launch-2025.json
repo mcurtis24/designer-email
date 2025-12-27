@@ -41,7 +41,7 @@
       "id": "new-badge",
       "type": "text",
       "data": {
-        "content": "<p style='display: inline-block; background: linear-gradient(135deg, #EC4899 0%, #F97316 100%); color: #FFFFFF; padding: 10px 24px; border-radius: 24px; font-weight: 700; font-size: 13px; letter-spacing: 0.05em; text-transform: uppercase;'>✨ New Arrival</p>",
+        "content": "<p style='display: inline-block; background: linear-gradient(135deg, #EC4899 0%, #F97316 100%); color: #FFFFFF; padding: 10px 24px; border-radius: 24px; font-weight: 700; font-size: 13px; letter-spacing: 0.05em; text-transform: uppercase;'>New Arrival</p>",
         "fontFamily": "-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', sans-serif",
         "fontSize": "13px",
         "color": "#FFFFFF",
@@ -170,7 +170,7 @@
       "id": "free-shipping",
       "type": "text",
       "data": {
-        "content": "<p>🚚 Free shipping & returns • 🎁 Engraving included</p>",
+        "content": "<p>Free shipping & returns • Complimentary engraving</p>",
         "fontFamily": "-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', sans-serif",
         "fontSize": "14px",
         "color": "#059669",
@@ -214,7 +214,7 @@
       "id": "features-grid",
       "type": "text",
       "data": {
-        "content": "<div style='background: linear-gradient(135deg, #F8FAFC 0%, #EFF6FF 100%); border-radius: 16px; padding: 32px 28px; margin-bottom: 20px; border: 1px solid #E0E7FF;'><div style='text-align: center; font-size: 48px; margin-bottom: 16px;'>🎧</div><p style='font-size: 20px; font-weight: 700; color: #0F172A; margin: 0 0 12px 0; text-align: center;'>Adaptive Audio</p><p style='font-size: 16px; color: #475569; line-height: 1.6; margin: 0; text-align: center;'>Automatically adjusts noise control based on your environment for the perfect listening experience.</p></div><div style='background: linear-gradient(135deg, #F8FAFC 0%, #FEF3C7 100%); border-radius: 16px; padding: 32px 28px; margin-bottom: 20px; border: 1px solid #FDE68A;'><div style='text-align: center; font-size: 48px; margin-bottom: 16px;'>🔋</div><p style='font-size: 20px; font-weight: 700; color: #0F172A; margin: 0 0 12px 0; text-align: center;'>All-Day Battery</p><p style='font-size: 16px; color: #475569; line-height: 1.6; margin: 0; text-align: center;'>Up to 6 hours listening time, up to 30 hours total with charging case. USB-C charging included.</p></div><div style='background: linear-gradient(135deg, #F8FAFC 0%, #ECFDF5 100%); border-radius: 16px; padding: 32px 28px; margin-bottom: 20px; border: 1px solid #BBF7D0;'><div style='text-align: center; font-size: 48px; margin-bottom: 16px;'>✨</div><p style='font-size: 20px; font-weight: 700; color: #0F172A; margin: 0 0 12px 0; text-align: center;'>Premium Comfort</p><p style='font-size: 16px; color: #475569; line-height: 1.6; margin: 0; text-align: center;'>All-new ergonomic design with 4 silicone tip sizes for a customized, secure fit all day long.</p></div><div style='background: linear-gradient(135deg, #F8FAFC 0%, #FCE7F3 100%); border-radius: 16px; padding: 32px 28px; margin-bottom: 0px; border: 1px solid #FBCFE8;'><div style='text-align: center; font-size: 48px; margin-bottom: 16px;'>🌊</div><p style='font-size: 20px; font-weight: 700; color: #0F172A; margin: 0 0 12px 0; text-align: center;'>Water Resistant</p><p style='font-size: 16px; color: #475569; line-height: 1.6; margin: 0; text-align: center;'>IP54 dust, sweat and water resistance. Perfect for workouts, commutes, and everyday adventures.</p></div>",
+        "content": "<div style='background: linear-gradient(135deg, #F8FAFC 0%, #EFF6FF 100%); border-radius: 16px; padding: 32px 28px; margin-bottom: 20px; border: 1px solid #E0E7FF;'><p style='font-size: 20px; font-weight: 700; color: #0F172A; margin: 0 0 12px 0; text-align: center;'>Adaptive Audio</p><p style='font-size: 16px; color: #475569; line-height: 1.6; margin: 0; text-align: center;'>Automatically adjusts noise control based on your environment for the perfect listening experience.</p></div><div style='background: linear-gradient(135deg, #F8FAFC 0%, #FEF3C7 100%); border-radius: 16px; padding: 32px 28px; margin-bottom: 20px; border: 1px solid #FDE68A;'><p style='font-size: 20px; font-weight: 700; color: #0F172A; margin: 0 0 12px 0; text-align: center;'>All-Day Battery</p><p style='font-size: 16px; color: #475569; line-height: 1.6; margin: 0; text-align: center;'>Up to 6 hours listening time, up to 30 hours total with charging case. USB-C charging included.</p></div><div style='background: linear-gradient(135deg, #F8FAFC 0%, #ECFDF5 100%); border-radius: 16px; padding: 32px 28px; margin-bottom: 20px; border: 1px solid #BBF7D0;'><p style='font-size: 20px; font-weight: 700; color: #0F172A; margin: 0 0 12px 0; text-align: center;'>Premium Comfort</p><p style='font-size: 16px; color: #475569; line-height: 1.6; margin: 0; text-align: center;'>All-new ergonomic design with 4 silicone tip sizes for a customized, secure fit all day long.</p></div><div style='background: linear-gradient(135deg, #F8FAFC 0%, #FCE7F3 100%); border-radius: 16px; padding: 32px 28px; margin-bottom: 0px; border: 1px solid #FBCFE8;'><p style='font-size: 20px; font-weight: 700; color: #0F172A; margin: 0 0 12px 0; text-align: center;'>Water Resistant</p><p style='font-size: 16px; color: #475569; line-height: 1.6; margin: 0; text-align: center;'>IP54 dust, sweat and water resistance. Perfect for workouts, commutes, and everyday adventures.</p></div>",
         "fontFamily": "-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', sans-serif",
         "fontSize": "16px",
         "color": "#475569",
@@ -234,7 +234,7 @@
       "id": "reviews-section",
       "type": "text",
       "data": {
-        "content": "<div style='background: #FFFBEB; border: 2px solid #FDE68A; border-radius: 16px; padding: 36px 32px; text-align: center;'><p style='font-size: 48px; margin: 0 0 16px 0;'>⭐⭐⭐⭐⭐</p><p style='font-size: 18px; font-weight: 700; color: #78350F; margin: 0 0 12px 0;'>Rated 4.9/5 by 12,000+ customers</p><p style='font-size: 16px; color: #92400E; line-height: 1.6; margin: 0 0 20px 0; font-style: italic;'>\"Best earbuds I've ever owned. The sound quality is incredible and they stay in perfectly during runs.\" — Alex M.</p><p style='font-size: 14px; color: #92400E; margin: 0;'><a href='https://example.com/reviews' style='color: #78350F; font-weight: 600; text-decoration: underline;'>Read 12,000+ reviews →</a></p></div>",
+        "content": "<div style='background: #FFFBEB; border: 2px solid #FDE68A; border-radius: 16px; padding: 36px 32px; text-align: center;'><p style='font-size: 18px; font-weight: 700; color: #78350F; margin: 0 0 12px 0;'>Rated 4.9 out of 5 stars by 12,000+ customers</p><p style='font-size: 16px; color: #92400E; line-height: 1.6; margin: 0 0 20px 0; font-style: italic;'>\"Best earbuds I've ever owned. The sound quality is incredible and they stay in perfectly during runs.\" — Alex M.</p><p style='font-size: 14px; color: #92400E; margin: 0;'><a href='https://example.com/reviews' style='color: #78350F; font-weight: 600; text-decoration: underline;'>Read 12,000+ reviews →</a></p></div>",
         "fontFamily": "-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', sans-serif",
         "fontSize": "16px",
         "color": "#475569",
@@ -371,7 +371,7 @@
       "id": "guarantee",
       "type": "text",
       "data": {
-        "content": "<p>✅ 14-day returns • 🛡️ 1-year warranty • 📞 24/7 support</p>",
+        "content": "<p>14-day returns • 1-year warranty • 24/7 customer support</p>",
         "fontFamily": "-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', sans-serif",
         "fontSize": "14px",
         "color": "#64748B",
@@ -416,7 +416,7 @@
     }
   ],
   "settings": {
-    "subject": "✨ Just Launched: AirPods Pro 4 • Adaptive Audio Technology",
+    "subject": "Just Launched: AirPods Pro 4 • Adaptive Audio Technology",
     "preheader": "All-new design. 6-hour battery. Active noise cancellation. $249 with free shipping & engraving.",
     "width": 640,
     "backgroundColor": "#FFFFFF",

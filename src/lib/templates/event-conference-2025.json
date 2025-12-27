@@ -44,7 +44,7 @@
       "id": "event-label",
       "type": "text",
       "data": {
-        "content": "<p style='text-transform: uppercase; letter-spacing: 0.1em; font-weight: 600;'>📍 Join Us</p>",
+        "content": "<p style='text-transform: uppercase; letter-spacing: 0.1em; font-weight: 600;'>Upcoming Event</p>",
         "fontFamily": "-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', sans-serif",
         "fontSize": "12px",
         "color": "#F59E0B",
@@ -161,7 +161,7 @@
       "id": "details-card",
       "type": "text",
       "data": {
-        "content": "<div style='background: #F8FAFC; border-radius: 12px; padding: 32px; border: 1px solid #E2E8F0;'><p style='font-size: 20px; font-weight: 700; color: #0F172A; margin: 0 0 24px 0; text-align: center;'>Event Details</p><table style='width: 100%; border-collapse: collapse;'><tr><td style='padding: 12px 0; border-bottom: 1px solid #E2E8F0;'><span style='font-size: 28px; margin-right: 12px;'>📅</span><div style='display: inline-block; vertical-align: middle;'><p style='margin: 0; font-size: 14px; color: #64748B; font-weight: 500;'>Date</p><p style='margin: 0; font-size: 17px; color: #0F172A; font-weight: 600;'>April 15-17, 2025</p></div></td></tr><tr><td style='padding: 12px 0; border-bottom: 1px solid #E2E8F0;'><span style='font-size: 28px; margin-right: 12px;'>🕐</span><div style='display: inline-block; vertical-align: middle;'><p style='margin: 0; font-size: 14px; color: #64748B; font-weight: 500;'>Time</p><p style='margin: 0; font-size: 17px; color: #0F172A; font-weight: 600;'>9:00 AM - 6:00 PM PST Daily</p></div></td></tr><tr><td style='padding: 12px 0; border-bottom: 1px solid #E2E8F0;'><span style='font-size: 28px; margin-right: 12px;'>📍</span><div style='display: inline-block; vertical-align: middle;'><p style='margin: 0; font-size: 14px; color: #64748B; font-weight: 500;'>Location</p><p style='margin: 0; font-size: 17px; color: #0F172A; font-weight: 600;'>Moscone Center, San Francisco</p></div></td></tr><tr><td style='padding: 12px 0;'><span style='font-size: 28px; margin-right: 12px;'>👥</span><div style='display: inline-block; vertical-align: middle;'><p style='margin: 0; font-size: 14px; color: #64748B; font-weight: 500;'>Attendees</p><p style='margin: 0; font-size: 17px; color: #0F172A; font-weight: 600;'>2,500+ Design Leaders</p></div></td></tr></table></div>",
+        "content": "<div style='background: #F8FAFC; border-radius: 12px; padding: 32px; border: 1px solid #E2E8F0;'><p style='font-size: 20px; font-weight: 700; color: #0F172A; margin: 0 0 24px 0; text-align: center;'>Event Details</p><table style='width: 100%; border-collapse: collapse;'><tr><td style='padding: 16px 0; border-bottom: 1px solid #E2E8F0;'><p style='margin: 0; font-size: 13px; color: #64748B; font-weight: 600; text-transform: uppercase; letter-spacing: 0.05em; margin-bottom: 6px;'>Date</p><p style='margin: 0; font-size: 17px; color: #0F172A; font-weight: 600;'>April 15-17, 2025</p></td></tr><tr><td style='padding: 16px 0; border-bottom: 1px solid #E2E8F0;'><p style='margin: 0; font-size: 13px; color: #64748B; font-weight: 600; text-transform: uppercase; letter-spacing: 0.05em; margin-bottom: 6px;'>Time</p><p style='margin: 0; font-size: 17px; color: #0F172A; font-weight: 600;'>9:00 AM - 6:00 PM PST Daily</p></td></tr><tr><td style='padding: 16px 0; border-bottom: 1px solid #E2E8F0;'><p style='margin: 0; font-size: 13px; color: #64748B; font-weight: 600; text-transform: uppercase; letter-spacing: 0.05em; margin-bottom: 6px;'>Location</p><p style='margin: 0; font-size: 17px; color: #0F172A; font-weight: 600;'>Moscone Center, San Francisco</p></td></tr><tr><td style='padding: 16px 0;'><p style='margin: 0; font-size: 13px; color: #64748B; font-weight: 600; text-transform: uppercase; letter-spacing: 0.05em; margin-bottom: 6px;'>Attendees</p><p style='margin: 0; font-size: 17px; color: #0F172A; font-weight: 600;'>2,500+ Design Leaders</p></td></tr></table></div>",
         "fontFamily": "-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', sans-serif",
         "fontSize": "16px",
         "color": "#475569",
@@ -210,7 +210,7 @@
       "id": "price-note",
       "type": "text",
       "data": {
-        "content": "<p>🎟️ Save $200 with early registration • Ends February 28</p>",
+        "content": "<p>Save $200 with early registration • Ends February 28</p>",
         "fontFamily": "-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', sans-serif",
         "fontSize": "14px",
         "color": "#DC2626",
@@ -298,7 +298,7 @@
       "id": "tracks-list",
       "type": "text",
       "data": {
-        "content": "<div style='border-left: 4px solid #4F46E5; padding-left: 20px; margin-bottom: 24px;'><p style='font-size: 18px; font-weight: 700; color: #0F172A; margin: 0 0 8px 0;'>🎨 Product Design</p><p style='font-size: 15px; color: #475569; line-height: 1.6; margin: 0;'>UX/UI best practices, design systems, prototyping workflows</p></div><div style='border-left: 4px solid #059669; padding-left: 20px; margin-bottom: 24px;'><p style='font-size: 18px; font-weight: 700; color: #0F172A; margin: 0 0 8px 0;'>🤖 AI & Automation</p><p style='font-size: 15px; color: #475569; line-height: 1.6; margin: 0;'>AI-powered design tools, automation strategies, ethical AI</p></div><div style='border-left: 4px solid #F59E0B; padding-left: 20px; margin-bottom: 24px;'><p style='font-size: 18px; font-weight: 700; color: #0F172A; margin: 0 0 8px 0;'>🔬 Design Research</p><p style='font-size: 15px; color: #475569; line-height: 1.6; margin: 0;'>User research methods, behavioral insights, data-driven design</p></div><div style='border-left: 4px solid #DC2626; padding-left: 20px;'><p style='font-size: 18px; font-weight: 700; color: #0F172A; margin: 0 0 8px 0;'>💼 Design Leadership</p><p style='font-size: 15px; color: #475569; line-height: 1.6; margin: 0;'>Building design teams, career growth, executive communication</p></div>",
+        "content": "<div style='border-left: 4px solid #4F46E5; padding-left: 20px; margin-bottom: 24px;'><p style='font-size: 18px; font-weight: 700; color: #0F172A; margin: 0 0 8px 0;'>Product Design</p><p style='font-size: 15px; color: #475569; line-height: 1.6; margin: 0;'>UX/UI best practices, design systems, prototyping workflows</p></div><div style='border-left: 4px solid #059669; padding-left: 20px; margin-bottom: 24px;'><p style='font-size: 18px; font-weight: 700; color: #0F172A; margin: 0 0 8px 0;'>AI & Automation</p><p style='font-size: 15px; color: #475569; line-height: 1.6; margin: 0;'>AI-powered design tools, automation strategies, ethical AI</p></div><div style='border-left: 4px solid #F59E0B; padding-left: 20px; margin-bottom: 24px;'><p style='font-size: 18px; font-weight: 700; color: #0F172A; margin: 0 0 8px 0;'>Design Research</p><p style='font-size: 15px; color: #475569; line-height: 1.6; margin: 0;'>User research methods, behavioral insights, data-driven design</p></div><div style='border-left: 4px solid #DC2626; padding-left: 20px;'><p style='font-size: 18px; font-weight: 700; color: #0F172A; margin: 0 0 8px 0;'>Design Leadership</p><p style='font-size: 15px; color: #475569; line-height: 1.6; margin: 0;'>Building design teams, career growth, executive communication</p></div>",
         "fontFamily": "-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', sans-serif",
         "fontSize": "16px",
         "color": "#475569",
@@ -372,7 +372,7 @@
     }
   ],
   "settings": {
-    "subject": "🎨 You're Invited: Product Design Summit 2025 • April 15-17 in SF",
+    "subject": "You're Invited: Product Design Summit 2025 • April 15-17 in SF",
     "preheader": "Join 2,500+ design leaders for 3 days of innovation, workshops & networking. Early bird pricing ends Feb 28.",
     "width": 640,
     "backgroundColor": "#FFFFFF",
