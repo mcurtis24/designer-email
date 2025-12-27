@@ -1,5 +1,22 @@
 @import "tailwindcss";
 
+/* Theme Configuration - Tailwind v4 */
+@theme {
+  --color-primary: #027DB3;
+  --color-primary-hover: #015f8a;
+
+  --color-blue-50: #e6f5fb;
+  --color-blue-100: #cceaf6;
+  --color-blue-200: #99d5ed;
+  --color-blue-300: #66c0e4;
+  --color-blue-400: #33abdb;
+  --color-blue-500: #027DB3;
+  --color-blue-600: #027DB3;
+  --color-blue-700: #015f8a;
+  --color-blue-800: #014766;
+  --color-blue-900: #012f43;
+}
+
 /* Custom base styles */
 @layer base {
   body {
