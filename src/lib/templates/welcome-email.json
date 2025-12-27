@@ -52,7 +52,7 @@
       "type": "heading",
       "data": {
         "level": 1,
-        "text": "Welcome to TechFlow! 🚀",
+        "text": "Welcome to TechFlow!",
         "fontFamily": "Georgia, serif",
         "fontSize": "48px",
         "fontWeight": 700,
@@ -202,7 +202,7 @@
     }
   ],
   "settings": {
-    "subject": "Welcome to TechFlow! Your 14-day trial starts now 🚀",
+    "subject": "Welcome to TechFlow! Your 14-day trial starts now",
     "preheader": "Complete your profile and invite your team in just 2 minutes",
     "width": 640,
     "backgroundColor": "#FFFFFF",

@@ -120,7 +120,7 @@
       "id": "updates-text",
       "type": "text",
       "data": {
-        "content": "<p>🆕 <strong>Spring 2025 Collection</strong> – Fresh styles just dropped, including sustainable fabrics</p><p>✨ <strong>Exclusive Member Perks</strong> – Early access to sales and free shipping on orders $75+</p><p>💝 <strong>Loyalty Rewards</strong> – Earn points on every purchase and get birthday discounts</p>",
+        "content": "<p><strong>Spring 2025 Collection</strong> – Fresh styles just dropped, including sustainable fabrics</p><p><strong>Exclusive Member Perks</strong> – Early access to sales and free shipping on orders $75+</p><p><strong>Loyalty Rewards</strong> – Earn points on every purchase and get birthday discounts</p>",
         "fontFamily": "-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif",
         "fontSize": "16px",
         "color": "#4B5563",

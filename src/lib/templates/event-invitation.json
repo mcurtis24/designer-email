@@ -9,7 +9,7 @@
     "tags": ["event", "webinar", "invitation", "registration"],
     "placeholders": {
       "event-label": {
-        "content": "<p>📅 UPCOMING EVENT</p>"
+        "content": "<p>UPCOMING EVENT</p>"
       },
       "event-heading": {
         "text": "You're Invited!"
@@ -21,7 +21,7 @@
         "content": "<p>Add your event description here. Explain what attendees will learn, who the speaker is, and why they should attend.</p>"
       },
       "event-details": {
-        "content": "<p style='font-size: 18px; font-weight: 600; margin-bottom: 12px;'>📅 [Day, Month DD, YYYY]</p><p style='font-size: 18px; font-weight: 600; margin-bottom: 12px;'>🕐 [Time] [Timezone]</p><p style='font-size: 18px; font-weight: 600; margin-bottom: 12px;'>⏱️ Duration: [X] minutes</p><p style='font-size: 18px; font-weight: 600;'>👩‍🏫 Speaker: [Speaker Name]</p>"
+        "content": "<p style='font-size: 18px; font-weight: 600; margin-bottom: 12px;'>Date: [Day, Month DD, YYYY]</p><p style='font-size: 18px; font-weight: 600; margin-bottom: 12px;'>Time: [Time] [Timezone]</p><p style='font-size: 18px; font-weight: 600; margin-bottom: 12px;'>Duration: [X] minutes</p><p style='font-size: 18px; font-weight: 600;'>Speaker: [Speaker Name]</p>"
       },
       "register-button": {
         "text": "Register Now",
@@ -63,7 +63,7 @@
       "id": "event-label",
       "type": "text",
       "data": {
-        "content": "<p>📅 UPCOMING WEBINAR</p>",
+        "content": "<p>UPCOMING WEBINAR</p>",
         "fontFamily": "-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif",
         "fontSize": "12px",
         "color": "#7C3AED",
@@ -150,7 +150,7 @@
       "id": "event-details",
       "type": "text",
       "data": {
-        "content": "<p style='font-size: 18px; font-weight: 600; margin-bottom: 12px;'>📅 Saturday, March 15, 2025</p><p style='font-size: 18px; font-weight: 600; margin-bottom: 12px;'>🕐 2:00 PM EST (11:00 AM PST)</p><p style='font-size: 18px; font-weight: 600; margin-bottom: 12px;'>⏱️ Duration: 90 minutes + Q&A</p><p style='font-size: 18px; font-weight: 600;'>👩‍🏫 Speaker: Jane Martinez, Email Expert</p>",
+        "content": "<p style='font-size: 18px; font-weight: 600; margin-bottom: 12px;'>Date: Saturday, March 15, 2025</p><p style='font-size: 18px; font-weight: 600; margin-bottom: 12px;'>Time: 2:00 PM EST (11:00 AM PST)</p><p style='font-size: 18px; font-weight: 600; margin-bottom: 12px;'>Duration: 90 minutes + Q&A</p><p style='font-size: 18px; font-weight: 600;'>Speaker: Jane Martinez, Email Expert</p>",
         "fontFamily": "-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif",
         "fontSize": "16px",
         "color": "#111827",
@@ -302,7 +302,7 @@
     }
   ],
   "settings": {
-    "subject": "📅 You're Invited: Email Marketing Masterclass 2025 with Jane Martinez",
+    "subject": "You're Invited: Email Marketing Masterclass 2025 with Jane Martinez",
     "preheader": "March 15 at 2:00 PM EST – 90 minutes of expert insights + live Q&A",
     "width": 640,
     "backgroundColor": "#FFFFFF",

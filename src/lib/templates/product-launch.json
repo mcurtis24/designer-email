@@ -9,7 +9,7 @@
     "tags": ["product", "launch", "announcement", "ecommerce"],
     "placeholders": {
       "launch-badge": {
-        "content": "<p><strong>🚀 NEW PRODUCT</strong></p>"
+        "content": "<p><strong>NEW PRODUCT</strong></p>"
       },
       "product-heading": {
         "text": "[Introducing Product Name]"
@@ -58,7 +58,7 @@
       "id": "launch-badge",
       "type": "text",
       "data": {
-        "content": "<p><strong>🚀 NEW PRODUCT</strong></p>",
+        "content": "<p><strong>NEW PRODUCT</strong></p>",
         "fontFamily": "-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif",
         "fontSize": "12px",
         "color": "#3B82F6",
@@ -163,7 +163,7 @@
       "id": "features-text",
       "type": "text",
       "data": {
-        "content": "<p><strong>✨ Intuitive Design</strong><br>Beautiful interface that's easy to navigate from day one</p><p><strong>⚡ Lightning Fast</strong><br>Optimized performance for seamless user experience</p><p><strong>🔒 Secure & Reliable</strong><br>Enterprise-grade security to protect your data</p><p><strong>🤝 24/7 Support</strong><br>Our team is always here to help when you need it</p>",
+        "content": "<p><strong>Intuitive Design</strong><br>Beautiful interface that's easy to navigate from day one</p><p><strong>Lightning Fast</strong><br>Optimized performance for seamless user experience</p><p><strong>Secure & Reliable</strong><br>Enterprise-grade security to protect your data</p><p><strong>24/7 Support</strong><br>Our team is always here to help when you need it</p>",
         "fontFamily": "-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif",
         "fontSize": "16px",
         "color": "#4B5563",
@@ -233,7 +233,7 @@
     }
   ],
   "settings": {
-    "subject": "🚀 Introducing [Product Name] – Our Latest Innovation",
+    "subject": "Introducing [Product Name] – Our Latest Innovation",
     "preheader": "Simplify your workflow and boost productivity by 3x",
     "width": 640,
     "backgroundColor": "#FFFFFF",
