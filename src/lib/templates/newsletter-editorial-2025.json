@@ -1,0 +1,393 @@
+{
+  "metadata": {
+    "id": "template-newsletter-editorial-2025",
+    "version": 1,
+    "name": "Newsletter • Editorial 2025",
+    "category": "newsletter",
+    "description": "Modern editorial-style newsletter with generous spacing, bold typography, and comfort-driven design aesthetic",
+    "thumbnail": "",
+    "tags": ["newsletter", "editorial", "2025", "modern", "content", "blog"],
+    "placeholders": {
+      "newsletter-title": {
+        "text": "[Your Newsletter Name]"
+      },
+      "tagline": {
+        "content": "<p>[Your tagline or mission statement]</p>"
+      },
+      "hero-image": {
+        "src": "https://images.unsplash.com/photo-1499750310107-5fef28a66643?w=1200&h=600&fit=crop",
+        "alt": "Person working on laptop with coffee in modern workspace"
+      },
+      "featured-heading": {
+        "text": "[Featured Article Headline]"
+      },
+      "byline": {
+        "content": "<p>By [Author Name] • [Date] • [X] min read</p>"
+      },
+      "excerpt": {
+        "content": "<p>Write your compelling article excerpt here. Use 2-3 paragraphs to draw readers in and encourage them to click through to read the full story.</p>"
+      },
+      "continue-reading": {
+        "text": "Continue Reading",
+        "linkUrl": "https://example.com/article"
+      }
+    }
+  },
+  "blocks": [
+    {
+      "id": "spacer-top",
+      "type": "spacer",
+      "data": {
+        "height": 50
+      },
+      "styles": {
+        "padding": {
+          "top": "0px",
+          "right": "0px",
+          "bottom": "0px",
+          "left": "0px"
+        }
+      }
+    },
+    {
+      "id": "newsletter-title",
+      "type": "heading",
+      "data": {
+        "level": 1,
+        "text": "The Founder's Weekly",
+        "fontFamily": "Georgia, 'Times New Roman', serif",
+        "fontSize": "52px",
+        "mobileFontSize": "36px",
+        "fontWeight": 700,
+        "color": "#0F172A",
+        "lineHeight": 1.1,
+        "mobileLineHeight": 1.2,
+        "letterSpacing": "-0.03em"
+      },
+      "styles": {
+        "padding": {
+          "top": "8px",
+          "right": "24px",
+          "bottom": "12px",
+          "left": "24px"
+        },
+        "textAlign": "center"
+      }
+    },
+    {
+      "id": "tagline",
+      "type": "text",
+      "data": {
+        "content": "<p>Insights for ambitious founders and product builders</p>",
+        "fontFamily": "-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', sans-serif",
+        "fontSize": "16px",
+        "color": "#64748B",
+        "lineHeight": 1.6
+      },
+      "styles": {
+        "padding": {
+          "top": "4px",
+          "right": "24px",
+          "bottom": "8px",
+          "left": "24px"
+        },
+        "textAlign": "center"
+      }
+    },
+    {
+      "id": "issue-date",
+      "type": "text",
+      "data": {
+        "content": "<p>Issue #127 • January 18, 2025</p>",
+        "fontFamily": "-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', sans-serif",
+        "fontSize": "13px",
+        "color": "#94A3B8",
+        "lineHeight": 1.5
+      },
+      "styles": {
+        "padding": {
+          "top": "4px",
+          "right": "24px",
+          "bottom": "32px",
+          "left": "24px"
+        },
+        "textAlign": "center"
+      }
+    },
+    {
+      "id": "divider-top",
+      "type": "divider",
+      "data": {
+        "color": "#E2E8F0",
+        "thickness": 1,
+        "style": "solid",
+        "width": "80%",
+        "padding": "24px 0"
+      },
+      "styles": {
+        "padding": {
+          "top": "8px",
+          "right": "24px",
+          "bottom": "8px",
+          "left": "24px"
+        }
+      }
+    },
+    {
+      "id": "spacer-1",
+      "type": "spacer",
+      "data": {
+        "height": 40
+      },
+      "styles": {
+        "padding": {
+          "top": "0px",
+          "right": "0px",
+          "bottom": "0px",
+          "left": "0px"
+        }
+      }
+    },
+    {
+      "id": "hero-image",
+      "type": "image",
+      "data": {
+        "src": "https://images.unsplash.com/photo-1499750310107-5fef28a66643?w=1200&h=600&fit=crop",
+        "alt": "Person working on laptop with coffee in bright modern workspace",
+        "alignment": "center",
+        "borderRadius": 12,
+        "width": "100%"
+      },
+      "styles": {
+        "padding": {
+          "top": "0px",
+          "right": "0px",
+          "bottom": "0px",
+          "left": "0px"
+        }
+      }
+    },
+    {
+      "id": "spacer-2",
+      "type": "spacer",
+      "data": {
+        "height": 40
+      },
+      "styles": {
+        "padding": {
+          "top": "0px",
+          "right": "0px",
+          "bottom": "0px",
+          "left": "0px"
+        }
+      }
+    },
+    {
+      "id": "featured-heading",
+      "type": "heading",
+      "data": {
+        "level": 2,
+        "text": "Why the Best Founders Focus on Process, Not Outcomes",
+        "fontFamily": "Georgia, 'Times New Roman', serif",
+        "fontSize": "42px",
+        "mobileFontSize": "32px",
+        "fontWeight": 700,
+        "color": "#0F172A",
+        "lineHeight": 1.2,
+        "mobileLineHeight": 1.3,
+        "letterSpacing": "-0.02em"
+      },
+      "styles": {
+        "padding": {
+          "top": "8px",
+          "right": "32px",
+          "bottom": "20px",
+          "left": "32px"
+        },
+        "textAlign": "left"
+      }
+    },
+    {
+      "id": "byline",
+      "type": "text",
+      "data": {
+        "content": "<p>By Sarah Chen, Founder & CEO • January 18, 2025 • 8 min read</p>",
+        "fontFamily": "-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', sans-serif",
+        "fontSize": "14px",
+        "color": "#94A3B8",
+        "lineHeight": 1.6
+      },
+      "styles": {
+        "padding": {
+          "top": "0px",
+          "right": "32px",
+          "bottom": "28px",
+          "left": "32px"
+        },
+        "textAlign": "left"
+      }
+    },
+    {
+      "id": "excerpt",
+      "type": "text",
+      "data": {
+        "content": "<p>After building and selling two companies, I've learned that the most successful founders share a counterintuitive trait: they obsess over their daily processes rather than fixating on outcomes.</p><p>While most entrepreneurs wake up thinking about revenue targets, user growth, or valuation milestones, exceptional founders focus on perfecting their systems—the repeatable processes that compound over time. This mental shift transforms everything.</p><p>In this essay, I'll share the framework I've used to build sustainable growth systems, why process optimization beats goal-setting, and how you can apply these principles starting today. If you're feeling stuck in your startup journey, this might be the perspective shift you need.</p>",
+        "fontFamily": "-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', sans-serif",
+        "fontSize": "18px",
+        "mobileFontSize": "17px",
+        "color": "#475569",
+        "lineHeight": 1.7,
+        "mobileLineHeight": 1.8
+      },
+      "styles": {
+        "padding": {
+          "top": "0px",
+          "right": "32px",
+          "bottom": "32px",
+          "left": "32px"
+        },
+        "textAlign": "left"
+      }
+    },
+    {
+      "id": "continue-reading",
+      "type": "button",
+      "data": {
+        "text": "Continue Reading →",
+        "linkUrl": "https://example.com/article",
+        "backgroundColor": "#0F172A",
+        "textColor": "#FFFFFF",
+        "borderRadius": 8,
+        "fontFamily": "-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', sans-serif",
+        "fontSize": "16px",
+        "fontWeight": 600,
+        "padding": {
+          "top": "18px",
+          "right": "36px",
+          "bottom": "18px",
+          "left": "36px"
+        },
+        "alignment": "left"
+      },
+      "styles": {
+        "padding": {
+          "top": "8px",
+          "right": "32px",
+          "bottom": "60px",
+          "left": "32px"
+        }
+      }
+    },
+    {
+      "id": "divider-middle",
+      "type": "divider",
+      "data": {
+        "color": "#E2E8F0",
+        "thickness": 2,
+        "style": "solid",
+        "width": "100%",
+        "padding": "0px 0"
+      },
+      "styles": {
+        "padding": {
+          "top": "0px",
+          "right": "0px",
+          "bottom": "0px",
+          "left": "0px"
+        }
+      }
+    },
+    {
+      "id": "spacer-3",
+      "type": "spacer",
+      "data": {
+        "height": 50
+      },
+      "styles": {
+        "padding": {
+          "top": "0px",
+          "right": "0px",
+          "bottom": "0px",
+          "left": "0px"
+        }
+      }
+    },
+    {
+      "id": "more-heading",
+      "type": "heading",
+      "data": {
+        "level": 3,
+        "text": "More This Week",
+        "fontFamily": "Georgia, 'Times New Roman', serif",
+        "fontSize": "32px",
+        "mobileFontSize": "28px",
+        "fontWeight": 600,
+        "color": "#1E293B",
+        "lineHeight": 1.3,
+        "letterSpacing": "-0.01em"
+      },
+      "styles": {
+        "padding": {
+          "top": "8px",
+          "right": "32px",
+          "bottom": "28px",
+          "left": "32px"
+        },
+        "textAlign": "left"
+      }
+    },
+    {
+      "id": "article-links",
+      "type": "text",
+      "data": {
+        "content": "<p style='margin-bottom: 24px; padding-left: 8px; border-left: 3px solid #0F172A;'><a href='https://example.com/article-1' style='color: #0F172A; font-size: 18px; font-weight: 600; text-decoration: none;'>The 5-Minute Product Review Framework</a><br><span style='color: #64748B; font-size: 14px;'>How to make better product decisions with limited data</span></p><p style='margin-bottom: 24px; padding-left: 8px; border-left: 3px solid #0F172A;'><a href='https://example.com/article-2' style='color: #0F172A; font-size: 18px; font-weight: 600; text-decoration: none;'>Building Culture in Remote-First Teams</a><br><span style='color: #64748B; font-size: 14px;'>Lessons from 3 years of distributed work</span></p><p style='margin-bottom: 24px; padding-left: 8px; border-left: 3px solid #0F172A;'><a href='https://example.com/article-3' style='color: #0F172A; font-size: 18px; font-weight: 600; text-decoration: none;'>Startup Metrics That Actually Matter</a><br><span style='color: #64748B; font-size: 14px;'>Stop tracking vanity metrics, start measuring what matters</span></p>",
+        "fontFamily": "-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', sans-serif",
+        "fontSize": "16px",
+        "color": "#475569",
+        "lineHeight": 1.7
+      },
+      "styles": {
+        "padding": {
+          "top": "0px",
+          "right": "32px",
+          "bottom": "50px",
+          "left": "32px"
+        },
+        "textAlign": "left"
+      }
+    },
+    {
+      "id": "footer-1",
+      "type": "footer",
+      "data": {
+        "companyName": "The Founder's Weekly",
+        "address": "548 Market St, Suite 85294, San Francisco, CA 94104",
+        "socialLinks": [
+          { "platform": "twitter", "url": "https://twitter.com/foundersweekly" },
+          { "platform": "linkedin", "url": "https://linkedin.com/company/foundersweekly" }
+        ],
+        "links": [
+          { "text": "Archive", "url": "https://example.com/archive" },
+          { "text": "About", "url": "https://example.com/about" },
+          { "text": "Unsubscribe", "url": "{{unsubscribe_url}}" }
+        ],
+        "legalText": "© 2025 The Founder's Weekly. All rights reserved. You're receiving this because you subscribed to our newsletter.",
+        "backgroundColor": "#F8FAFC",
+        "textColor": "#64748B",
+        "linkColor": "#0F172A",
+        "fontSize": "13px"
+      },
+      "styles": {
+        "padding": { "top": "50px", "right": "32px", "bottom": "50px", "left": "32px" }
+      }
+    }
+  ],
+  "settings": {
+    "subject": "The Founder's Weekly #127: Why Process Beats Outcomes",
+    "preheader": "The counterintuitive mindset shift that transforms how exceptional founders build companies",
+    "width": 640,
+    "backgroundColor": "#FFFFFF",
+    "fontFamily": "-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', sans-serif",
+    "textColor": "#0F172A"
+  }
+}

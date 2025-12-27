@@ -13,6 +13,11 @@ import orderConfirmation from './order-confirmation.json'
 import reEngagement from './re-engagement.json'
 import simpleAnnouncement from './simple-announcement.json'
 
+// 2025 Showcase Templates with Modern Design Aesthetic
+import newsletterEditorial2025 from './newsletter-editorial-2025.json'
+import eventConference2025 from './event-conference-2025.json'
+import productLaunch2025 from './product-launch-2025.json'
+
 /**
  * Unified Template type that works with both legacy and modern formats
  */
@@ -55,10 +60,19 @@ export {
   orderConfirmation,
   reEngagement,
   simpleAnnouncement,
+  // 2025 Showcase Templates
+  newsletterEditorial2025,
+  eventConference2025,
+  productLaunch2025,
 }
 
 // Export array of all templates (can contain both formats)
 export const templates: Template[] = [
+  // 2025 Showcase Templates (Featured First)
+  newsletterEditorial2025 as Template,
+  eventConference2025 as Template,
+  productLaunch2025 as Template,
+  // Original Templates
   welcomeEmail as Template,
   newsletter as Template,
   promotion as Template,

@@ -1,0 +1,382 @@
+{
+  "metadata": {
+    "id": "template-event-conference-2025",
+    "version": 1,
+    "name": "Event • Conference 2025",
+    "category": "event",
+    "description": "Modern conference invitation with card-based layout, speaker highlights, and professional design aesthetic",
+    "thumbnail": "",
+    "tags": ["event", "conference", "2025", "modern", "professional", "webinar"],
+    "placeholders": {
+      "event-hero": {
+        "src": "https://images.unsplash.com/photo-1540575467063-178a50c2df87?w=1200&h=600&fit=crop",
+        "alt": "Conference hall with attendees"
+      },
+      "event-title": {
+        "text": "[Your Conference Name]"
+      },
+      "event-date": {
+        "content": "<p>[Month DD, YYYY]</p>"
+      },
+      "register-button": {
+        "text": "Register Now",
+        "linkUrl": "https://example.com/register"
+      }
+    }
+  },
+  "blocks": [
+    {
+      "id": "spacer-top",
+      "type": "spacer",
+      "data": {
+        "height": 40
+      },
+      "styles": {
+        "padding": {
+          "top": "0px",
+          "right": "0px",
+          "bottom": "0px",
+          "left": "0px"
+        }
+      }
+    },
+    {
+      "id": "event-label",
+      "type": "text",
+      "data": {
+        "content": "<p style='text-transform: uppercase; letter-spacing: 0.1em; font-weight: 600;'>📍 Join Us</p>",
+        "fontFamily": "-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', sans-serif",
+        "fontSize": "12px",
+        "color": "#F59E0B",
+        "lineHeight": 1.4
+      },
+      "styles": {
+        "padding": {
+          "top": "12px",
+          "right": "20px",
+          "bottom": "12px",
+          "left": "20px"
+        },
+        "textAlign": "center",
+        "backgroundColor": "#FFFBEB",
+        "borderRadius": "8px"
+      }
+    },
+    {
+      "id": "spacer-1",
+      "type": "spacer",
+      "data": {
+        "height": 32
+      },
+      "styles": {
+        "padding": {
+          "top": "0px",
+          "right": "0px",
+          "bottom": "0px",
+          "left": "0px"
+        }
+      }
+    },
+    {
+      "id": "event-hero",
+      "type": "image",
+      "data": {
+        "src": "https://images.unsplash.com/photo-1540575467063-178a50c2df87?w=1200&h=600&fit=crop",
+        "alt": "Professional conference hall with attendees and modern stage setup",
+        "alignment": "center",
+        "borderRadius": 16,
+        "width": "100%"
+      },
+      "styles": {
+        "padding": {
+          "top": "0px",
+          "right": "0px",
+          "bottom": "0px",
+          "left": "0px"
+        }
+      }
+    },
+    {
+      "id": "spacer-2",
+      "type": "spacer",
+      "data": {
+        "height": 48
+      },
+      "styles": {
+        "padding": {
+          "top": "0px",
+          "right": "0px",
+          "bottom": "0px",
+          "left": "0px"
+        }
+      }
+    },
+    {
+      "id": "event-title",
+      "type": "heading",
+      "data": {
+        "level": 1,
+        "text": "Product Design Summit 2025",
+        "fontFamily": "-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', sans-serif",
+        "fontSize": "48px",
+        "mobileFontSize": "36px",
+        "fontWeight": 700,
+        "color": "#0F172A",
+        "lineHeight": 1.1,
+        "mobileLineHeight": 1.2,
+        "letterSpacing": "-0.03em"
+      },
+      "styles": {
+        "padding": {
+          "top": "0px",
+          "right": "32px",
+          "bottom": "20px",
+          "left": "32px"
+        },
+        "textAlign": "center"
+      }
+    },
+    {
+      "id": "event-tagline",
+      "type": "text",
+      "data": {
+        "content": "<p>Where Design Meets Innovation • Three Days of Insights, Networking & Workshops</p>",
+        "fontFamily": "-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', sans-serif",
+        "fontSize": "18px",
+        "mobileFontSize": "17px",
+        "color": "#475569",
+        "lineHeight": 1.6
+      },
+      "styles": {
+        "padding": {
+          "top": "0px",
+          "right": "40px",
+          "bottom": "40px",
+          "left": "40px"
+        },
+        "textAlign": "center"
+      }
+    },
+    {
+      "id": "details-card",
+      "type": "text",
+      "data": {
+        "content": "<div style='background: #F8FAFC; border-radius: 12px; padding: 32px; border: 1px solid #E2E8F0;'><p style='font-size: 20px; font-weight: 700; color: #0F172A; margin: 0 0 24px 0; text-align: center;'>Event Details</p><table style='width: 100%; border-collapse: collapse;'><tr><td style='padding: 12px 0; border-bottom: 1px solid #E2E8F0;'><span style='font-size: 28px; margin-right: 12px;'>📅</span><div style='display: inline-block; vertical-align: middle;'><p style='margin: 0; font-size: 14px; color: #64748B; font-weight: 500;'>Date</p><p style='margin: 0; font-size: 17px; color: #0F172A; font-weight: 600;'>April 15-17, 2025</p></div></td></tr><tr><td style='padding: 12px 0; border-bottom: 1px solid #E2E8F0;'><span style='font-size: 28px; margin-right: 12px;'>🕐</span><div style='display: inline-block; vertical-align: middle;'><p style='margin: 0; font-size: 14px; color: #64748B; font-weight: 500;'>Time</p><p style='margin: 0; font-size: 17px; color: #0F172A; font-weight: 600;'>9:00 AM - 6:00 PM PST Daily</p></div></td></tr><tr><td style='padding: 12px 0; border-bottom: 1px solid #E2E8F0;'><span style='font-size: 28px; margin-right: 12px;'>📍</span><div style='display: inline-block; vertical-align: middle;'><p style='margin: 0; font-size: 14px; color: #64748B; font-weight: 500;'>Location</p><p style='margin: 0; font-size: 17px; color: #0F172A; font-weight: 600;'>Moscone Center, San Francisco</p></div></td></tr><tr><td style='padding: 12px 0;'><span style='font-size: 28px; margin-right: 12px;'>👥</span><div style='display: inline-block; vertical-align: middle;'><p style='margin: 0; font-size: 14px; color: #64748B; font-weight: 500;'>Attendees</p><p style='margin: 0; font-size: 17px; color: #0F172A; font-weight: 600;'>2,500+ Design Leaders</p></div></td></tr></table></div>",
+        "fontFamily": "-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', sans-serif",
+        "fontSize": "16px",
+        "color": "#475569",
+        "lineHeight": 1.6
+      },
+      "styles": {
+        "padding": {
+          "top": "0px",
+          "right": "24px",
+          "bottom": "40px",
+          "left": "24px"
+        },
+        "textAlign": "left"
+      }
+    },
+    {
+      "id": "register-button",
+      "type": "button",
+      "data": {
+        "text": "Register Now • Early Bird Pricing",
+        "linkUrl": "https://example.com/register",
+        "backgroundColor": "#F59E0B",
+        "textColor": "#78350F",
+        "borderRadius": 10,
+        "fontFamily": "-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', sans-serif",
+        "fontSize": "17px",
+        "fontWeight": 700,
+        "padding": {
+          "top": "20px",
+          "right": "48px",
+          "bottom": "20px",
+          "left": "48px"
+        },
+        "alignment": "center"
+      },
+      "styles": {
+        "padding": {
+          "top": "8px",
+          "right": "24px",
+          "bottom": "16px",
+          "left": "24px"
+        }
+      }
+    },
+    {
+      "id": "price-note",
+      "type": "text",
+      "data": {
+        "content": "<p>🎟️ Save $200 with early registration • Ends February 28</p>",
+        "fontFamily": "-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', sans-serif",
+        "fontSize": "14px",
+        "color": "#DC2626",
+        "lineHeight": 1.5
+      },
+      "styles": {
+        "padding": {
+          "top": "0px",
+          "right": "24px",
+          "bottom": "60px",
+          "left": "24px"
+        },
+        "textAlign": "center"
+      }
+    },
+    {
+      "id": "speakers-heading",
+      "type": "heading",
+      "data": {
+        "level": 2,
+        "text": "Featured Speakers",
+        "fontFamily": "-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', sans-serif",
+        "fontSize": "36px",
+        "mobileFontSize": "28px",
+        "fontWeight": 700,
+        "color": "#0F172A",
+        "lineHeight": 1.2,
+        "letterSpacing": "-0.02em"
+      },
+      "styles": {
+        "padding": {
+          "top": "0px",
+          "right": "32px",
+          "bottom": "32px",
+          "left": "32px"
+        },
+        "textAlign": "center"
+      }
+    },
+    {
+      "id": "speaker-cards",
+      "type": "text",
+      "data": {
+        "content": "<div style='background: #FFFFFF; border: 1px solid #E2E8F0; border-radius: 12px; padding: 28px; margin-bottom: 20px; box-shadow: 0 1px 3px rgba(0,0,0,0.06);'><p style='font-size: 20px; font-weight: 700; color: #0F172A; margin: 0 0 8px 0;'>Sarah Johnson</p><p style='font-size: 15px; color: #4F46E5; font-weight: 600; margin: 0 0 16px 0;'>VP of Design • Airbnb</p><p style='font-size: 16px; color: #475569; line-height: 1.6; margin: 0;'>Leading the charge in AI-powered design systems and accessibility-first product development.</p></div><div style='background: #FFFFFF; border: 1px solid #E2E8F0; border-radius: 12px; padding: 28px; margin-bottom: 20px; box-shadow: 0 1px 3px rgba(0,0,0,0.06);'><p style='font-size: 20px; font-weight: 700; color: #0F172A; margin: 0 0 8px 0;'>Marcus Chen</p><p style='font-size: 15px; color: #4F46E5; font-weight: 600; margin: 0 0 16px 0;'>Chief Product Officer • Stripe</p><p style='font-size: 16px; color: #475569; line-height: 1.6; margin: 0;'>15+ years building products that balance complexity with elegant user experiences.</p></div><div style='background: #FFFFFF; border: 1px solid #E2E8F0; border-radius: 12px; padding: 28px; margin-bottom: 0px; box-shadow: 0 1px 3px rgba(0,0,0,0.06);'><p style='font-size: 20px; font-weight: 700; color: #0F172A; margin: 0 0 8px 0;'>Priya Patel</p><p style='font-size: 15px; color: #4F46E5; font-weight: 600; margin: 0 0 16px 0;'>Head of Design Research • Google</p><p style='font-size: 16px; color: #475569; line-height: 1.6; margin: 0;'>Pioneer in human-centered AI and ethical design practices at scale.</p></div>",
+        "fontFamily": "-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', sans-serif",
+        "fontSize": "16px",
+        "color": "#475569",
+        "lineHeight": 1.6
+      },
+      "styles": {
+        "padding": {
+          "top": "0px",
+          "right": "24px",
+          "bottom": "50px",
+          "left": "24px"
+        },
+        "textAlign": "left"
+      }
+    },
+    {
+      "id": "tracks-heading",
+      "type": "heading",
+      "data": {
+        "level": 3,
+        "text": "Conference Tracks",
+        "fontFamily": "-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', sans-serif",
+        "fontSize": "32px",
+        "mobileFontSize": "26px",
+        "fontWeight": 700,
+        "color": "#0F172A",
+        "lineHeight": 1.3,
+        "letterSpacing": "-0.01em"
+      },
+      "styles": {
+        "padding": {
+          "top": "0px",
+          "right": "32px",
+          "bottom": "28px",
+          "left": "32px"
+        },
+        "textAlign": "center"
+      }
+    },
+    {
+      "id": "tracks-list",
+      "type": "text",
+      "data": {
+        "content": "<div style='border-left: 4px solid #4F46E5; padding-left: 20px; margin-bottom: 24px;'><p style='font-size: 18px; font-weight: 700; color: #0F172A; margin: 0 0 8px 0;'>🎨 Product Design</p><p style='font-size: 15px; color: #475569; line-height: 1.6; margin: 0;'>UX/UI best practices, design systems, prototyping workflows</p></div><div style='border-left: 4px solid #059669; padding-left: 20px; margin-bottom: 24px;'><p style='font-size: 18px; font-weight: 700; color: #0F172A; margin: 0 0 8px 0;'>🤖 AI & Automation</p><p style='font-size: 15px; color: #475569; line-height: 1.6; margin: 0;'>AI-powered design tools, automation strategies, ethical AI</p></div><div style='border-left: 4px solid #F59E0B; padding-left: 20px; margin-bottom: 24px;'><p style='font-size: 18px; font-weight: 700; color: #0F172A; margin: 0 0 8px 0;'>🔬 Design Research</p><p style='font-size: 15px; color: #475569; line-height: 1.6; margin: 0;'>User research methods, behavioral insights, data-driven design</p></div><div style='border-left: 4px solid #DC2626; padding-left: 20px;'><p style='font-size: 18px; font-weight: 700; color: #0F172A; margin: 0 0 8px 0;'>💼 Design Leadership</p><p style='font-size: 15px; color: #475569; line-height: 1.6; margin: 0;'>Building design teams, career growth, executive communication</p></div>",
+        "fontFamily": "-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', sans-serif",
+        "fontSize": "16px",
+        "color": "#475569",
+        "lineHeight": 1.6
+      },
+      "styles": {
+        "padding": {
+          "top": "0px",
+          "right": "32px",
+          "bottom": "50px",
+          "left": "32px"
+        },
+        "textAlign": "left"
+      }
+    },
+    {
+      "id": "cta-final",
+      "type": "button",
+      "data": {
+        "text": "Secure Your Spot →",
+        "linkUrl": "https://example.com/register",
+        "backgroundColor": "#0F172A",
+        "textColor": "#FFFFFF",
+        "borderRadius": 10,
+        "fontFamily": "-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', sans-serif",
+        "fontSize": "17px",
+        "fontWeight": 700,
+        "padding": {
+          "top": "20px",
+          "right": "48px",
+          "bottom": "20px",
+          "left": "48px"
+        },
+        "alignment": "center"
+      },
+      "styles": {
+        "padding": {
+          "top": "0px",
+          "right": "24px",
+          "bottom": "60px",
+          "left": "24px"
+        }
+      }
+    },
+    {
+      "id": "footer-1",
+      "type": "footer",
+      "data": {
+        "companyName": "Product Design Summit",
+        "address": "747 Howard Street, San Francisco, CA 94103",
+        "socialLinks": [
+          { "platform": "twitter", "url": "https://twitter.com/pdsummit" },
+          { "platform": "linkedin", "url": "https://linkedin.com/company/pdsummit" },
+          { "platform": "instagram", "url": "https://instagram.com/pdsummit" }
+        ],
+        "links": [
+          { "text": "View Schedule", "url": "https://example.com/schedule" },
+          { "text": "Hotel Info", "url": "https://example.com/hotels" },
+          { "text": "Contact Us", "url": "https://example.com/contact" },
+          { "text": "Unsubscribe", "url": "{{unsubscribe_url}}" }
+        ],
+        "legalText": "© 2025 Product Design Summit. All rights reserved. Can't attend in person? Virtual passes available.",
+        "backgroundColor": "#F8FAFC",
+        "textColor": "#64748B",
+        "linkColor": "#0F172A",
+        "fontSize": "13px"
+      },
+      "styles": {
+        "padding": { "top": "50px", "right": "32px", "bottom": "50px", "left": "32px" }
+      }
+    }
+  ],
+  "settings": {
+    "subject": "🎨 You're Invited: Product Design Summit 2025 • April 15-17 in SF",
+    "preheader": "Join 2,500+ design leaders for 3 days of innovation, workshops & networking. Early bird pricing ends Feb 28.",
+    "width": 640,
+    "backgroundColor": "#FFFFFF",
+    "fontFamily": "-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', sans-serif",
+    "textColor": "#0F172A"
+  }
+}

@@ -1,0 +1,426 @@
+{
+  "metadata": {
+    "id": "template-product-launch-2025",
+    "version": 1,
+    "name": "E-commerce • Product Launch 2025",
+    "category": "ecommerce",
+    "description": "Bold product launch template with gradient CTAs, feature highlights, and conversion-focused design",
+    "thumbnail": "",
+    "tags": ["ecommerce", "product", "launch", "2025", "modern", "sale", "shop"],
+    "placeholders": {
+      "product-hero": {
+        "src": "https://images.unsplash.com/photo-1523275335684-37898b6baf30?w=1200&h=600&fit=crop",
+        "alt": "Product hero image"
+      },
+      "product-name": {
+        "text": "[Product Name]"
+      },
+      "shop-button": {
+        "text": "Shop Now",
+        "linkUrl": "https://example.com/product"
+      }
+    }
+  },
+  "blocks": [
+    {
+      "id": "spacer-top",
+      "type": "spacer",
+      "data": {
+        "height": 40
+      },
+      "styles": {
+        "padding": {
+          "top": "0px",
+          "right": "0px",
+          "bottom": "0px",
+          "left": "0px"
+        }
+      }
+    },
+    {
+      "id": "new-badge",
+      "type": "text",
+      "data": {
+        "content": "<p style='display: inline-block; background: linear-gradient(135deg, #EC4899 0%, #F97316 100%); color: #FFFFFF; padding: 10px 24px; border-radius: 24px; font-weight: 700; font-size: 13px; letter-spacing: 0.05em; text-transform: uppercase;'>✨ New Arrival</p>",
+        "fontFamily": "-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', sans-serif",
+        "fontSize": "13px",
+        "color": "#FFFFFF",
+        "lineHeight": 1.4
+      },
+      "styles": {
+        "padding": {
+          "top": "0px",
+          "right": "24px",
+          "bottom": "32px",
+          "left": "24px"
+        },
+        "textAlign": "center"
+      }
+    },
+    {
+      "id": "product-name",
+      "type": "heading",
+      "data": {
+        "level": 1,
+        "text": "AirPods Pro 4",
+        "fontFamily": "-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', sans-serif",
+        "fontSize": "56px",
+        "mobileFontSize": "40px",
+        "fontWeight": 800,
+        "color": "#0F172A",
+        "lineHeight": 1.05,
+        "mobileLineHeight": 1.1,
+        "letterSpacing": "-0.04em"
+      },
+      "styles": {
+        "padding": {
+          "top": "0px",
+          "right": "32px",
+          "bottom": "16px",
+          "left": "32px"
+        },
+        "textAlign": "center"
+      }
+    },
+    {
+      "id": "product-tagline",
+      "type": "text",
+      "data": {
+        "content": "<p style='font-size: 22px; color: #475569; font-weight: 500;'>Adaptive Audio. All-new design.</p>",
+        "fontFamily": "-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', sans-serif",
+        "fontSize": "22px",
+        "mobileFontSize": "19px",
+        "color": "#475569",
+        "lineHeight": 1.4
+      },
+      "styles": {
+        "padding": {
+          "top": "0px",
+          "right": "40px",
+          "bottom": "40px",
+          "left": "40px"
+        },
+        "textAlign": "center"
+      }
+    },
+    {
+      "id": "product-hero",
+      "type": "image",
+      "data": {
+        "src": "https://images.unsplash.com/photo-1572569511254-d8f925fe2cbb?w=1200&h=800&fit=crop",
+        "alt": "AirPods Pro 4 wireless earbuds in charging case on minimal white background",
+        "alignment": "center",
+        "borderRadius": 0,
+        "width": "100%"
+      },
+      "styles": {
+        "padding": {
+          "top": "0px",
+          "right": "0px",
+          "bottom": "0px",
+          "left": "0px"
+        }
+      }
+    },
+    {
+      "id": "spacer-1",
+      "type": "spacer",
+      "data": {
+        "height": 50
+      },
+      "styles": {
+        "padding": {
+          "top": "0px",
+          "right": "0px",
+          "bottom": "0px",
+          "left": "0px"
+        }
+      }
+    },
+    {
+      "id": "shop-button",
+      "type": "button",
+      "data": {
+        "text": "Shop Now • $249",
+        "linkUrl": "https://example.com/product/airpods-pro-4",
+        "backgroundColor": "#0F172A",
+        "textColor": "#FFFFFF",
+        "borderRadius": 12,
+        "fontFamily": "-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', sans-serif",
+        "fontSize": "18px",
+        "fontWeight": 700,
+        "padding": {
+          "top": "22px",
+          "right": "56px",
+          "bottom": "22px",
+          "left": "56px"
+        },
+        "alignment": "center"
+      },
+      "styles": {
+        "padding": {
+          "top": "0px",
+          "right": "24px",
+          "bottom": "12px",
+          "left": "24px"
+        }
+      }
+    },
+    {
+      "id": "free-shipping",
+      "type": "text",
+      "data": {
+        "content": "<p>🚚 Free shipping & returns • 🎁 Engraving included</p>",
+        "fontFamily": "-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', sans-serif",
+        "fontSize": "14px",
+        "color": "#059669",
+        "lineHeight": 1.5
+      },
+      "styles": {
+        "padding": {
+          "top": "0px",
+          "right": "24px",
+          "bottom": "60px",
+          "left": "24px"
+        },
+        "textAlign": "center"
+      }
+    },
+    {
+      "id": "features-heading",
+      "type": "heading",
+      "data": {
+        "level": 2,
+        "text": "Why You'll Love It",
+        "fontFamily": "-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', sans-serif",
+        "fontSize": "38px",
+        "mobileFontSize": "30px",
+        "fontWeight": 700,
+        "color": "#0F172A",
+        "lineHeight": 1.2,
+        "letterSpacing": "-0.02em"
+      },
+      "styles": {
+        "padding": {
+          "top": "0px",
+          "right": "32px",
+          "bottom": "40px",
+          "left": "32px"
+        },
+        "textAlign": "center"
+      }
+    },
+    {
+      "id": "features-grid",
+      "type": "text",
+      "data": {
+        "content": "<div style='background: linear-gradient(135deg, #F8FAFC 0%, #EFF6FF 100%); border-radius: 16px; padding: 32px 28px; margin-bottom: 20px; border: 1px solid #E0E7FF;'><div style='text-align: center; font-size: 48px; margin-bottom: 16px;'>🎧</div><p style='font-size: 20px; font-weight: 700; color: #0F172A; margin: 0 0 12px 0; text-align: center;'>Adaptive Audio</p><p style='font-size: 16px; color: #475569; line-height: 1.6; margin: 0; text-align: center;'>Automatically adjusts noise control based on your environment for the perfect listening experience.</p></div><div style='background: linear-gradient(135deg, #F8FAFC 0%, #FEF3C7 100%); border-radius: 16px; padding: 32px 28px; margin-bottom: 20px; border: 1px solid #FDE68A;'><div style='text-align: center; font-size: 48px; margin-bottom: 16px;'>🔋</div><p style='font-size: 20px; font-weight: 700; color: #0F172A; margin: 0 0 12px 0; text-align: center;'>All-Day Battery</p><p style='font-size: 16px; color: #475569; line-height: 1.6; margin: 0; text-align: center;'>Up to 6 hours listening time, up to 30 hours total with charging case. USB-C charging included.</p></div><div style='background: linear-gradient(135deg, #F8FAFC 0%, #ECFDF5 100%); border-radius: 16px; padding: 32px 28px; margin-bottom: 20px; border: 1px solid #BBF7D0;'><div style='text-align: center; font-size: 48px; margin-bottom: 16px;'>✨</div><p style='font-size: 20px; font-weight: 700; color: #0F172A; margin: 0 0 12px 0; text-align: center;'>Premium Comfort</p><p style='font-size: 16px; color: #475569; line-height: 1.6; margin: 0; text-align: center;'>All-new ergonomic design with 4 silicone tip sizes for a customized, secure fit all day long.</p></div><div style='background: linear-gradient(135deg, #F8FAFC 0%, #FCE7F3 100%); border-radius: 16px; padding: 32px 28px; margin-bottom: 0px; border: 1px solid #FBCFE8;'><div style='text-align: center; font-size: 48px; margin-bottom: 16px;'>🌊</div><p style='font-size: 20px; font-weight: 700; color: #0F172A; margin: 0 0 12px 0; text-align: center;'>Water Resistant</p><p style='font-size: 16px; color: #475569; line-height: 1.6; margin: 0; text-align: center;'>IP54 dust, sweat and water resistance. Perfect for workouts, commutes, and everyday adventures.</p></div>",
+        "fontFamily": "-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', sans-serif",
+        "fontSize": "16px",
+        "color": "#475569",
+        "lineHeight": 1.6
+      },
+      "styles": {
+        "padding": {
+          "top": "0px",
+          "right": "24px",
+          "bottom": "60px",
+          "left": "24px"
+        },
+        "textAlign": "left"
+      }
+    },
+    {
+      "id": "reviews-section",
+      "type": "text",
+      "data": {
+        "content": "<div style='background: #FFFBEB; border: 2px solid #FDE68A; border-radius: 16px; padding: 36px 32px; text-align: center;'><p style='font-size: 48px; margin: 0 0 16px 0;'>⭐⭐⭐⭐⭐</p><p style='font-size: 18px; font-weight: 700; color: #78350F; margin: 0 0 12px 0;'>Rated 4.9/5 by 12,000+ customers</p><p style='font-size: 16px; color: #92400E; line-height: 1.6; margin: 0 0 20px 0; font-style: italic;'>\"Best earbuds I've ever owned. The sound quality is incredible and they stay in perfectly during runs.\" — Alex M.</p><p style='font-size: 14px; color: #92400E; margin: 0;'><a href='https://example.com/reviews' style='color: #78350F; font-weight: 600; text-decoration: underline;'>Read 12,000+ reviews →</a></p></div>",
+        "fontFamily": "-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', sans-serif",
+        "fontSize": "16px",
+        "color": "#475569",
+        "lineHeight": 1.6
+      },
+      "styles": {
+        "padding": {
+          "top": "0px",
+          "right": "24px",
+          "bottom": "50px",
+          "left": "24px"
+        },
+        "textAlign": "left"
+      }
+    },
+    {
+      "id": "tech-specs-heading",
+      "type": "heading",
+      "data": {
+        "level": 3,
+        "text": "Technical Specifications",
+        "fontFamily": "-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', sans-serif",
+        "fontSize": "28px",
+        "mobileFontSize": "24px",
+        "fontWeight": 700,
+        "color": "#0F172A",
+        "lineHeight": 1.3,
+        "letterSpacing": "-0.01em"
+      },
+      "styles": {
+        "padding": {
+          "top": "0px",
+          "right": "32px",
+          "bottom": "24px",
+          "left": "32px"
+        },
+        "textAlign": "left"
+      }
+    },
+    {
+      "id": "tech-specs",
+      "type": "text",
+      "data": {
+        "content": "<table style='width: 100%; border-collapse: collapse;'><tr style='border-bottom: 1px solid #E2E8F0;'><td style='padding: 14px 0; font-size: 15px; color: #64748B; font-weight: 500;'>Chip</td><td style='padding: 14px 0; font-size: 15px; color: #0F172A; font-weight: 600; text-align: right;'>H2 Apple Silicon</td></tr><tr style='border-bottom: 1px solid #E2E8F0;'><td style='padding: 14px 0; font-size: 15px; color: #64748B; font-weight: 500;'>Audio</td><td style='padding: 14px 0; font-size: 15px; color: #0F172A; font-weight: 600; text-align: right;'>Adaptive EQ, Spatial Audio</td></tr><tr style='border-bottom: 1px solid #E2E8F0;'><td style='padding: 14px 0; font-size: 15px; color: #64748B; font-weight: 500;'>Noise Control</td><td style='padding: 14px 0; font-size: 15px; color: #0F172A; font-weight: 600; text-align: right;'>Active Noise Cancellation</td></tr><tr style='border-bottom: 1px solid #E2E8F0;'><td style='padding: 14px 0; font-size: 15px; color: #64748B; font-weight: 500;'>Battery Life</td><td style='padding: 14px 0; font-size: 15px; color: #0F172A; font-weight: 600; text-align: right;'>6 hours (30 with case)</td></tr><tr style='border-bottom: 1px solid #E2E8F0;'><td style='padding: 14px 0; font-size: 15px; color: #64748B; font-weight: 500;'>Connectivity</td><td style='padding: 14px 0; font-size: 15px; color: #0F172A; font-weight: 600; text-align: right;'>Bluetooth 5.3</td></tr><tr><td style='padding: 14px 0; font-size: 15px; color: #64748B; font-weight: 500;'>Resistance</td><td style='padding: 14px 0; font-size: 15px; color: #0F172A; font-weight: 600; text-align: right;'>IP54 Water & Dust</td></tr></table>",
+        "fontFamily": "-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', sans-serif",
+        "fontSize": "15px",
+        "color": "#475569",
+        "lineHeight": 1.6
+      },
+      "styles": {
+        "padding": {
+          "top": "0px",
+          "right": "32px",
+          "bottom": "50px",
+          "left": "32px"
+        },
+        "textAlign": "left"
+      }
+    },
+    {
+      "id": "colors-heading",
+      "type": "heading",
+      "data": {
+        "level": 3,
+        "text": "Available Colors",
+        "fontFamily": "-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', sans-serif",
+        "fontSize": "28px",
+        "mobileFontSize": "24px",
+        "fontWeight": 700,
+        "color": "#0F172A",
+        "lineHeight": 1.3,
+        "letterSpacing": "-0.01em"
+      },
+      "styles": {
+        "padding": {
+          "top": "0px",
+          "right": "32px",
+          "bottom": "24px",
+          "left": "32px"
+        },
+        "textAlign": "center"
+      }
+    },
+    {
+      "id": "color-swatches",
+      "type": "text",
+      "data": {
+        "content": "<div style='text-align: center;'><div style='display: inline-block; margin: 0 12px 20px 12px;'><div style='width: 60px; height: 60px; border-radius: 50%; background: #FFFFFF; border: 3px solid #E2E8F0; margin: 0 auto 8px;'></div><p style='font-size: 14px; color: #64748B; margin: 0;'>White</p></div><div style='display: inline-block; margin: 0 12px 20px 12px;'><div style='width: 60px; height: 60px; border-radius: 50%; background: #1E293B; border: 3px solid #E2E8F0; margin: 0 auto 8px;'></div><p style='font-size: 14px; color: #64748B; margin: 0;'>Midnight</p></div><div style='display: inline-block; margin: 0 12px 20px 12px;'><div style='width: 60px; height: 60px; border-radius: 50%; background: linear-gradient(135deg, #FCA5A5 0%, #F87171 100%); border: 3px solid #E2E8F0; margin: 0 auto 8px;'></div><p style='font-size: 14px; color: #64748B; margin: 0;'>Coral</p></div></div>",
+        "fontFamily": "-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', sans-serif",
+        "fontSize": "14px",
+        "color": "#64748B",
+        "lineHeight": 1.5
+      },
+      "styles": {
+        "padding": {
+          "top": "0px",
+          "right": "32px",
+          "bottom": "50px",
+          "left": "32px"
+        },
+        "textAlign": "center"
+      }
+    },
+    {
+      "id": "cta-final",
+      "type": "button",
+      "data": {
+        "text": "Add to Cart • $249",
+        "linkUrl": "https://example.com/cart/add/airpods-pro-4",
+        "backgroundColor": "#0F172A",
+        "textColor": "#FFFFFF",
+        "borderRadius": 12,
+        "fontFamily": "-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', sans-serif",
+        "fontSize": "18px",
+        "fontWeight": 700,
+        "padding": {
+          "top": "22px",
+          "right": "56px",
+          "bottom": "22px",
+          "left": "56px"
+        },
+        "alignment": "center"
+      },
+      "styles": {
+        "padding": {
+          "top": "0px",
+          "right": "24px",
+          "bottom": "12px",
+          "left": "24px"
+        }
+      }
+    },
+    {
+      "id": "guarantee",
+      "type": "text",
+      "data": {
+        "content": "<p>✅ 14-day returns • 🛡️ 1-year warranty • 📞 24/7 support</p>",
+        "fontFamily": "-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', sans-serif",
+        "fontSize": "14px",
+        "color": "#64748B",
+        "lineHeight": 1.5
+      },
+      "styles": {
+        "padding": {
+          "top": "0px",
+          "right": "24px",
+          "bottom": "60px",
+          "left": "24px"
+        },
+        "textAlign": "center"
+      }
+    },
+    {
+      "id": "footer-1",
+      "type": "footer",
+      "data": {
+        "companyName": "AudioTech",
+        "address": "1 Infinite Loop, Cupertino, CA 95014",
+        "socialLinks": [
+          { "platform": "instagram", "url": "https://instagram.com/audiotech" },
+          { "platform": "twitter", "url": "https://twitter.com/audiotech" },
+          { "platform": "facebook", "url": "https://facebook.com/audiotech" }
+        ],
+        "links": [
+          { "text": "Shop All Products", "url": "https://example.com/shop" },
+          { "text": "Track Order", "url": "https://example.com/track" },
+          { "text": "Support", "url": "https://example.com/support" },
+          { "text": "Unsubscribe", "url": "{{unsubscribe_url}}" }
+        ],
+        "legalText": "© 2025 AudioTech. All rights reserved. Free shipping on orders over $50. 14-day returns on all products.",
+        "backgroundColor": "#F8FAFC",
+        "textColor": "#64748B",
+        "linkColor": "#0F172A",
+        "fontSize": "13px"
+      },
+      "styles": {
+        "padding": { "top": "50px", "right": "32px", "bottom": "50px", "left": "32px" }
+      }
+    }
+  ],
+  "settings": {
+    "subject": "✨ Just Launched: AirPods Pro 4 • Adaptive Audio Technology",
+    "preheader": "All-new design. 6-hour battery. Active noise cancellation. $249 with free shipping & engraving.",
+    "width": 640,
+    "backgroundColor": "#FFFFFF",
+    "fontFamily": "-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', sans-serif",
+    "textColor": "#0F172A"
+  }
+}
