@@ -7,6 +7,201 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Changed - December 27, 2025 (Style Tab Simplification - Phase 1)
+
+#### Text and Heading Block Controls Simplification
+- **Removed Duplicate Brand Colors Section**: Eliminated redundant brand color quick-access swatches
+  - Brand colors previously appeared twice: quick-access swatches (6 colors) + ColorThemePicker Brand Kit section (all colors)
+  - Removed lines 110-144 in TextControls.tsx and lines 168-202 in HeadingControls.tsx
+  - ColorThemePicker Brand Kit remains as single source of truth
+  - Impact: Reduced cognitive load, eliminated user confusion about which color selector to use
+- **Added Visual Section Headers**: Improved information hierarchy with clear groupings
+  - Added "TYPOGRAPHY" section header grouping font family, size, weight, and line height controls
+  - Added "COLORS" section header grouping text color and background color controls
+  - Used uppercase tracking-wider styling for clear visual distinction
+  - Impact: Improved scannability, logical grouping of related controls
+- **Reorganized Control Order**: Moved controls into logical groups
+  - Typography controls now grouped together (font family → size → weight → line height)
+  - Color controls grouped together (text color → background color)
+  - Line Height moved from after background color into Typography section
+  - Impact: Reduced scrolling, easier to find related controls
+- **Updated ColorThemePicker Labels**: Changed misleading labels for clarity
+  - Changed "More Colors" → "Text Color" in both TextControls and HeadingControls
+  - Label now accurately describes what the picker controls
+  - Impact: Eliminated confusion about "more" implying incomplete color access
+- **Files Modified**:
+  - `src/components/controls/TextControls.tsx` - Removed 35 lines of duplicate code
+  - `src/components/controls/HeadingControls.tsx` - Removed 35 lines of duplicate code
+- **Code Reduction**: 70 lines of redundant brand color swatch code eliminated
+- **Next Steps**: Phase 2 implementation (unified desktop/mobile toggle, typography preset state tracking)
+
+#### Documentation
+- **New Planning Document**: Created comprehensive recommendations document
+  - `planning/STYLE_TAB_SIMPLIFICATION_RECOMMENDATIONS.md` - 45+ pages of analysis
+  - Includes code review findings (90% duplication, triple color selection system)
+  - Includes UX design recommendations (information hierarchy, interaction patterns)
+  - 4-phase implementation roadmap with time estimates
+  - Success metrics and technical feasibility analysis
+  - Detailed line references for all issues identified
+
+### Changed - December 27, 2025 (Style Tab Simplification - Phase 3)
+
+#### Code Quality & Architecture Refactoring
+- **Extracted BaseTypographyControls Component**: Eliminated ~650 lines of code duplication
+  - Created `src/components/controls/shared/BaseTypographyControls.tsx` - Shared component for Text and Heading blocks
+  - TextControls reduced from 380 lines to 33 lines (91% reduction)
+  - HeadingControls reduced from 421 lines to 76 lines (82% reduction)
+  - All shared typography controls (font family, font size, line height, text color, background color) now centralized
+  - Desktop/mobile toggle, mobile override logic, and typography preset management unified
+  - Impact: Dramatically improved maintainability - bug fixes and improvements now apply to both components automatically
+
+- **Created DesignModeContext**: Shared context for desktop/mobile editing mode
+  - Created `src/contexts/DesignModeContext.tsx` - Global design mode state management
+  - Provides `useDesignMode()` hook for accessing mode state across components
+  - Foundation for future unified mode toggle (not yet implemented in UI)
+  - Impact: Prepares architecture for single global toggle controlling all responsive sections
+
+- **Created useMobileOverrides Hook**: Shared mobile override logic
+  - Created `src/hooks/useMobileOverrides.ts` - Centralized mobile override management
+  - Handles mobile font size, line height, and background color overrides
+  - Provides clear, reusable methods for checking, clearing, and applying mobile overrides
+  - Impact: Consistent mobile override behavior, easier to test and maintain
+
+- **Shared Document Color Extraction**: Eliminated duplicate computation
+  - Document colors now extracted once in parent components using `useMemo`
+  - Passed as prop to BaseTypographyControls to avoid re-computation
+  - Impact: Performance improvement, reduced redundant color extraction
+
+#### Typography Preset Positioning Improvement
+- **Unified Preset Position**: Typography preset now consistently appears at top of Typography section
+  - TextControls: Preset moved to top (was already there)
+  - HeadingControls: Preset moved from after Font Size to top of Typography section
+  - Follows Phase 2 recommended order: Preset → Font Family → Font Size → Line Height
+  - Impact: Consistent UI pattern, preset discovery improved, encourages brand consistency
+
+#### Files Modified
+- **New Files Created** (3 files, 385 lines):
+  - `src/components/controls/shared/BaseTypographyControls.tsx` - 315 lines
+  - `src/contexts/DesignModeContext.tsx` - 33 lines
+  - `src/hooks/useMobileOverrides.ts` - 77 lines
+
+- **Existing Files Refactored** (2 files):
+  - `src/components/controls/TextControls.tsx` - Reduced from 380 to 33 lines (347 lines removed)
+  - `src/components/controls/HeadingControls.tsx` - Reduced from 421 to 76 lines (345 lines removed)
+
+#### Code Quality Metrics
+- **Total Code Reduction**: 692 lines removed, 385 lines added = **307 net lines eliminated**
+- **Duplication Eliminated**: ~650 lines of duplicate code now shared in BaseTypographyControls
+- **Maintainability Score**: Single source of truth for all typography controls
+- **Type Safety**: All changes fully typed with TypeScript, zero type errors
+- **Zero Breaking Changes**: Backward compatible with existing emails, all functionality preserved
+- **Build Verification**: All changes pass `npm run typecheck` with zero errors
+
+#### Architecture Benefits
+- **Single Source of Truth**: Typography control logic exists in one place
+- **Easier Maintenance**: Bug fixes and improvements automatically apply to both Text and Heading blocks
+- **Better Testing**: Shared components can be tested once instead of twice
+- **Faster Development**: New block types can reuse BaseTypographyControls
+- **Reduced Bundle Size**: Less duplicate code in production build
+- **Improved Performance**: Document color extraction runs once instead of twice per component
+
+#### User Experience Impact
+- **No Visual Changes**: UI remains identical to Phase 2
+- **Consistent Behavior**: Typography controls now guaranteed to behave identically across block types
+- **Faster Future Updates**: Future improvements to typography controls will benefit all block types
+- **Improved Reliability**: Reduced code surface area = fewer potential bugs
+
+### Added - December 27, 2025 (Style Tab Simplification - Phase 2)
+
+#### Unified Desktop/Mobile Editing Mode
+- **Global Desktop/Mobile Toggle**: Implemented single toggle controlling all responsive overrides
+  - Sticky toggle at top of control panel with "Desktop" and "Mobile" buttons
+  - Blue dot indicator on Mobile button shows count of active overrides
+  - Helper text explains "Mobile overrides will apply on devices under 600px width"
+  - Impact: Eliminated confusion from multiple duplicate toggles, single mental model for editing modes
+- **Removed Duplicate Toggles**: Eliminated redundant desktop/mobile toggles
+  - Removed toggle from Background Color section (previously lines 247-285 in TextControls)
+  - Removed entire "Mobile Typography Overrides" section (130+ lines per component)
+  - All mobile editing now controlled by global toggle
+  - Impact: Reduced vertical scrolling, cleaner interface, consistent behavior
+
+#### Responsive Typography Controls
+- **Font Size with Mobile Override Support**:
+  - Shows blue dot indicator in desktop mode when mobile override exists
+  - Switches to mobile value when in mobile mode
+  - "Clear Override" button appears in mobile mode
+  - Shows desktop value as helper text when editing mobile override
+  - Impact: Clear visual feedback, easy mobile optimization
+- **Line Height with Mobile Override Support**:
+  - Same pattern as Font Size for consistency
+  - Blue dot indicator, mode-responsive value, clear override button
+  - Desktop value reference in mobile mode
+- **Background Color with Mobile Override Support**:
+  - Unified with global mode toggle
+  - Blue dot indicator in desktop mode
+  - Clear override button in mobile mode
+  - Desktop color shown as reference in mobile mode
+  - Impact: All responsive controls follow same predictable pattern
+
+#### Typography Preset State Tracking
+- **Visual Preset Indicators**: Shows when typography preset is active
+  - Blue checkmark badge displays "Using Body Style preset" or "Using Heading Style preset"
+  - Appears below "Typography Style" label when preset is applied
+  - "Reapply" button allows resetting to preset values
+  - Impact: Users always know if block uses preset or custom values
+- **Automatic Preset Clearing**: Manual changes disconnect from preset
+  - Changing font family, size, weight, color, or line height clears `appliedPreset` field
+  - Clear feedback when preset connection is broken
+  - Impact: No confusion about whether global typography changes will affect block
+- **Preset Reapplication**: Easy to return to brand consistency
+  - "Reapply" button in indicator badge
+  - Main "Apply" button also sets preset state
+  - Impact: Encourages use of brand presets, easy to maintain consistency
+
+#### Type System Updates
+- **Added appliedPreset Field**: Extended block data types
+  - `TextBlockData.appliedPreset?: 'heading' | 'body' | null`
+  - `HeadingBlockData.appliedPreset?: 'heading' | 'body' | null`
+  - Optional field for backward compatibility
+  - Impact: Proper TypeScript support, type-safe preset tracking
+
+#### Files Modified
+- `src/types/email.ts` - Added appliedPreset fields to TextBlockData and HeadingBlockData
+- `src/components/controls/TextControls.tsx` - 200+ lines changed:
+  - Added global desktop/mobile toggle (38 lines)
+  - Updated Font Size control with mobile support (38 lines)
+  - Updated Line Height control with mobile support (38 lines)
+  - Simplified Background Color section (removed duplicate toggle)
+  - Removed Mobile Typography Overrides section (130+ lines deleted)
+  - Added preset state tracking with visual indicators (28 lines)
+  - Updated handleDataChange to clear preset on manual edits
+- `src/components/controls/HeadingControls.tsx` - 200+ lines changed:
+  - Same changes as TextControls for consistency
+  - Tracks 'heading' preset instead of 'body'
+
+#### User Experience Improvements
+- **Cognitive Load Reduction**:
+  - One toggle instead of three eliminates decision paralysis
+  - Clear visual hierarchy (global mode at top affects all controls below)
+  - Consistent blue dot pattern for all mobile overrides
+- **Discoverability**:
+  - Blue dots make mobile overrides immediately visible
+  - Preset indicators show brand system usage
+  - Helper text provides context without cluttering interface
+- **Efficiency**:
+  - Faster to switch between desktop/mobile editing (one click)
+  - Easier to clear all mobile overrides (visible in one place)
+  - Preset reapply button speeds up brand consistency work
+
+#### Code Quality
+- **Eliminated Code Duplication**: 260+ lines removed
+  - Removed Mobile Typography section from both components (130 lines each)
+  - Simplified Background Color sections (removed duplicate toggles)
+  - Centralized mobile editing logic in global toggle
+- **Type Safety**: All changes fully typed with TypeScript
+- **Zero Breaking Changes**: Backward compatible with existing emails
+- **Build Verification**: All changes pass `npm run typecheck` with zero errors
+
 ### Fixed - December 27, 2025 (Afternoon Session)
 
 #### Style Tab UX Improvements

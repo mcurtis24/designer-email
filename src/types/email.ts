@@ -43,6 +43,8 @@ export interface HeadingBlockData {
   color: string
   lineHeight: number
   letterSpacing?: string
+  // Typography preset tracking
+  appliedPreset?: 'heading' | 'body' | null
   // Mobile-specific overrides
   mobileFontSize?: string
   mobileLineHeight?: number
@@ -54,6 +56,8 @@ export interface TextBlockData {
   fontSize: string
   color: string
   lineHeight: number
+  // Typography preset tracking
+  appliedPreset?: 'heading' | 'body' | null
   // Mobile-specific overrides
   mobileFontSize?: string
   mobileLineHeight?: number
