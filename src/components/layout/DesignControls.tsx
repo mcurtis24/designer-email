@@ -124,7 +124,7 @@ export default function DesignControls() {
             >
               <div className="space-y-2">
                 <div className="text-xs text-gray-600 mb-3">Quick apply brand colors to this block</div>
-                <div className="grid grid-cols-5 gap-2">
+                <div className="flex flex-wrap gap-1.5">
                   {brandColors.map((brandColor, index) => (
                     <button
                       key={index}
@@ -179,12 +179,10 @@ export default function DesignControls() {
                             console.warn('Brand color application not implemented for block type:', selectedBlock.type)
                         }
                       }}
-                      className="group relative w-full aspect-square rounded-md border-2 border-gray-200 hover:border-blue-500 transition-colors"
+                      className="w-7 h-7 rounded border-2 border-gray-200 hover:border-blue-500 transition-colors"
                       style={{ backgroundColor: brandColor.color }}
                       title={brandColor.name || brandColor.color}
-                    >
-                      <div className="absolute inset-0 bg-black bg-opacity-0 group-hover:bg-opacity-10 rounded-md transition-opacity" />
-                    </button>
+                    />
                   ))}
                 </div>
               </div>
