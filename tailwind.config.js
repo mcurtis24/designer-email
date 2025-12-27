@@ -9,8 +9,8 @@ export default {
       colors: {
         // Brand colors
         primary: {
-          DEFAULT: '#2563EB',
-          hover: '#1D4ED8',
+          DEFAULT: '#027DB3',
+          hover: '#015f8a',
           light: '#DBEAFE',
         },
         // Override Tailwind's default blue with custom brand color
