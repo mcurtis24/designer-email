@@ -56,8 +56,6 @@ export default function CommonControls({ block }: CommonControlsProps) {
 
   // Check if mobile overrides exist
   const hasMobilePaddingOverride = !!block.styles.mobileStyles?.padding
-  const hasMobileTextAlignOverride = !!block.styles.mobileStyles?.textAlign
-  const hasMobileBgColorOverride = !!block.styles.mobileStyles?.backgroundColor
 
   const handlePaddingChange = (side: 'top' | 'right' | 'bottom' | 'left', value: string) => {
     const newPadding: SpacingValue = isLinked
@@ -155,108 +153,14 @@ export default function CommonControls({ block }: CommonControlsProps) {
     }
   }
 
-  const handleHideOnMobileChange = (hide: boolean) => {
-    updateBlock(block.id, {
-      styles: {
-        ...block.styles,
-        hideOnMobile: hide,
-      },
-    })
-  }
-
-  const handleHideOnDesktopChange = (hide: boolean) => {
-    updateBlock(block.id, {
-      styles: {
-        ...block.styles,
-        hideOnDesktop: hide,
-      },
-    })
-  }
-
   return (
-    <div className="space-y-3 pt-3 border-t border-gray-200">
-      {/* Desktop/Mobile Design Mode Toggle */}
-      <div>
-        <label className="text-xs font-medium text-gray-700 mb-2 block">
-          Design Mode
-        </label>
-        <div className="flex gap-1 p-1 bg-gray-100 rounded-lg">
-          <button
-            onClick={() => setDesignMode('desktop')}
-            className={`flex-1 px-3 py-1.5 text-xs font-medium rounded-md transition-colors ${
-              designMode === 'desktop'
-                ? 'bg-white text-gray-900 shadow-sm'
-                : 'text-gray-600 hover:text-gray-900'
-            }`}
-          >
-            🖥️ Desktop
-          </button>
-          <button
-            onClick={() => setDesignMode('mobile')}
-            className={`flex-1 px-3 py-1.5 text-xs font-medium rounded-md transition-colors ${
-              designMode === 'mobile'
-                ? 'bg-white text-gray-900 shadow-sm'
-                : 'text-gray-600 hover:text-gray-900'
-            }`}
-          >
-            📱 Mobile
-            {(hasMobilePaddingOverride || hasMobileTextAlignOverride || hasMobileBgColorOverride) && (
-              <span className="ml-1 inline-block w-1.5 h-1.5 bg-blue-500 rounded-full"></span>
-            )}
-          </button>
-        </div>
-        {designMode === 'mobile' && (
-          <p className="text-xs text-gray-500 mt-1">
-            Override desktop styles for mobile devices
-          </p>
-        )}
-      </div>
-
-      {/* Visibility Controls */}
-      <div className="space-y-2">
-        <label className="text-xs font-medium text-gray-700 block">
-          Visibility
-        </label>
-        <label className="flex items-center gap-2">
-          <input
-            type="checkbox"
-            checked={block.styles.hideOnMobile || false}
-            onChange={(e) => handleHideOnMobileChange(e.target.checked)}
-            className="rounded border-gray-300 text-blue-600 focus:ring-blue-500"
-          />
-          <span className="text-sm text-gray-700">Hide on Mobile</span>
-        </label>
-        <label className="flex items-center gap-2">
-          <input
-            type="checkbox"
-            checked={block.styles.hideOnDesktop || false}
-            onChange={(e) => handleHideOnDesktopChange(e.target.checked)}
-            className="rounded border-gray-300 text-blue-600 focus:ring-blue-500"
-          />
-          <span className="text-sm text-gray-700">Hide on Desktop</span>
-        </label>
-      </div>
-
+    <div className="space-y-4 pt-3 border-t border-gray-200">
       {/* Padding Controls */}
       <div>
-        <div className="flex items-center justify-between mb-1.5">
-          <div className="flex items-center gap-2">
-            <label className="text-xs font-medium text-gray-700">
-              Padding (px)
-            </label>
-            {designMode === 'mobile' && hasMobilePaddingOverride && (
-              <span className="inline-flex items-center gap-1 px-1.5 py-0.5 bg-blue-100 text-blue-700 text-xs rounded">
-                📱 Override
-                <button
-                  onClick={clearMobilePaddingOverride}
-                  className="hover:text-blue-900"
-                  title="Clear mobile override"
-                >
-                  ×
-                </button>
-              </span>
-            )}
-          </div>
+        <div className="flex items-center justify-between mb-2">
+          <label className="text-xs font-medium text-gray-700 uppercase tracking-wide">
+            Padding
+          </label>
           <button
             onClick={toggleLink}
             className={`p-1 rounded transition-colors ${
@@ -267,17 +171,56 @@ export default function CommonControls({ block }: CommonControlsProps) {
             title={isLinked ? 'Unlink sides' : 'Link all sides'}
           >
             {isLinked ? (
-              // Linked icon
               <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13.828 10.172a4 4 0 00-5.656 0l-4 4a4 4 0 105.656 5.656l1.102-1.101m-.758-4.899a4 4 0 005.656 0l4-4a4 4 0 00-5.656-5.656l-1.1 1.1" />
               </svg>
             ) : (
-              // Unlinked icon
               <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13.828 10.172a4 4 0 00-5.656 0l-4 4a4 4 0 105.656 5.656l1.102-1.101m-.758-4.899a4 4 0 005.656 0l4-4a4 4 0 00-5.656-5.656l-1.1 1.1M6 18h.01M10 14h.01" />
               </svg>
             )}
           </button>
+        </div>
+
+        {/* Desktop/Mobile Toggle - Only for editing mobile overrides */}
+        <div className="mb-2">
+          <div className="flex items-center gap-2 mb-1.5">
+            <button
+              onClick={() => setDesignMode('desktop')}
+              className={`flex-1 px-2 py-1 text-xs font-medium rounded transition-colors ${
+                designMode === 'desktop'
+                  ? 'bg-gray-900 text-white'
+                  : 'bg-gray-100 text-gray-600 hover:bg-gray-200'
+              }`}
+            >
+              Desktop
+            </button>
+            <button
+              onClick={() => setDesignMode('mobile')}
+              className={`flex-1 px-2 py-1 text-xs font-medium rounded transition-colors ${
+                designMode === 'mobile'
+                  ? 'bg-gray-900 text-white'
+                  : 'bg-gray-100 text-gray-600 hover:bg-gray-200'
+              }`}
+            >
+              Mobile {hasMobilePaddingOverride && '•'}
+            </button>
+          </div>
+          <p className="text-xs text-gray-500">
+            {designMode === 'desktop'
+              ? 'Editing default padding (all devices)'
+              : hasMobilePaddingOverride
+                ? 'Editing mobile-specific padding override'
+                : 'Create mobile-specific padding (optional)'}
+          </p>
+          {designMode === 'mobile' && hasMobilePaddingOverride && (
+            <button
+              onClick={clearMobilePaddingOverride}
+              className="mt-1.5 text-xs text-blue-600 hover:text-blue-700 font-medium"
+            >
+              ← Remove mobile override
+            </button>
+          )}
         </div>
 
         {isLinked ? (
