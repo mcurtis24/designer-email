@@ -24,6 +24,7 @@ import { VersionManager } from '@/lib/versionManager'
 import { validateTemplate } from '@/lib/templateValidator'
 import { stripToPlaceholders } from '@/lib/templatePlaceholders'
 import { getTemplateMetadata } from '@/lib/templates'
+import { isLayoutBlock } from '@/lib/typeGuards'
 
 interface EmailStore {
   // Email Document State
@@ -345,16 +346,15 @@ export const useEmailStore = create<EmailStore>((set, get) => ({
         }
 
         // If this is a layout block, recursively update its children
-        if (block.type === 'layout') {
-          const layoutData = block.data as any
-          const updatedChildren = layoutData.children.map(updateBlockRecursive)
+        if (isLayoutBlock(block)) {
+          const updatedChildren = block.data.children.map(updateBlockRecursive)
 
           // Only create new block if children actually changed
-          if (updatedChildren.some((child: EmailBlock, i: number) => child !== layoutData.children[i])) {
+          if (updatedChildren.some((child: EmailBlock, i: number) => child !== block.data.children[i])) {
             return {
               ...block,
               data: {
-                ...layoutData,
+                ...block.data,
                 children: updatedChildren,
               },
             }
@@ -505,15 +505,14 @@ export const useEmailStore = create<EmailStore>((set, get) => ({
   addBlockToLayoutColumn: (layoutBlockId, columnIndex, block) =>
     set((state) => {
       const newBlocks = state.email.blocks.map((b) => {
-        if (b.id === layoutBlockId && b.type === 'layout') {
-          const layoutData = b.data as any
-          const newChildren = [...layoutData.children]
+        if (b.id === layoutBlockId && isLayoutBlock(b)) {
+          const newChildren = [...b.data.children]
           newChildren[columnIndex] = block
 
           return {
             ...b,
             data: {
-              ...layoutData,
+              ...b.data,
               children: newChildren,
             },
           }
@@ -881,12 +880,11 @@ export const useEmailStore = create<EmailStore>((set, get) => ({
         const newBlock = { ...block, id: nanoid() }
 
         // Regenerate IDs for nested blocks in layouts
-        if (block.type === 'layout') {
-          const layoutData = block.data as any
-          if (layoutData.children && Array.isArray(layoutData.children)) {
+        if (isLayoutBlock(block)) {
+          if (block.data.children && Array.isArray(block.data.children)) {
             newBlock.data = {
-              ...layoutData,
-              children: regenerateIds(layoutData.children),
+              ...block.data,
+              children: regenerateIds(block.data.children),
             }
           }
         }

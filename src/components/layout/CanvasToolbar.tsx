@@ -7,6 +7,7 @@
 import { useState, useEffect } from 'react'
 import { useEmailStore } from '@/stores/emailStore'
 import type { EmailBlock, HeadingBlockData } from '@/types/email'
+import { getBlockFontSize, getBlockFontFamily, getBlockColor } from '@/lib/typeGuards'
 
 interface CanvasToolbarProps {
   block: EmailBlock
@@ -44,15 +45,16 @@ export default function CanvasToolbar({ block, onFormat, activeStates = {} }: Ca
 
   // Update current font size from block data
   useEffect(() => {
-    const blockData = block.data as any
-    const fontSize = parseInt(blockData.fontSize || '16px')
-    setCurrentFontSize(fontSize)
+    const fontSize = getBlockFontSize(block)
+    if (fontSize) {
+      const parsed = parseInt(fontSize)
+      setCurrentFontSize(parsed)
+    }
   }, [block])
 
   // Update current font family from block data
   useEffect(() => {
-    const blockData = block.data as any
-    const blockFontFamily = blockData.fontFamily || 'Arial, Helvetica, sans-serif'
+    const blockFontFamily = getBlockFontFamily(block) || 'Arial, Helvetica, sans-serif'
     const matchingFont = emailSafeFonts.find(f =>
       blockFontFamily.includes(f.name)
     )
@@ -269,7 +271,7 @@ export default function CanvasToolbar({ block, onFormat, activeStates = {} }: Ca
           <span className="text-lg font-semibold leading-none text-gray-700">A</span>
           <div
             className="w-5 h-1 rounded"
-            style={{ backgroundColor: (block.data as any).color || '#000000' }}
+            style={{ backgroundColor: getBlockColor(block) || '#000000' }}
           />
         </button>
 

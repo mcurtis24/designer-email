@@ -1,4 +1,15 @@
 import type { EmailBlock } from '@/types/email'
+import {
+  isHeadingBlock,
+  isTextBlock,
+  isImageBlock,
+  isImageGalleryBlock,
+  isButtonBlock,
+  isSpacerBlock,
+  isDividerBlock,
+  isLayoutBlock,
+  isFooterBlock,
+} from '@/lib/typeGuards'
 import HeadingBlock from './HeadingBlock'
 import TextBlock from './TextBlock'
 import ImageBlock from './ImageBlock'
@@ -23,23 +34,50 @@ export default function BlockRenderer({ block, isSelected = false, onClick, onFo
 
   switch (block.type) {
     case 'heading':
-      return <HeadingBlock block={block as any} isSelected={isSelected} onClick={clickHandler} onFormatRequest={onFormatRequest} onActiveStatesChange={onActiveStatesChange} />
+      if (isHeadingBlock(block)) {
+        return <HeadingBlock block={block} isSelected={isSelected} onClick={clickHandler} onFormatRequest={onFormatRequest} onActiveStatesChange={onActiveStatesChange} />
+      }
+      break
     case 'text':
-      return <TextBlock block={block as any} isSelected={isSelected} onClick={clickHandler} onFormatRequest={onFormatRequest} onActiveStatesChange={onActiveStatesChange} />
+      if (isTextBlock(block)) {
+        return <TextBlock block={block} isSelected={isSelected} onClick={clickHandler} onFormatRequest={onFormatRequest} onActiveStatesChange={onActiveStatesChange} />
+      }
+      break
     case 'image':
-      return <ImageBlock block={block as any} isSelected={isSelected} onClick={clickHandler} />
+      if (isImageBlock(block)) {
+        return <ImageBlock block={block} isSelected={isSelected} onClick={clickHandler} />
+      }
+      break
     case 'imageGallery':
-      return <GalleryBlock block={block as any} isSelected={isSelected} onClick={clickHandler} />
+      if (isImageGalleryBlock(block)) {
+        return <GalleryBlock block={block} isSelected={isSelected} onClick={clickHandler} />
+      }
+      break
     case 'button':
-      return <ButtonBlock block={block as any} isSelected={isSelected} onClick={clickHandler} />
+      if (isButtonBlock(block)) {
+        return <ButtonBlock block={block} isSelected={isSelected} onClick={clickHandler} />
+      }
+      break
     case 'spacer':
-      return <SpacerBlock block={block as any} isSelected={isSelected} onClick={clickHandler} />
+      if (isSpacerBlock(block)) {
+        return <SpacerBlock block={block} isSelected={isSelected} onClick={clickHandler} />
+      }
+      break
     case 'divider':
-      return <DividerBlock block={block as any} isSelected={isSelected} onClick={clickHandler} />
+      if (isDividerBlock(block)) {
+        return <DividerBlock block={block} isSelected={isSelected} onClick={clickHandler} />
+      }
+      break
     case 'layout':
-      return <LayoutBlock block={block as any} isSelected={isSelected} onClick={clickHandler} />
+      if (isLayoutBlock(block)) {
+        return <LayoutBlock block={block} isSelected={isSelected} onClick={clickHandler} />
+      }
+      break
     case 'footer':
-      return <FooterBlock block={block as any} isSelected={isSelected} onClick={clickHandler} />
+      if (isFooterBlock(block)) {
+        return <FooterBlock block={block} isSelected={isSelected} onClick={clickHandler} />
+      }
+      break
     default:
       return (
         <div className="p-4 bg-red-50 border border-red-200 rounded-md">
