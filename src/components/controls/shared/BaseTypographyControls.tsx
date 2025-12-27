@@ -120,7 +120,7 @@ export function BaseTypographyControls<T extends TypographyBlockData>({
   }
 
   return (
-    <div className="space-y-4">
+    <div className="space-y-3">
       {/* Global Desktop/Mobile Mode Toggle */}
       <div className="sticky top-0 bg-white z-10 pb-3 border-b border-gray-200">
         <div className="flex items-center justify-between mb-2">
@@ -190,21 +190,21 @@ export function BaseTypographyControls<T extends TypographyBlockData>({
 
       {/* TYPOGRAPHY Section */}
       <div className="pt-1">
-        <h3 className="text-xs font-semibold text-gray-500 uppercase tracking-wider mb-3">
+        <h3 className="text-xs font-semibold text-gray-500 uppercase tracking-wide mb-2">
           Typography
         </h3>
       </div>
 
       {/* Typography Style Preset */}
       {typographyStyle && (
-        <div className="pb-3 border-b border-gray-200">
-          <label className="block text-xs font-medium text-gray-700 mb-2">
+        <div className="pb-2 border-b border-gray-200">
+          <label className="block text-xs font-medium text-gray-700 mb-1.5">
             Typography Style
           </label>
 
           {/* Preset Active Indicator */}
           {data.appliedPreset === typographyPresetName && (
-            <div className="mb-2 p-2 bg-blue-50 border border-blue-200 rounded-lg flex items-center justify-between">
+            <div className="mb-1.5 p-1.5 bg-blue-50 border border-blue-200 rounded-lg flex items-center justify-between">
               <div className="flex items-center gap-2">
                 <svg className="w-4 h-4 text-blue-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
@@ -222,7 +222,7 @@ export function BaseTypographyControls<T extends TypographyBlockData>({
 
           <button
             onClick={() => applyTypographyPreset(typographyStyle)}
-            className="w-full px-4 py-3 text-left border border-gray-200 rounded-lg hover:border-blue-500 hover:bg-blue-50 transition-all group"
+            className="w-full px-3 py-2 text-left border border-gray-200 rounded-lg hover:border-blue-500 hover:bg-blue-50 transition-all group"
           >
             <div className="flex items-center justify-between mb-1">
               <span className="text-sm font-medium text-gray-900">{typographyPresetLabel}</span>
@@ -241,7 +241,7 @@ export function BaseTypographyControls<T extends TypographyBlockData>({
           </button>
           <button
             onClick={() => setShowBrandingModal(true)}
-            className="w-full mt-2 text-xs text-blue-600 hover:text-blue-700"
+            className="w-full mt-1.5 text-xs text-blue-600 hover:text-blue-700"
           >
             Edit Typography Styles →
           </button>
@@ -258,95 +258,98 @@ export function BaseTypographyControls<T extends TypographyBlockData>({
         onChange={(fontFamily) => handleDataChange('fontFamily' as keyof T, fontFamily)}
       />
 
-      {/* Font Size */}
-      <div>
-        <div className="flex items-center justify-between mb-1.5">
-          <label className="text-xs font-medium text-gray-700 flex items-center gap-1.5">
-            Font Size
-            {hasMobileFontSize && designMode === 'desktop' && (
-              <span className="inline-block w-1.5 h-1.5 bg-blue-600 rounded-full" title="Has mobile override"></span>
+      {/* Font Size & Line Height - Side by Side */}
+      <div className="grid grid-cols-2 gap-3">
+        {/* Font Size */}
+        <div>
+          <div className="flex items-center justify-between mb-1.5">
+            <label className="text-xs font-medium text-gray-700 flex items-center gap-1.5">
+              Font Size
+              {hasMobileFontSize && designMode === 'desktop' && (
+                <span className="inline-block w-1.5 h-1.5 bg-blue-600 rounded-full" title="Has mobile override"></span>
+              )}
+            </label>
+            {designMode === 'mobile' && hasMobileFontSize && (
+              <button
+                onClick={() => {
+                  clearMobileFontSize()
+                  setDesignMode('desktop')
+                }}
+                className="text-xs text-blue-600 hover:text-blue-800"
+              >
+                Clear
+              </button>
             )}
-          </label>
-          {designMode === 'mobile' && hasMobileFontSize && (
-            <button
-              onClick={() => {
-                clearMobileFontSize()
-                setDesignMode('desktop')
-              }}
-              className="text-xs text-blue-600 hover:text-blue-800"
-            >
-              Clear Override
-            </button>
+          </div>
+          <SizeControl
+            label=""
+            value={designMode === 'mobile' && data.mobileFontSize ? data.mobileFontSize : data.fontSize}
+            onChange={(fontSize) => {
+              if (designMode === 'mobile') {
+                handleDataChange('mobileFontSize' as keyof T, fontSize)
+              } else {
+                handleDataChange('fontSize' as keyof T, fontSize)
+              }
+            }}
+            min={fontSizeMin}
+            max={fontSizeMax}
+            step={1}
+            unit="px"
+          />
+          {designMode === 'mobile' && (
+            <p className="text-xs text-gray-500 mt-1">
+              Desktop: {data.fontSize}
+            </p>
           )}
         </div>
-        <SizeControl
-          label=""
-          value={designMode === 'mobile' && data.mobileFontSize ? data.mobileFontSize : data.fontSize}
-          onChange={(fontSize) => {
-            if (designMode === 'mobile') {
-              handleDataChange('mobileFontSize' as keyof T, fontSize)
-            } else {
-              handleDataChange('fontSize' as keyof T, fontSize)
-            }
-          }}
-          min={fontSizeMin}
-          max={fontSizeMax}
-          step={1}
-          unit="px"
-        />
-        {designMode === 'mobile' && (
-          <p className="text-xs text-gray-500 mt-1">
-            Desktop: {data.fontSize}
-          </p>
-        )}
-      </div>
 
-      {/* Line Height */}
-      <div>
-        <div className="flex items-center justify-between mb-1.5">
-          <label className="text-xs font-medium text-gray-700 flex items-center gap-1.5">
-            Line Height
-            {hasMobileLineHeight && designMode === 'desktop' && (
-              <span className="inline-block w-1.5 h-1.5 bg-blue-600 rounded-full" title="Has mobile override"></span>
+        {/* Line Height */}
+        <div>
+          <div className="flex items-center justify-between mb-1.5">
+            <label className="text-xs font-medium text-gray-700 flex items-center gap-1.5">
+              Line Height
+              {hasMobileLineHeight && designMode === 'desktop' && (
+                <span className="inline-block w-1.5 h-1.5 bg-blue-600 rounded-full" title="Has mobile override"></span>
+              )}
+            </label>
+            {designMode === 'mobile' && hasMobileLineHeight && (
+              <button
+                onClick={() => {
+                  clearMobileLineHeight()
+                  setDesignMode('desktop')
+                }}
+                className="text-xs text-blue-600 hover:text-blue-800"
+              >
+                Clear
+              </button>
             )}
-          </label>
-          {designMode === 'mobile' && hasMobileLineHeight && (
-            <button
-              onClick={() => {
-                clearMobileLineHeight()
-                setDesignMode('desktop')
-              }}
-              className="text-xs text-blue-600 hover:text-blue-800"
-            >
-              Clear Override
-            </button>
+          </div>
+          <SizeControl
+            label=""
+            value={(designMode === 'mobile' && data.mobileLineHeight ? data.mobileLineHeight : data.lineHeight).toString()}
+            onChange={(lineHeight) => {
+              if (designMode === 'mobile') {
+                handleDataChange('mobileLineHeight' as keyof T, parseFloat(lineHeight))
+              } else {
+                handleDataChange('lineHeight' as keyof T, parseFloat(lineHeight))
+              }
+            }}
+            min={1.0}
+            max={3.0}
+            step={0.1}
+            unit=""
+          />
+          {designMode === 'mobile' && (
+            <p className="text-xs text-gray-500 mt-1">
+              Desktop: {data.lineHeight}
+            </p>
           )}
         </div>
-        <SizeControl
-          label=""
-          value={(designMode === 'mobile' && data.mobileLineHeight ? data.mobileLineHeight : data.lineHeight).toString()}
-          onChange={(lineHeight) => {
-            if (designMode === 'mobile') {
-              handleDataChange('mobileLineHeight' as keyof T, parseFloat(lineHeight))
-            } else {
-              handleDataChange('lineHeight' as keyof T, parseFloat(lineHeight))
-            }
-          }}
-          min={1.0}
-          max={3.0}
-          step={0.1}
-          unit=""
-        />
-        {designMode === 'mobile' && (
-          <p className="text-xs text-gray-500 mt-1">
-            Desktop: {data.lineHeight}
-          </p>
-        )}
       </div>
 
       {/* COLORS Section */}
       <div className="pt-3 border-t border-gray-200">
-        <h3 className="text-xs font-semibold text-gray-500 uppercase tracking-wider mb-3">
+        <h3 className="text-xs font-semibold text-gray-500 uppercase tracking-wide mb-2">
           Colors
         </h3>
       </div>
