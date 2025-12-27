@@ -5,8 +5,8 @@
 
 export const colors = {
   // Brand colors
-  primary: '#2563EB',
-  primaryHover: '#1D4ED8',
+  primary: '#027DB3',
+  primaryHover: '#015f8a',
   primaryLight: '#DBEAFE',
 
   // Neutrals (UI)

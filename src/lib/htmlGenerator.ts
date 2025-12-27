@@ -771,7 +771,7 @@ export function generateEmailHTML(email: EmailDocument, includeOutlookFallback: 
 
       /* Buttons: invert backgrounds while maintaining branding */
       .button-container a {
-        background-color: #2563eb !important;
+        background-color: #027DB3 !important;
         color: #ffffff !important;
       }
 
