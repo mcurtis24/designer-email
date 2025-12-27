@@ -1,5 +1,6 @@
 import { useState } from 'react'
 import type { EmailBlock, VideoBlockData } from '@/types/email'
+import { useEmailStore } from '@/stores/emailStore'
 
 interface VideoBlockProps {
   block: EmailBlock & { data: VideoBlockData }
@@ -9,6 +10,7 @@ interface VideoBlockProps {
 
 export default function VideoBlock({ block, isSelected, onClick }: VideoBlockProps) {
   const data = block.data as VideoBlockData
+  const setActiveSidebarTab = useEmailStore((state) => state.setActiveSidebarTab)
   const [imageError, setImageError] = useState(false)
 
   // Get alignment styles
@@ -30,7 +32,8 @@ export default function VideoBlock({ block, isSelected, onClick }: VideoBlockPro
 
     if (isYouTube) {
       const videoId = extractYouTubeId(data.videoUrl)
-      return videoId ? `https://img.youtube.com/vi/${videoId}/maxresdefault.jpg` : ''
+      // Use sddefault which is more reliable than maxresdefault
+      return videoId ? `https://img.youtube.com/vi/${videoId}/sddefault.jpg` : ''
     }
 
     if (isVimeo) {
@@ -49,9 +52,15 @@ export default function VideoBlock({ block, isSelected, onClick }: VideoBlockPro
   const thumbnail = getVideoThumbnail()
   const width = data.width || 560
 
+  const handleClick = (e: React.MouseEvent) => {
+    e.stopPropagation()
+    onClick?.()
+    setActiveSidebarTab('style')
+  }
+
   return (
     <div
-      onClick={onClick}
+      onClick={handleClick}
       className={`group cursor-pointer transition-all ${
         isSelected ? 'ring-2 ring-blue-500' : ''
       }`}

@@ -215,8 +215,8 @@ export function createFooterBlock(order: number): EmailBlock {
 
 export function createVideoBlock(order: number): EmailBlock {
   const data: VideoBlockData = {
-    videoUrl: 'https://www.youtube.com/watch?v=dQw4w9WgXcQ',
-    thumbnailSrc: 'https://img.youtube.com/vi/dQw4w9WgXcQ/maxresdefault.jpg',
+    videoUrl: 'https://www.youtube.com/watch?v=LXb3EKWsInQ',
+    thumbnailSrc: 'https://images.unsplash.com/photo-1506905925346-21bda4d32df4?w=640&h=360&fit=crop',
     alt: 'Video thumbnail',
     width: 560,
     alignment: 'center',

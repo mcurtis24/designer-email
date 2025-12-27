@@ -7,6 +7,20 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Fixed - December 27, 2025 (Afternoon Session)
+
+#### Video Block Bug Fixes
+- **Style Sidebar Activation**: Fixed video block not activating style sidebar when clicked
+  - Added `useEmailStore` import and `setActiveSidebarTab('style')` call to click handler
+  - Matches ImageBlock behavior for consistent UX across all blocks
+  - Impact: Users can now properly access style controls when editing video blocks
+- **Thumbnail Display Issues**: Improved video thumbnail reliability
+  - Replaced YouTube maxresdefault.jpg with more reliable sddefault.jpg quality
+  - Updated default video thumbnail to use Unsplash stock scenery image
+  - Changed from Rick Astley placeholder to professional mountain landscape
+  - Updated auto-generated YouTube thumbnails to use sddefault.jpg
+  - Impact: Video blocks now show proper thumbnails instead of gray placeholder icons
+
 ### Added - December 27, 2025 (Morning Session)
 
 #### Global Social Links Manager
@@ -235,8 +249,13 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Previous Updates]
 
-### Phase 0-3 Features
-See [planning_and_updates/comprehensive-review-2025.md](planning_and_updates/comprehensive-review-2025.md) for detailed roadmap and [archive_planning_docs/](archive_planning_docs/) for historical planning documents.
+### Phase 0-3 Features & Complete Roadmap
+See [planning/MASTER_PLANNING_DOCUMENT.md](planning/MASTER_PLANNING_DOCUMENT.md) for:
+- Complete feature status (what's done, what's not)
+- Remaining features with priorities and effort estimates
+- Implementation timeline and success metrics
+
+Historical planning documents: [planning/archive/](planning/archive/)
 
 ---
 
