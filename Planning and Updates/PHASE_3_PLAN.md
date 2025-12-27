@@ -95,12 +95,12 @@ This plan covers the implementation of advanced template features that will diff
 - Optional: Regenerate thumbnail with `generateThumbnail()`
 
 **Acceptance Criteria**:
-- [ ] Edit button appears on template card hover
-- [ ] Dialog pre-fills with current template metadata
-- [ ] Name field is required (validation)
-- [ ] Saves metadata updates to localStorage
-- [ ] Thumbnail regeneration works (async)
-- [ ] Updates reflected immediately in template grid
+- [x] Edit button appears on template card hover
+- [x] Dialog pre-fills with current template metadata
+- [x] Name field is required (validation)
+- [x] Saves metadata updates to localStorage
+- [x] Thumbnail regeneration works (async)
+- [x] Updates reflected immediately in template grid
 
 ---
 
@@ -150,11 +150,11 @@ const sortedTemplates = useMemo(() => {
 ```
 
 **Acceptance Criteria**:
-- [ ] Dropdown appears above template grid
-- [ ] All 6 sort options work correctly
-- [ ] Default is "Newest First"
-- [ ] Sorting persists during session (useState)
-- [ ] Works with search/filter (sorts filtered results)
+- [x] Dropdown appears above template grid
+- [x] All 6 sort options work correctly
+- [x] Default is "Newest First"
+- [x] Sorting persists during session (useState)
+- [x] Works with search/filter (sorts filtered results)
 
 ---
 
@@ -194,12 +194,12 @@ updateTemplateContent: (templateId?: string) => Promise<void>
 ```
 
 **Acceptance Criteria**:
-- [ ] "Update Template" button appears when template is loaded
-- [ ] Button shows template name (e.g., "Update 'Newsletter'")
-- [ ] Confirmation: "Update template with current changes?"
-- [ ] Updates template blocks, settings, and thumbnail
-- [ ] Sets updatedAt timestamp
-- [ ] Template grid shows updated content immediately
+- [x] "Update Template" button appears when template is loaded
+- [x] Button shows template name (e.g., "Update 'Newsletter'")
+- [x] Confirmation: "Update template with current changes?"
+- [x] Updates template blocks, settings, and thumbnail
+- [x] Sets updatedAt timestamp
+- [x] Template grid shows updated content immediately
 
 ---
 
@@ -249,11 +249,11 @@ getTemplateVersions: (templateId: string) => TemplateVersion[]
 - Version message display
 
 **Acceptance Criteria**:
-- [ ] Version created on every template content update
-- [ ] Max 10 versions per template (auto-prune oldest)
-- [ ] Version history modal shows all versions
-- [ ] Restore version updates template content
-- [ ] Restoring creates new version (checkpoint)
+- [x] Version created on every template content update
+- [x] Max 10 versions per template (auto-prune oldest)
+- [x] Version history modal shows all versions
+- [x] Restore version updates template content
+- [x] Restoring creates new version (checkpoint)
 
 ---
 
@@ -293,12 +293,12 @@ exportMultipleTemplates: (templateIds: string[]) => void  // Returns JSON[] or Z
 ```
 
 **Acceptance Criteria**:
-- [ ] "Select" mode toggle button
-- [ ] Checkboxes appear on all template cards
-- [ ] Select all / deselect all works
-- [ ] Bulk delete removes all selected
-- [ ] Bulk export downloads all as individual JSON files
-- [ ] Selection count shows in toolbar
+- [x] "Select" mode toggle button
+- [x] Checkboxes appear on all template cards
+- [x] Select all / deselect all works
+- [x] Bulk delete removes all selected
+- [x] Bulk export downloads all as individual JSON files
+- [x] Selection count shows in toolbar
 
 ---
 
@@ -396,11 +396,11 @@ export function getStorageUsage(): {
 - Simple bar charts or sparklines
 
 **Acceptance Criteria**:
-- [ ] Analytics button in Template Library
-- [ ] Modal shows template usage stats
-- [ ] Most/least used templates highlighted
-- [ ] Category distribution shown
-- [ ] Data persists across sessions
+- [x] Analytics button in Template Library
+- [x] Modal shows template usage stats
+- [x] Most/least used templates highlighted
+- [x] Category distribution shown
+- [x] Data persists across sessions
 
 ---
 
@@ -447,11 +447,11 @@ export function getStorageUsage(): {
 ## Testing Checklist
 
 ### Phase 2 Completion
-- [ ] Edit template - all fields update correctly
-- [ ] Edit template - thumbnail regeneration works
-- [ ] Sort by newest - templates in correct order
-- [ ] Sort by name - alphabetical order
-- [ ] Sort by usage - most used first
+- [x] Edit template - all fields update correctly
+- [x] Edit template - thumbnail regeneration works
+- [x] Sort by newest - templates in correct order
+- [x] Sort by name - alphabetical order
+- [x] Sort by usage - most used first
 
 ### Phase 3 Features
 - [x] Update template content preserves metadata
@@ -459,11 +459,11 @@ export function getStorageUsage(): {
 - [x] Version created on template update
 - [x] Version history shows all versions
 - [x] Restore version works correctly
-- [ ] Bulk select works for 2+ templates
-- [ ] Bulk delete removes all selected
-- [ ] Bulk export downloads all JSONs
-- [ ] ~~Storage meter~~ REMOVED (cloud storage planned)
-- [ ] Analytics shows correct usage data (optional)
+- [x] Bulk select works for 2+ templates
+- [x] Bulk delete removes all selected
+- [x] Bulk export downloads all JSONs
+- [x] ~~Storage meter~~ REMOVED (cloud storage planned)
+- [x] Analytics shows correct usage data (optional)
 
 ---
 
