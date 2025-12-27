@@ -1,7 +1,11 @@
-import { useState, useEffect, useRef } from 'react'
+import { useState, useEffect, useRef, useCallback } from 'react'
 import { Plus, Palette } from 'lucide-react'
 import { useEmailStore } from '@/stores/emailStore'
 import type { BrandColor } from '@/types/email'
+
+// Recent colors storage key
+const RECENT_COLORS_KEY = 'recentColors'
+const MAX_RECENT_COLORS = 8
 
 interface ColorThemePickerProps {
   value: string
@@ -46,11 +50,37 @@ export function ColorThemePicker({
   const [isOpen, setIsOpen] = useState(false)
   const [shouldPulse, setShouldPulse] = useState(false)
   const [buttonRect, setButtonRect] = useState<DOMRect | null>(null)
+  const [recentColors, setRecentColors] = useState<string[]>(() => {
+    try {
+      const stored = localStorage.getItem(RECENT_COLORS_KEY)
+      return stored ? JSON.parse(stored) : []
+    } catch {
+      return []
+    }
+  })
   const buttonRef = useRef<HTMLButtonElement>(null)
   const activeSidebarTab = useEmailStore((state) => state.activeSidebarTab)
   const editingBlockId = useEmailStore((state) => state.editorState.editingBlockId)
   const autoOpenColorPicker = useEmailStore((state) => state.autoOpenColorPicker)
   const setAutoOpenColorPicker = useEmailStore((state) => state.setAutoOpenColorPicker)
+
+  // Add color to recent colors
+  const addToRecentColors = useCallback((color: string) => {
+    setRecentColors((prev) => {
+      // Remove duplicates and add to front
+      const filtered = prev.filter((c) => c.toLowerCase() !== color.toLowerCase())
+      const updated = [color, ...filtered].slice(0, MAX_RECENT_COLORS)
+
+      // Persist to localStorage
+      try {
+        localStorage.setItem(RECENT_COLORS_KEY, JSON.stringify(updated))
+      } catch (e) {
+        console.warn('Failed to save recent colors:', e)
+      }
+
+      return updated
+    })
+  }, [])
 
   // Trigger pulse animation when sidebar opens to style tab while editing
   useEffect(() => {
@@ -87,6 +117,7 @@ export function ColorThemePicker({
 
   const handleColorClick = (color: string) => {
     onChange(color)
+    addToRecentColors(color)
     setIsOpen(false)
   }
 
@@ -130,51 +161,92 @@ export function ColorThemePicker({
                 className="w-full px-3 py-2 text-sm border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
               />
 
-              {/* Brand Kit - PRIMARY (shown first) */}
-              <div>
-                <div className="flex items-center justify-between mb-2">
-                  <h3 className="text-sm font-semibold text-gray-900">Brand Kit</h3>
-                </div>
-                <div className="flex flex-wrap gap-1.5">
-                  {/* Add color button */}
-                  <button
-                    onClick={() => {
-                      const newColor = value
-                      if (onAddBrandColor && !brandColors.some((bc) => bc.color === newColor)) {
-                        onAddBrandColor(newColor)
-                      }
-                    }}
-                    className="w-7 h-7 rounded border-2 border-dashed border-gray-300 hover:border-blue-500 flex items-center justify-center transition-colors"
-                    title="Add current color to brand kit"
-                  >
-                    <Plus className="w-3.5 h-3.5 text-gray-400" />
-                  </button>
-
-                  {brandColors.filter((bc) => filterColor(bc.color)).map((brandColor, index) => (
-                    <div key={`brand-${index}`} className="relative group">
+              {/* Recent Colors - Show first if exists */}
+              {recentColors.length > 0 && (
+                <div>
+                  <div className="flex items-center justify-between mb-2">
+                    <h3 className="text-xs font-medium text-gray-600">Recent colors ({recentColors.length})</h3>
+                  </div>
+                  <div className="flex flex-wrap gap-1.5">
+                    {recentColors.filter(filterColor).map((color, index) => (
                       <button
-                        onClick={() => handleColorClick(brandColor.color)}
+                        key={`recent-${index}`}
+                        onClick={() => handleColorClick(color)}
                         className="w-7 h-7 rounded border-2 border-gray-200 hover:border-blue-500 transition-colors"
-                        style={{ backgroundColor: brandColor.color }}
-                        title={brandColor.name || brandColor.color}
+                        style={{ backgroundColor: color }}
+                        title={color}
                       />
-                      {onRemoveBrandColor && (
-                        <button
-                          onClick={(e) => {
-                            e.stopPropagation()
-                            onRemoveBrandColor(brandColor.color)
-                          }}
-                          className="absolute -top-1 -right-1 w-4 h-4 bg-red-500 text-white rounded-full opacity-0 group-hover:opacity-100 transition-opacity text-xs flex items-center justify-center"
-                          title="Remove from brand kit"
-                        >
-                          ×
-                        </button>
-                      )}
-                    </div>
-                  ))}
+                    ))}
+                  </div>
                 </div>
-                {brandColors.length === 0 && (
-                  <p className="text-xs text-gray-500 mt-1">Click + to add colors to your brand kit</p>
+              )}
+
+              {/* Brand Kit - PRIMARY (shown first) */}
+              <div className={recentColors.length > 0 ? 'mt-4 pt-4 border-t border-gray-200' : ''}>
+                <div className="flex items-center justify-between mb-2">
+                  <h3 className="text-sm font-semibold text-gray-900">
+                    Brand Kit {brandColors.length > 0 && `(${brandColors.length})`}
+                  </h3>
+                </div>
+                {brandColors.length === 0 ? (
+                  <div className="p-4 bg-gray-50 border-2 border-dashed border-gray-200 rounded-lg text-center">
+                    <Palette className="w-8 h-8 text-gray-400 mx-auto mb-2" />
+                    <p className="text-xs font-medium text-gray-700 mb-1">No brand colors yet</p>
+                    <p className="text-xs text-gray-500 mb-3">
+                      Add colors to create a consistent brand palette
+                    </p>
+                    <button
+                      onClick={() => {
+                        const newColor = value
+                        if (onAddBrandColor && !brandColors.some((bc) => bc.color === newColor)) {
+                          onAddBrandColor(newColor)
+                        }
+                      }}
+                      className="inline-flex items-center gap-1.5 px-3 py-1.5 text-xs font-medium text-blue-600 hover:text-blue-700 border border-blue-200 hover:border-blue-300 rounded-md transition-colors"
+                    >
+                      <Plus className="w-3.5 h-3.5" />
+                      Add Current Color
+                    </button>
+                  </div>
+                ) : (
+                  <div className="flex flex-wrap gap-1.5">
+                    {/* Add color button */}
+                    <button
+                      onClick={() => {
+                        const newColor = value
+                        if (onAddBrandColor && !brandColors.some((bc) => bc.color === newColor)) {
+                          onAddBrandColor(newColor)
+                        }
+                      }}
+                      className="w-7 h-7 rounded border-2 border-dashed border-gray-300 hover:border-blue-500 flex items-center justify-center transition-colors"
+                      title="Add current color to brand kit"
+                    >
+                      <Plus className="w-3.5 h-3.5 text-gray-400" />
+                    </button>
+
+                    {brandColors.filter((bc) => filterColor(bc.color)).map((brandColor, index) => (
+                      <div key={`brand-${index}`} className="relative group">
+                        <button
+                          onClick={() => handleColorClick(brandColor.color)}
+                          className="w-7 h-7 rounded border-2 border-gray-200 hover:border-blue-500 transition-colors"
+                          style={{ backgroundColor: brandColor.color }}
+                          title={brandColor.name || brandColor.color}
+                        />
+                        {onRemoveBrandColor && (
+                          <button
+                            onClick={(e) => {
+                              e.stopPropagation()
+                              onRemoveBrandColor(brandColor.color)
+                            }}
+                            className="absolute -top-1 -right-1 w-4 h-4 bg-red-500 text-white rounded-full opacity-0 group-hover:opacity-100 transition-opacity text-xs flex items-center justify-center"
+                            title="Remove from brand kit"
+                          >
+                            ×
+                          </button>
+                        )}
+                      </div>
+                    ))}
+                  </div>
                 )}
               </div>
 
@@ -182,7 +254,9 @@ export function ColorThemePicker({
               {documentColors.length > 0 && (
                 <div className="mt-4 pt-4 border-t border-gray-200">
                   <div className="flex items-center justify-between mb-1.5">
-                    <h3 className="text-xs font-medium text-gray-600">Document colors</h3>
+                    <h3 className="text-xs font-medium text-gray-600">
+                      Document colors ({documentColors.length})
+                    </h3>
                   </div>
                   <div className="flex flex-wrap gap-1.5">
                     {documentColors.filter(filterColor).map((color, index) => (

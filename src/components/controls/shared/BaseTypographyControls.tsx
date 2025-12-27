@@ -4,7 +4,7 @@
  * Eliminates ~375 lines of duplication between TextControls and HeadingControls
  */
 
-import { ReactNode, useState } from 'react'
+import { ReactNode, useState, useEffect } from 'react'
 import { useEmailStore } from '@/stores/emailStore'
 import type { EmailBlock, TextBlockData, HeadingBlockData, TypographyStyle } from '@/types/email'
 import { ColorThemePicker } from '@/components/ui/ColorThemePicker'
@@ -51,6 +51,12 @@ export function BaseTypographyControls<T extends TypographyBlockData>({
   // Design mode toggle (desktop/mobile)
   const [designMode, setDesignMode] = useState<DesignMode>('desktop')
 
+  // Track if user has seen mobile hint (localStorage)
+  const [showMobileHint, setShowMobileHint] = useState(() => {
+    const hasSeenHint = localStorage.getItem('hasSeenMobileHint')
+    return hasSeenHint !== 'true'
+  })
+
   // Use mobile overrides hook
   const {
     hasMobileFontSize,
@@ -61,6 +67,30 @@ export function BaseTypographyControls<T extends TypographyBlockData>({
     clearMobileBackgroundColor,
     handleBackgroundChange,
   } = useMobileOverrides(block)
+
+  // Mark hint as seen when user switches to mobile mode
+  useEffect(() => {
+    if (designMode === 'mobile' && showMobileHint) {
+      localStorage.setItem('hasSeenMobileHint', 'true')
+      // Keep showing for this session, hide on next mount
+      setTimeout(() => setShowMobileHint(false), 5000)
+    }
+  }, [designMode, showMobileHint])
+
+  // Count active mobile overrides
+  const mobileOverrideCount = [
+    hasMobileFontSize,
+    hasMobileLineHeight,
+    hasMobileBackgroundColor,
+  ].filter(Boolean).length
+
+  // Clear all mobile overrides
+  const clearAllMobileOverrides = () => {
+    if (hasMobileFontSize) clearMobileFontSize()
+    if (hasMobileLineHeight) clearMobileLineHeight()
+    if (hasMobileBackgroundColor) clearMobileBackgroundColor()
+    setDesignMode('desktop')
+  }
 
   const handleDataChange = (field: keyof T, value: any) => {
     const fieldsToWatch = ['fontFamily', 'fontSize', 'fontWeight', 'color', 'lineHeight']
@@ -93,7 +123,7 @@ export function BaseTypographyControls<T extends TypographyBlockData>({
     <div className="space-y-4">
       {/* Global Desktop/Mobile Mode Toggle */}
       <div className="sticky top-0 bg-white z-10 pb-3 border-b border-gray-200">
-        <div className="flex items-center justify-between">
+        <div className="flex items-center justify-between mb-2">
           <span className="text-xs font-medium text-gray-700">Editing Mode</span>
           <div className="flex gap-1 p-1 bg-gray-100 rounded-lg">
             <button
@@ -115,15 +145,45 @@ export function BaseTypographyControls<T extends TypographyBlockData>({
               }`}
             >
               Mobile
-              {(hasMobileFontSize || hasMobileLineHeight || hasMobileBackgroundColor) && (
+              {mobileOverrideCount > 0 && (
                 <span className="ml-1.5 inline-block w-1.5 h-1.5 bg-blue-600 rounded-full"></span>
               )}
             </button>
           </div>
         </div>
-        {designMode === 'mobile' && (
+        {/* Mobile Overrides Count & Clear All */}
+        {mobileOverrideCount > 0 && (
+          <div className="flex items-center justify-between text-xs">
+            <span className="text-blue-600 font-medium flex items-center gap-1.5">
+              <span className="inline-block w-1.5 h-1.5 bg-blue-600 rounded-full"></span>
+              {mobileOverrideCount} mobile override{mobileOverrideCount !== 1 ? 's' : ''} active
+            </span>
+            <button
+              onClick={clearAllMobileOverrides}
+              className="text-blue-600 hover:text-blue-800 font-medium"
+            >
+              Clear All
+            </button>
+          </div>
+        )}
+        {designMode === 'mobile' && showMobileHint && (
+          <div className="mt-3 p-3 bg-blue-50 border border-blue-200 rounded-lg">
+            <div className="flex items-start gap-2">
+              <svg className="w-4 h-4 text-blue-600 mt-0.5 flex-shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+              </svg>
+              <div className="flex-1">
+                <p className="text-xs font-medium text-blue-900 mb-1">Mobile Mode Active</p>
+                <p className="text-xs text-blue-700">
+                  Changes will only apply on devices under 600px width. Desktop values remain unchanged unless overridden.
+                </p>
+              </div>
+            </div>
+          </div>
+        )}
+        {designMode === 'mobile' && !showMobileHint && (
           <p className="text-xs text-gray-500 mt-2">
-            Mobile overrides will apply on devices under 600px width
+            Mobile overrides apply on devices under 600px width
           </p>
         )}
       </div>
